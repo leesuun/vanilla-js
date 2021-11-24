@@ -1,0 +1,17 @@
+main {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    width: 90px;
+    font-size: 1.5rem;
+}
+
+.calc__screen {
+    height: 70px;
+
+    border: 1px solid black;
+    border-radius: 0.3rem;
+    margin-bottom: 2rem;
+}
