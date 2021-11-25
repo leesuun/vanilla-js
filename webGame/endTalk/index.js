@@ -32,8 +32,9 @@ function handleGame(event) {
     const input = gameForm.querySelector("input");
     word = input.value;
     newWord.push(input.value);
+    order.innerText = `제시어: ${word}`;
 
-    if (newWord.length >= 2) {
+    if (newWord.length >= 1) {
         const preWord = newWord[newWord.length - 2];
         const nextWord = newWord[newWord.length - 1];
         if (
