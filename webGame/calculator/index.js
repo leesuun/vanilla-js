@@ -53,88 +53,101 @@ const result = document
     .getElementById("result")
     .addEventListener("click", handleClickResult);
 
-let firstNum = "";
-let nextNum = "";
-let thirdNum = "";
-let operator = "";
-let nextOperator = "";
+let number = "";
+let numberAry = [];
+let operAry = [];
 
-function showScreen(firstNum, operator, nextNum) {
-    screen.innerText = `${firstNum} ${operator} ${nextNum} ${nextOperator} ${thirdNum}`;
+let operCnt = 0; // 연산자 입력 체크용
+let operOverlap = 0; // 연산자 중복입력 방지
+
+function showScreen(numberAry, operAry) {
+    let showText = "";
+
+    for (let i = 0; i < numberAry.length; i++) {
+        showText += numberAry[i];
+        showText += operAry[i] === undefined ? "" : operAry[i];
+    }
+    screen.innerText = showText;
 }
 function handleClickNumber() {
-    if (!nextOperator) {
-        if (!operator) {
-            firstNum += this.textContent;
-        } else {
-            nextNum += this.textContent;
-        }
-    } else {
-        thirdNum += this.textContent;
+    number += this.textContent;
+
+    // 연산자 입력시 배열에 추가
+    if (operAry.length === operCnt) {
+        numberAry[operCnt] = number;
     }
 
-    showScreen(firstNum, operator, nextNum, nextOperator, thirdNum);
+    operOverlap = 0;
+    showScreen(numberAry, operAry);
 }
 
 function handleClickOperator() {
-    if (!operator) {
-        operator = this.textContent;
-    } else {
-        nextOperator = this.textContent;
+    if (numberAry.length === 0) {
+        alert("숫자를 먼저 입력해주세요.!");
+        return;
     }
 
-    showScreen(firstNum, operator, nextNum, nextOperator, thirdNum);
+    if (operOverlap === 1) {
+        alert("연산자 중복 입력 불가!");
+        return;
+    }
+    number = ""; // 합쳐지는 문자열 clear
+    operCnt++; // 연산자 입력시 카운트
+    operOverlap++; // 연산자 중복 체크
+    operAry.push(this.textContent);
+
+    showScreen(numberAry, operAry);
 }
 
 function handleClickClear() {
-    firstNum = "";
-    nextNum = "";
-    operator = "";
-    showScreen(firstNum, operator, nextNum, nextOperator, thirdNum);
+    number = "";
+    numberAry = [];
+    operAry = [];
+    operCnt = 0;
+    operOverlap = 0;
+    showScreen(numberAry, operAry);
 }
 
 function handleClickResult() {
     let result;
-    switch (operator) {
-        case "+": {
-            result = add(firstNum, nextNum);
-            break;
-        }
-        case "-": {
-            result = sub(firstNum, nextNum);
-            break;
-        }
-        case "*": {
-            result = mul(firstNum, nextNum);
-            break;
-        }
-        case "/": {
-            result = div(firstNum, nextNum);
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    switch (nextOperator) {
-        case "+": {
-            result = add(result, thirdNum);
-            break;
-        }
-        case "-": {
-            result = sub(result, thirdNum);
-            break;
-        }
-        case "*": {
-            result = mul(result, thirdNum);
-            break;
-        }
-        case "/": {
-            result = div(result, thirdNum);
-            break;
-        }
-        default: {
-            break;
+
+    for (let i = 0; i < operAry.length; i++) {
+        switch (operAry[i]) {
+            case "+": {
+                if (result) {
+                    result = add(result, numberAry[i + 1]);
+                } else {
+                    result = add(numberAry[i], numberAry[i + 1]);
+                }
+                break;
+            }
+            case "-": {
+                if (result) {
+                    result = sub(result, numberAry[i + 1]);
+                } else {
+                    result = sub(numberAry[i], numberAry[i + 1]);
+                }
+                break;
+            }
+            case "*": {
+                if (result) {
+                    result = mul(result, numberAry[i + 1]);
+                } else {
+                    result = mul(numberAry[i], numberAry[i + 1]);
+                }
+                break;
+            }
+            case "/": {
+                if (result) {
+                    result = div(result, numberAry[i + 1]);
+                } else {
+                    result = div(numberAry[i], numberAry[i + 1]);
+                }
+                break;
+            }
+            default: {
+                break;
+            }
         }
     }
 
