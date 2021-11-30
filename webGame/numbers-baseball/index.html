@@ -124,24 +124,14 @@
                 const MIN = 1000;
                 const MAX = 10000;
                 let number;
-                let numberCheck = 0;
-
                 do {
-                    numberCheck = 0;
                     number = Math.ceil(Math.random() * (MAX - MIN) + MIN)
                         .toString()
                         .split("");
-
-                    for (let i = 0; i < number.length; i++) {
-                        for (let j = i + 1; j < number.length; j++) {
-                            if (number[i] === number[j]) {
-                                numberCheck = 1;
-                            }
-                        }
-                    }
-                } while (numberCheck === 1);
-
+                    number = [...new Set(number)];
+                } while (number.length < 4);
                 console.log(number);
+
                 return number;
             }
         </script>
