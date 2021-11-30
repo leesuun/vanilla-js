@@ -1,0 +1,108 @@
+/* ------------------------------- Set Main--------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    min-height: auto;
+    min-height: 120vh;
+}
+
+main {
+    width: 1000px;
+    display: flex;
+    justify-content: center;
+}
+
+.game__wrapper {
+    width: 1000px;
+    height: 600px;
+    display: flex;
+    border: 1px solid black;
+    border-radius: 3rem;
+    box-shadow: 5px 5px 5px black;
+}
+
+/* ------------------------------- left screen--------------------------------- */
+
+.game__place {
+    width: 500px;
+    padding: 2rem;
+}
+
+.game__state {
+    margin-bottom: 2rem;
+}
+
+.state__row {
+    margin-bottom: 0.5rem;
+    border: 1px solid black;
+    padding: 0.3rem;
+}
+
+.strike,
+.ball,
+.out,
+.home-run {
+    display: table-cell;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.strike {
+    background-color: yellow;
+}
+.ball {
+    background-color: green;
+}
+.out {
+    background-color: red;
+}
+.home-run {
+    background-color: blue;
+}
+
+.game__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game__form .number__input {
+    display: flex;
+    gap: 1rem;
+}
+
+.game__form input {
+    width: 50px;
+    height: 50px;
+}
+
+.form__option {
+}
+
+/* ------------------------------- right screen--------------------------------- */
+
+.game__status {
+    padding: 2rem;
+    width: 500px;
+}
+
+table {
+    width: 100%;
+    border: none;
+}
+
+table tr td:nth-child(1) {
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+table tr td:nth-child(2) {
+    width: 400px;
+}

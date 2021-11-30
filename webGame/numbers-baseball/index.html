@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <link rel="stylesheet" href="style.css" />
+        <title>numbers-baseball</title>
+    </head>
+    <body>
+        <header>
+            <h1>숫자 야구</h1>
+        </header>
+        <main>
+            <div class="game__wrapper">
+                <div class="game__place">
+                    <div class="game__state">
+                        <div class="state__row state__strike">
+                            <div class="strike">S</div>
+                        </div>
+                        <div class="state__row state__ball">
+                            <div class="ball">B</div>
+                        </div>
+                        <div class="state__row state__out">
+                            <div class="out">O</div>
+                        </div>
+                        <div class="state__row state__home-run">
+                            <div class="home-run">H</div>
+                        </div>
+                    </div>
+                    <form class="game__form">
+                        <div class="number__input">
+                            <input
+                                type="number"
+                                min="0"
+                                max="9"
+                                placeholder="0~9"
+                            />
+                            <input
+                                type="number"
+                                min="0"
+                                max="9"
+                                placeholder="0~9"
+                            />
+                            <input
+                                type="number"
+                                min="0"
+                                max="9"
+                                placeholder="0~9"
+                            />
+                            <input
+                                type="number"
+                                min="0"
+                                max="9"
+                                placeholder="0~9"
+                            />
+                        </div>
+                        <div class="form__option">
+                            <button type="submit">스윙</button>
+                            <button>재시작</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="game__status">
+                    <table class="status__table">
+                        <thead>
+                            <tr>
+                                <td>회</td>
+                                <td>결과</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>2회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>3회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>4회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>5회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>6회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>7회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>8회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>9회</td>
+                                <td>x</td>
+                            </tr>
+                            <tr>
+                                <td>10회</td>
+                                <td>x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <script>
+            const goalNumber = randomNumber();
+
+            function randomNumber() {
+                const MIN = 1000;
+                const MAX = 10000;
+                let number;
+                let numberCheck = 0;
+
+                do {
+                    numberCheck = 0;
+                    number = Math.ceil(Math.random() * (MAX - MIN) + MIN)
+                        .toString()
+                        .split("");
+
+                    for (let i = 0; i < number.length; i++) {
+                        for (let j = i + 1; j < number.length; j++) {
+                            if (number[i] === number[j]) {
+                                numberCheck = 1;
+                            }
+                        }
+                    }
+                } while (numberCheck === 1);
+
+                console.log(number);
+                return number;
+            }
+        </script>
+    </body>
+</html>
