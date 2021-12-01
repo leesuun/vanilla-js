@@ -37,6 +37,7 @@ main {
 }
 
 .state__row {
+    display: flex;
     margin-bottom: 0.5rem;
     border: 1px solid black;
     padding: 0.3rem;
@@ -46,11 +47,12 @@ main {
 .ball,
 .out,
 .home-run {
-    display: table-cell;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
     width: 50px;
     height: 50px;
-    text-align: center;
-    vertical-align: middle;
     border-radius: 50%;
     font-weight: bold;
 }
@@ -66,6 +68,26 @@ main {
 }
 .home-run {
     background-color: blue;
+}
+
+@keyframes flip-scale-down-hor {
+    0% {
+        -webkit-transform: scale(1) rotateX(0);
+        transform: scale(1) rotateX(0);
+    }
+    50% {
+        -webkit-transform: scale(0.4) rotateX(90deg);
+        transform: scale(0.4) rotateX(90deg);
+    }
+    100% {
+        -webkit-transform: scale(1) rotateX(360deg);
+        transform: scale(5) rotateX(360deg) translateX(200px);
+    }
+}
+
+.victory {
+    -webkit-animation: flip-scale-down-hor 1s ease-in-out both;
+    animation: flip-scale-down-hor 1s ease-in-out both;
 }
 
 .game__form {
@@ -84,8 +106,8 @@ main {
     height: 50px;
 }
 
-.form__option {
-}
+/* .form__option {
+} */
 
 /* ------------------------------- right screen--------------------------------- */
 
@@ -105,4 +127,5 @@ table tr td:nth-child(1) {
 
 table tr td:nth-child(2) {
     width: 400px;
+    font-size: 1.2rem;
 }
