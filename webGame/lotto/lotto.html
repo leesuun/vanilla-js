@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <title>lotto</title>
+        <style>
+            body {
+                height: 100%;
+                display: flex;
+                justify-content: center;
+            }
+            .lotto {
+                margin-top: 3rem;
+                height: 300px;
+                width: 500px;
+                border: 1px solid black;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .raffle-box {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .ball {
+                display: inline-block;
+                border-radius: 20px;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 20px;
+                text-align: center;
+                margin-right: 20px;
+            }
+            .menu {
+                margin-top: 2rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="lotto">
+            <div class="raffle-box">
+                <div id="mainLotto" class="main-resion"></div>
+
+                <div class="bonus-resion"></div>
+            </div>
+
+            <div class="menu">
+                <button id="raffle">추첨</button>
+            </div>
+        </div>
+
+        <script>
+            const raffleBtn = document.getElementById("raffle");
+            const mainLotto = document.getElementById("mainLotto");
+
+            const LOTTO_MIN = 1;
+            const LOTTO_MAX = 45;
+            const LOTTO_COUNT = 7;
+
+            // set ball color
+            function setColors(ball, number) {
+                if (0 < number && number < 10) {
+                    ball.style.backgroundColor = "red";
+                } else if (10 <= number && number < 20) {
+                    ball.style.backgroundColor = "orange";
+                } else if (20 <= number && number < 30) {
+                    ball.style.backgroundColor = "yellow";
+                } else if (30 <= number && number < 40) {
+                    ball.style.backgroundColor = "blue";
+                } else if (40 <= number) {
+                    ball.style.backgroundColor = "green";
+                }
+            }
+
+            // draw ball
+            function drawLottoBall(lottoNums) {
+                lottoNums.forEach((number) => {
+                    setTimeout(() => {
+                        const ball = document.createElement("div");
+                        ball.classList.add("ball");
+
+                        setColors(ball, number);
+                        ball.innerText = `${
+                            lottoNums[lottoNums.indexOf(number)]
+                        }`;
+
+                        if (
+                            lottoNums.indexOf(number) ===
+                            lottoNums.length - 1
+                        ) {
+                            const span = document.createElement("span");
+                            span.innerText = "➕";
+                            span.className = "plus";
+                            mainLotto.appendChild(span);
+                        }
+                        mainLotto.appendChild(ball);
+                    }, lottoNums.indexOf(number) * 1000);
+                });
+            }
+
+            //remove ball
+            function removePreBall() {
+                const balls = document.querySelectorAll(".ball");
+                const plus = document.querySelector(".plus");
+                if (plus) {
+                    plus.remove();
+                }
+                balls.forEach((ball) => ball.remove());
+            }
+
+            // lotto process control
+            function handleLotto() {
+                raffleBtn.disabled = true;
+                const lottoNums = getLottoNumber();
+                removePreBall();
+                drawLottoBall(lottoNums);
+                setTimeout(() => (raffleBtn.disabled = false), 7000);
+            }
+
+            // get lotto number
+            function getLottoNumber() {
+                let lottoAry = [];
+
+                while (lottoAry.length < LOTTO_COUNT) {
+                    const randomNumber =
+                        ~~(Math.random() * LOTTO_MAX) + LOTTO_MIN;
+                    lottoAry.push(randomNumber);
+                    lottoAry = [...new Set(lottoAry)];
+                }
+                lottoAry.sort((a, b) => a - b);
+                return lottoAry;
+            }
+
+            raffleBtn.addEventListener("click", handleLotto);
+        </script>
+    </body>
+</html>
