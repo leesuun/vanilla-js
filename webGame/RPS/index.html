@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <title>가위바위보</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            #computer {
+                width: 142px;
+                height: 200px;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>가위바위보 (3판 2선)</h1>
+        </header>
+
+        <main>
+            <div id="computer"></div>
+            <div>
+                <button id="scissors" class="btn">가위</button>
+                <button id="rock" class="btn">바위</button>
+                <button id="paper" class="btn">보</button>
+            </div>
+            <span id="result"></span>
+        </main>
+        <script>
+            const computer = document.querySelector("#computer");
+            const buttons = document.querySelectorAll("button");
+            const result = document.querySelector("#result");
+
+            const IMG_URL = `rsp.png`;
+            const RELOAD_SPEED = 50;
+            const RSP_DELAY = 1000;
+
+            const rspX = {
+                scissors: "0", // 가위
+                rock: "-220px", // 바위
+                paper: "-440px", // 보
+            };
+
+            let intervalId;
+            let clickable = true;
+
+            let computerChoice = `scissors`;
+            const changeComputerHand = () => {
+                if (computerChoice === "rock") {
+                    computerChoice = "scissors";
+                } else if (computerChoice === "scissors") {
+                    computerChoice = "paper";
+                } else {
+                    computerChoice = "rock";
+                }
+                computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]}`;
+                computer.style.backgroundSize = `auto 200px`;
+            };
+
+            function handleRspGame(event) {
+                const myRspSelect = this.id;
+
+                if (clickable) {
+                    clearInterval(intervalId);
+                    clickable = false;
+
+                    setTimeout(() => {
+                        clickable = true;
+                        intervalId = setInterval(
+                            changeComputerHand,
+                            RELOAD_SPEED
+                        );
+                    }, RSP_DELAY);
+                }
+
+                if (computerChoice === "scissors") {
+                    if (myRspSelect === "scissors") {
+                        result.textContent = "비김";
+                        console.log("비김");
+                    } else if (myRspSelect === "rock") {
+                        result.innerText = "너이김";
+                    } else {
+                        result.innerText = "너짐";
+                    }
+                } else if (computerChoice === "rock") {
+                    if (myRspSelect === "scissors") {
+                        console.log("너짐");
+                    } else if (myRspSelect === "rock") {
+                        console.log("비김");
+                    } else {
+                        console.log("너이김");
+                    }
+                } else {
+                    if (myRspSelect === "scissors") {
+                        console.log("너이김");
+                    } else if (myRspSelect === "rock") {
+                        console.log("너짐");
+                    } else {
+                        console.log("비김");
+                    }
+                }
+                console.log(intervalId);
+            }
+
+            intervalId = setInterval(changeComputerHand, RELOAD_SPEED);
+            buttons.forEach((button) =>
+                button.addEventListener("click", handleRspGame)
+            );
+        </script>
+    </body>
+</html>
