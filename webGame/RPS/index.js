@@ -45,3 +45,16 @@ if (diff === 2 || diff === -1) {
     //무승부 diff = 0
     result.innerText = "비김";
 }
+
+if ([2, -1].includes(diff)) {
+    //승리
+    result.innerText = "승리";
+} else if ([1, -2].includes(diff)) {
+    //패배
+    result.innerText = "패배";
+} else {
+    //무승부 diff = 0
+    result.innerText = "비김";
+}
+
+////////////////////////////////////////////
