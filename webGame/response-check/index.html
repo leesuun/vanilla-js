@@ -20,7 +20,6 @@
                 text-align: center;
                 width: 300px;
                 height: 300px;
-                background-color: red;
             }
 
             .red {
@@ -34,6 +33,9 @@
             .green {
                 background-color: green;
             }
+            .yellow {
+                background-color: yellow;
+            }
         </style>
     </head>
     <body>
@@ -42,21 +44,133 @@
         </header>
         <main>
             <div id="box" class="box">박스를 클릭해서 시작하세요.</div>
+            <div id="status">
+                <span id="nowRecord"></span>
+                <span id="average"></span>
+            </div>
+            <ul id="rankList"></ul>
         </main>
         <script>
             const box = document.getElementById("box");
+            const main = document.querySelector("main");
 
-            function handleBoxClick() {
-                const delay = getRandomDelay();
+            const boxColors = {
+                red: "red",
+                blue: "blue",
+                green: "green",
+                yellow: "yellow",
+            };
 
-                setTimeout(() => box.classList.add("blue"), delay * 1000);
+            const boxText = {
+                start: "박스를 클릭해서 시작하세요.",
+                ready: "초록색으로 변하면 클릭하세요.",
+                error: "너무 성급합니다.",
+            };
+
+            box.classList.add("red");
+
+            const timeRecord = [];
+            const timeRecordSort = [];
+
+            let startTime;
+            let earlyCheck = false;
+            let timeoutId = 0;
+
+            function changeBoxStatus(addClass, text, removeEvent, addEvent) {
+                box.classList.remove("red", "blue", "green", "yellow");
+                box.classList.add(addClass);
+                box.innerText = text;
+                if (removeEvent) {
+                    box.removeEventListener("click", removeEvent);
+                }
+                if (addEvent) {
+                    box.addEventListener("click", addEvent);
+                }
             }
 
-            function getRandomDelay() {
-                return Math.floor(Math.random() * 5 + 1);
+            function handleRestartBoxClick() {
+                changeBoxStatus(
+                    boxColors.red,
+                    boxText.start,
+                    handleRestartBoxClick,
+                    handleReadyBoxClick
+                );
             }
 
-            box.addEventListener("click", handleBoxClick);
+            function drawRecord(timeRecord) {
+                const nowRecord = document.getElementById("nowRecord");
+                const average = document.getElementById("average");
+                const rankList = document.getElementById("rankList");
+                const rankListAry = rankList.querySelectorAll("li");
+
+                timeRecordSort.sort((a, b) => a - b);
+
+                for (let i = 0; i < rankListAry.length; i++) {
+                    rankListAry[i].remove();
+                }
+
+                for (let i = 0; i < timeRecordSort.length; i++) {
+                    const li = document.createElement("li");
+                    li.innerText = `${i + 1}위: ${timeRecordSort[i] + "ms"}`;
+                    rankList.appendChild(li);
+                }
+
+                nowRecord.innerText = `현재: ${
+                    timeRecord[timeRecord.length - 1] + "ms"
+                }`;
+                average.innerText = `평균: ${
+                    timeRecord.reduce(
+                        (preVal, curVal) =>
+                            (preVal + curVal) / timeRecord.length
+                    ) + "ms"
+                }`;
+            }
+
+            function handleStartBoxClick() {
+                if (!earlyCheck) {
+                    clearTimeout(timeoutId);
+                    changeBoxStatus(
+                        boxColors.yellow,
+                        boxText.error,
+                        handleStartBoxClick,
+                        handleRestartBoxClick
+                    );
+                    return;
+                }
+
+                const finishTime = new Date();
+                timeRecord.push(finishTime - startTime);
+                timeRecordSort.push(finishTime - startTime);
+
+                changeBoxStatus(
+                    boxColors.red,
+                    boxText.start,
+                    handleStartBoxClick,
+                    handleReadyBoxClick
+                );
+                drawRecord(timeRecord);
+            }
+
+            function handleReadyBoxClick() {
+                earlyCheck = false;
+                const delay = Math.floor(Math.random() * 5 + 1);
+                changeBoxStatus(
+                    boxColors.blue,
+                    boxText.ready,
+                    handleReadyBoxClick,
+                    handleStartBoxClick
+                );
+
+                timeoutId = setTimeout(() => {
+                    earlyCheck = true;
+                    startTime = new Date();
+                    changeBoxStatus(boxColors.green, " ");
+                }, delay * 1000);
+            }
+
+            box.addEventListener("click", handleReadyBoxClick);
+
+            /////////////////////////////////////////////////
         </script>
     </body>
 </html>
