@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- <link rel="stylesheet" href="https://unpkg.com/mvp.css" /> -->
+        <title>tictactoe</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+            .tictactoe {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3rem;
+            }
+            td {
+                text-align: center;
+                border: 1px solid black;
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="tictactoe">
+            <header>
+                <h2>틱택토 게임</h2>
+            </header>
+            <main>
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr id="firstLine">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr id="secondLine">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr id="thirdLine">
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="result"></div>
+            </main>
+        </div>
+
+        <script>
+            const firstLine = document.querySelectorAll("#firstLine td");
+            const secondLine = document.querySelectorAll("#secondLine td");
+            const thirdLine = document.querySelectorAll("#thirdLine td");
+            const result = document.getElementById("result");
+
+            const tableElement = [[], [], []];
+            const tableText = [[], [], []];
+            let turn = "my";
+            let drawCheck = false;
+
+            firstLine.forEach((td) => tableElement[0].push(td));
+            secondLine.forEach((td) => tableElement[1].push(td));
+            thirdLine.forEach((td) => tableElement[2].push(td));
+
+            function showResult(winner) {
+                if (winner) {
+                    result.textContent = `승자는 ${winner}!!`;
+                } else {
+                    result.textContent = `무승부!! `;
+                }
+            }
+
+            function handleClick(event) {
+                if (drawCheck) {
+                    return;
+                }
+                let emptyPlace = 0;
+                tableElement.forEach((first) =>
+                    first.forEach((second) => {
+                        if (second.innerText === "") {
+                            emptyPlace++;
+                        }
+                    })
+                );
+
+                //진행
+                if (turn === "my") {
+                    drawCheck = gameProcess("O", "opponent");
+                } else {
+                    drawCheck = gameProcess("X", "my");
+                }
+
+                //무승부
+                if (emptyPlace === 1 && !drawCheck) {
+                    console.log("무승부!!");
+                    showResult();
+                    return;
+                }
+            }
+
+            function gameProcess(OorX, changeTurn) {
+                event.target.textContent = OorX;
+                event.target.removeEventListener("click", handleClick);
+                turn = changeTurn;
+
+                for (let i = 0; i < tableElement.length; i++) {
+                    if (tableElement[i].includes(event.target)) {
+                        tableText[i][tableElement[i].indexOf(event.target)] =
+                            event.target.textContent;
+                    }
+                }
+
+                for (let i = 0; i < tableText.length; i++) {
+                    for (let j = 0; j < tableText.length; j++) {
+                        if (
+                            //가로열 체크
+                            (tableText[i][0] === OorX &&
+                                tableText[i][1] === OorX &&
+                                tableText[i][2] === OorX) ||
+                            //세로열 체크
+                            (tableText[0][i] === OorX &&
+                                tableText[1][i] === OorX &&
+                                tableText[2][i] === OorX)
+                        ) {
+                            console.log(`${OorX} WIN!!`);
+                            showResult(OorX);
+                            return true;
+                        }
+                    }
+                }
+
+                //대각선 체크
+                if (
+                    (tableText[0][0] === OorX &&
+                        tableText[1][1] === OorX &&
+                        tableText[2][2] === OorX) ||
+                    (tableText[0][2] === OorX &&
+                        tableText[1][1] === OorX &&
+                        tableText[2][0] === OorX)
+                ) {
+                    console.log(`${OorX} WIN!!`);
+                    showResult(OorX);
+                    return true;
+                }
+            }
+
+            tableElement.forEach((first) =>
+                first.forEach((second) => {
+                    second.addEventListener("click", handleClick);
+                })
+            );
+        </script>
+    </body>
+</html>
