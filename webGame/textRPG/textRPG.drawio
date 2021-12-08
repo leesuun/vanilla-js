@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="7qbammMxtHrUomr0aRy5" name="페이지-1">
-        <mxGraphModel dx="1048" dy="938" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1448" dy="938" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -8,28 +8,28 @@
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="2" value="시작" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-                    <mxGeometry x="50" y="20" width="60" height="60" as="geometry"/>
+                    <mxGeometry x="-65" y="20" width="60" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="6" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="3" target="5">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="3" value="캐릭터 닉네임을 정한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="25" y="120" width="110" height="50" as="geometry"/>
+                    <mxGeometry x="-90" y="120" width="110" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="11" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="10">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="5" value="모험 시작하기 버튼을 누른다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="25" y="210" width="110" height="50" as="geometry"/>
+                    <mxGeometry x="-90" y="210" width="110" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="7" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="40" y="390" width="80" height="50" as="geometry"/>
+                    <mxGeometry x="-75" y="390" width="80" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="12" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="10" target="7">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="모드를 선택한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="25" y="300" width="110" height="50" as="geometry"/>
+                    <mxGeometry x="-90" y="300" width="110" height="50" as="geometry"/>
                 </mxCell>
                 <mxCell id="23" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="15" target="22">
                     <mxGeometry relative="1" as="geometry"/>
@@ -87,11 +87,12 @@
                         <mxPoint x="345" y="520" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="115" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="47" target="15">
+                <mxCell id="130" style="edgeStyle=none;html=1;" edge="1" parent="1" source="47">
                     <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="160" y="325" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="200" y="440"/>
-                            <mxPoint x="200" y="55"/>
+                            <mxPoint x="180" y="440"/>
+                            <mxPoint x="160" y="440"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
@@ -99,7 +100,7 @@
                     <mxGeometry x="305" y="400" width="80" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="50" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
-                    <mxGeometry x="200" y="230" width="40" height="20" as="geometry"/>
+                    <mxGeometry x="250" y="410" width="40" height="20" as="geometry"/>
                 </mxCell>
                 <mxCell id="55" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="53" target="54">
                     <mxGeometry relative="1" as="geometry"/>
@@ -253,6 +254,22 @@
                 </mxCell>
                 <mxCell id="127" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
                     <mxGeometry x="920" y="690" width="40" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="133" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="129" target="131">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="129" value="캐릭터 레벨업" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="110" y="270" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="134" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="131" target="15">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="165" y="55"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="131" value="스탯 상승" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="110" y="160" width="110" height="50" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

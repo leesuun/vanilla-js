@@ -4,9 +4,160 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+        />
         <title>텍스트 RPG</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            body {
+                width: 100%;
+                height: 100%;
+                background: darkgray;
+                font-family: "Trebuchet MS", "Lucida Sans Unicode",
+                    "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+                /* width: 500px;
+                margin: 0 auto; */
+                /* border: 1px solid black; */
+            }
+            .game__box {
+                width: 600px;
+                height: 450px;
+                margin: 7rem auto;
+                padding: 0.5rem;
+                /* border: 1px solid black; */
+                border-radius: 1rem;
+                background: white;
+            }
+
+            .nick-screen form {
+                display: flex;
+                gap: 2rem;
+                /* width: 30%; */
+                flex-direction: column;
+                align-items: center;
+                margin: 5rem auto 0 auto;
+            }
+            .nick-screen input {
+                width: 200px;
+                height: 30px;
+                padding: 0.2rem;
+            }
+            .nick-screen button {
+                padding: 0.4rem;
+            }
+
+            .nick-screen h1 {
+                text-align: center;
+            }
+            /* ----------------------------------- */
+
+            .main-screen {
+                width: 100%;
+                height: 100%;
+            }
+            .game-state {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .game-type {
+                background: rgb(235, 223, 173);
+                padding: 0.3rem;
+                border-radius: 0.3rem;
+            }
+            .charactor-info {
+                font-size: 1.7rem;
+            }
+
+            .main {
+                display: flex;
+                flex-direction: column;
+                margin-top: 10rem;
+                gap: 5rem;
+            }
+            .game-controller {
+                text-align: center;
+                /* border: 1px solid black; */
+            }
+
+            .explain-box {
+                margin: 0 auto;
+                width: 80%;
+                border: 1px solid black;
+                box-sizing: border-box;
+                padding: 0.5rem;
+                font-size: 1.8rem;
+            }
+        </style>
     </head>
+
     <body>
-        <script></script>
+        <div class="game__box">
+            <div id="nickScreen" class="nick-screen">
+                <h1>텍스트 RPG</h1>
+                <form id="nickForm">
+                    <input type="text" placeholder="닉네임을 입력하세요." />
+                    <button class="btn btn-success">모험 시작</button>
+                </form>
+            </div>
+            <div id="mainScreen" class="main-screen">
+                <header class="game-state">
+                    <h4 id="gameType" class="game-type">일반 모드</h4>
+                    <div id="charactorInfo" class="charactor-info">
+                        <span id="nick">닉네임: xxxxxxxx</span>
+                        <span id="level">레벨: xxx</span>
+                        <span id="power">공격력: xxx</span>
+                        <span id="health">HP: xxx</span>
+                    </div>
+                </header>
+                <main class="main">
+                    <nav class="game-controller">
+                        <button class="btn btn-info">전투 시작</button>
+                        <button class="btn btn-info">휴식 하기</button>
+                        <button class="btn btn-info">게임 종료</button>
+                    </nav>
+
+                    <p class="explain-box">
+                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
+                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
+                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
+                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
+                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
+                    </p>
+                </main>
+            </div>
+        </div>
+
+        <script>
+            const nickScreen = document.getElementById("nickScreen");
+            const nickForm = document.getElementById("nickForm");
+            const nickInput = nickForm.querySelector("input");
+
+            const mainScreen = document.getElementById("mainScreen");
+
+            // mainScreen.hidden = true;
+            nickScreen.hidden = true;
+            let nickname;
+
+            const handleNicknameSubmit = (event) => {
+                event.preventDefault();
+                nickname = nickInput.value;
+                if (!nickname) {
+                    alert("닉네임을 입력해주세요.");
+                    return;
+                }
+                console.log(nickname);
+                // nickScreen.hidden = true;
+                // mainScreen.hidden = false;
+            };
+
+            nickForm.addEventListener("submit", handleNicknameSubmit);
+        </script>
     </body>
 </html>
