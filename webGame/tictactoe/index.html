@@ -100,7 +100,6 @@
 
                 //무승부
                 if (emptyPlace === 1 && !drawCheck) {
-                    console.log("무승부!!");
                     showResult();
                     return;
                 }
@@ -130,7 +129,6 @@
                                 tableText[1][i] === OorX &&
                                 tableText[2][i] === OorX)
                         ) {
-                            console.log(`${OorX} WIN!!`);
                             showResult(OorX);
                             return true;
                         }
@@ -146,7 +144,6 @@
                         tableText[1][1] === OorX &&
                         tableText[2][0] === OorX)
                 ) {
-                    console.log(`${OorX} WIN!!`);
                     showResult(OorX);
                     return true;
                 }
