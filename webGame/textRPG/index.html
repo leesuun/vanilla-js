@@ -72,7 +72,7 @@
                 border-radius: 0.3rem;
             }
             .charactor-info {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
             }
 
             .main {
@@ -118,9 +118,28 @@
                 </header>
                 <main class="main">
                     <nav class="game-controller">
-                        <button class="btn btn-info">전투 시작</button>
-                        <button class="btn btn-info">휴식 하기</button>
-                        <button class="btn btn-info">게임 종료</button>
+                        <div id="nomalMode">
+                            <button id="battleBtn" class="btn btn-info">
+                                전투시작
+                            </button>
+                            <button id="restBtn" class="btn btn-info">
+                                휴식하기
+                            </button>
+                            <button id="endBtn" class="btn btn-info">
+                                게임종료
+                            </button>
+                        </div>
+                        <div id="battleMode">
+                            <button id="attackBtn" class="btn btn-info">
+                                공격하기
+                            </button>
+                            <button id="healBtn" class="btn btn-info">
+                                회복하기
+                            </button>
+                            <button id="runBtn" class="btn btn-info">
+                                도망가기
+                            </button>
+                        </div>
                     </nav>
 
                     <p class="explain-box">
@@ -135,16 +154,120 @@
         </div>
 
         <script>
+            // Screen 관련
+
             const nickScreen = document.getElementById("nickScreen");
             const nickForm = document.getElementById("nickForm");
             const nickInput = nickForm.querySelector("input");
-
             const mainScreen = document.getElementById("mainScreen");
 
-            // mainScreen.hidden = true;
-            nickScreen.hidden = true;
-            let nickname;
+            // Screen header 관련
+            const gameType = document.getElementById("gameType");
+            const nick = document.getElementById("nick");
+            const level = document.getElementById("level");
+            const power = document.getElementById("power");
+            const hp = document.getElementById("health");
 
+            // ------------------게임 모드 button ---------------------
+
+            // 노말 모드
+            const nomalMode = document.getElementById("nomalMode");
+            const battleBtn = document.getElementById("battleBtn");
+            const restBtn = document.getElementById("restBtn");
+            const endBtn = document.getElementById("endBtn");
+
+            // 배틀 모드
+            const battleMode = document.getElementById("battleMode");
+            const attackBtn = document.getElementById("attackBtn");
+            const healBtn = document.getElementById("healBtn");
+            const runBtn = document.getElementById("runBtn");
+
+            // -------------------------------------------------------
+
+            mainScreen.hidden = true;
+            battleMode.hidden = true;
+            // nickScreen.hidden = true;
+
+            // 모험가 클래스
+            const Hero = class {
+                constructor(nickname, level, power, hp) {
+                    this.nickname = nickname;
+                    this.level = level;
+                    this.power = power;
+                    this.hp = hp;
+                }
+            };
+
+            //  초기 능력치
+            const LEVEL = 1;
+            const POWER = 1;
+            const HP = 10;
+
+            // 게임 모드
+            const mode = {
+                NORMAL: "일반 모드",
+                BATTLE: "배틀 모드",
+            };
+
+            // 활동
+            const act = {
+                BATTLE: "전투시작",
+                REST: "휴식하기",
+                END: "게임종료",
+
+                ATTACK: "공격하기",
+                HEAL: "회복하기",
+                RUN: "도망가기",
+            };
+
+            let nickname;
+            let hero;
+
+            // 전투 모드
+            const handleBattleMode = (event) => {
+                const selecet = event.target.innerText;
+
+                switch (selecet) {
+                    case act.ATTACK: {
+                        console.log("공격");
+                    }
+                    case act.HEAL: {
+                        console.log("회복");
+                    }
+                    case act.RUN: {
+                        gameType.textContent = mode.NORMAL;
+                        nomalMode.hidden = false;
+                        battleMode.hidden = true;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            };
+
+            // 일반 모드
+            const handleNormalMode = (event) => {
+                const selecet = event.target.innerText;
+
+                switch (selecet) {
+                    case act.BATTLE: {
+                        gameType.textContent = mode.BATTLE;
+                        battleMode.hidden = false;
+                        nomalMode.hidden = true;
+                    }
+                    case act.REST: {
+                        console.log("휴식모드");
+                    }
+                    case act.END: {
+                        console.log("게임종료");
+                    }
+                    default: {
+                        break;
+                    }
+                }
+            };
+
+            // 닉네임 set 및 모험가 생성
             const handleNicknameSubmit = (event) => {
                 event.preventDefault();
                 nickname = nickInput.value;
@@ -152,12 +275,47 @@
                     alert("닉네임을 입력해주세요.");
                     return;
                 }
-                console.log(nickname);
-                // nickScreen.hidden = true;
-                // mainScreen.hidden = false;
+
+                // 모험가 생성
+                hero = new Hero(nickname, LEVEL, POWER, HP);
+                nick.textContent = `닉네임: ${hero.nickname}`;
+                level.textContent = `레벨: ${hero.level}`;
+                power.textContent = `공격력: ${hero.power}`;
+                hp.textContent = `체력: ${hero.hp}`;
+
+                console.log(hero);
+                nickScreen.hidden = true;
+                mainScreen.hidden = false;
             };
 
             nickForm.addEventListener("submit", handleNicknameSubmit);
+            battleBtn.addEventListener("click", handleNormalMode);
+            restBtn.addEventListener("click", handleNormalMode);
+            endBtn.addEventListener("click", handleNormalMode);
+
+            attackBtn.addEventListener("click", handleBattleMode);
+            healBtn.addEventListener("click", handleBattleMode);
+            runBtn.addEventListener("click", handleBattleMode);
         </script>
     </body>
 </html>
+
+<!-- const handleBattleMode = (event) => {
+                const { textContent } = event.target;
+
+                // 전투 모드
+                gameType.textContent = "전투모드";
+                battleBtn.textContent = "공격하기";
+                restBtn.textContent = "회복하기";
+                endBtn.textContent = "도망가기";
+
+                if (textContent === "공격하기") {
+                } else if (textContent === "회복하기") {
+                } else {
+                    battleMode = false;
+                    gameType.textContent = "일반모드";
+                    battleBtn.textContent = "전투시작";
+                    restBtn.textContent = "휴식하기";
+                    endBtn.textContent = "게임종료";
+                }
+            }; -->

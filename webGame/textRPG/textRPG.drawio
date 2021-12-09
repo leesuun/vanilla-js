@@ -1,93 +1,93 @@
 <mxfile host="65bd71144e">
     <diagram id="7qbammMxtHrUomr0aRy5" name="페이지-1">
-        <mxGraphModel dx="1448" dy="938" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="1794" dy="670" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="4" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="2" target="3">
+                <mxCell id="4" value="" style="edgeStyle=none;html=1;" parent="1" source="2" target="3" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="2" value="시작" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="2" value="시작" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="-65" y="20" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="6" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="3" target="5">
+                <mxCell id="6" value="" style="edgeStyle=none;html=1;" parent="1" source="3" target="5" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="3" value="캐릭터 닉네임을 정한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="3" value="캐릭터 닉네임을 정한다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-90" y="120" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="11" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="10">
+                <mxCell id="136" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="5" target="135">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="모험 시작하기 버튼을 누른다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="5" value="모험 시작하기 버튼을 누른다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="-90" y="210" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="7" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-75" y="390" width="80" height="50" as="geometry"/>
+                <mxCell id="7" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-75" y="480" width="80" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="12" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="10" target="7">
+                <mxCell id="12" value="" style="edgeStyle=none;html=1;" parent="1" source="10" target="7" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="10" value="모드를 선택한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="-90" y="300" width="110" height="50" as="geometry"/>
+                <mxCell id="10" value="모드를 선택한다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="-90" y="390" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="15" target="22">
+                <mxCell id="23" value="" style="edgeStyle=none;html=1;" parent="1" source="15" target="22" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="15" value="모드를 선택한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="15" value="모드를 선택한다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="430" y="30" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="31" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="22" target="30">
+                <mxCell id="31" value="" style="edgeStyle=none;html=1;" parent="1" source="22" target="30" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="42" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="22" target="33">
+                <mxCell id="42" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="22" target="33" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="85" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="22" target="26">
+                <mxCell id="85" value="" style="edgeStyle=none;html=1;" parent="1" source="22" target="26" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="일반 모드" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="22" value="일반 모드" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="445" y="120" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="78" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="26" target="77">
+                <mxCell id="78" value="" style="edgeStyle=none;html=1;" parent="1" source="26" target="77" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="26" value="전투 모드" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="26" value="전투 모드" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="290" y="140" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="38" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="30" target="37">
+                <mxCell id="38" value="" style="edgeStyle=none;html=1;" parent="1" source="30" target="37" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="30" value="휴식 모드" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="30" value="휴식 모드" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="430" y="230" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="44" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="33" target="43">
+                <mxCell id="44" value="" style="edgeStyle=none;html=1;" parent="1" source="33" target="43" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="33" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="33" value="게임 종료" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="560" y="135" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="57" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="37" target="56">
+                <mxCell id="57" value="" style="edgeStyle=none;html=1;" parent="1" source="37" target="56" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="37" value="캐릭터 체력을 회복한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="37" value="캐릭터 체력을 회복한다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="430" y="310" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="48" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="39" target="47">
+                <mxCell id="48" value="" style="edgeStyle=none;html=1;" parent="1" source="39" target="47" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="39" value="몬스터와 대결한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="39" value="몬스터와 대결한다." style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="290" y="320" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="43" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="43" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="585" y="225" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="52" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="47">
+                <mxCell id="52" value="" style="edgeStyle=none;html=1;" parent="1" source="47" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="345" y="520" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="130" style="edgeStyle=none;html=1;" edge="1" parent="1" source="47">
+                <mxCell id="130" style="edgeStyle=none;html=1;" parent="1" source="47" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="160" y="325" as="targetPoint"/>
                         <Array as="points">
@@ -96,131 +96,131 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="47" value="이겼는가?" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="47" value="이겼는가?" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="305" y="400" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="50" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="50" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="250" y="410" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="55" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="53" target="54">
+                <mxCell id="55" value="" style="edgeStyle=none;html=1;" parent="1" source="53" target="54" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="53" value="캐릭터 사망" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="53" value="캐릭터 사망" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="290" y="520" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="54" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="54" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="315" y="610" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="56" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="56" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="445" y="390" width="80" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="62" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="58" target="60">
+                <mxCell id="62" value="" style="edgeStyle=none;html=1;" parent="1" source="58" target="60" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="58" value="전투 모드&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="58" value="전투 모드&amp;nbsp;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1020" y="40" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="67" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="60" target="64">
+                <mxCell id="67" value="" style="edgeStyle=none;html=1;" parent="1" source="60" target="64" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="60" value="몬스터 생성" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="60" value="몬스터 생성" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1020" y="130" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="74" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="64" target="71">
+                <mxCell id="74" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="64" target="71" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="83" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="64" target="69">
+                <mxCell id="83" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64" target="69" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="84" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="64" target="70">
+                <mxCell id="84" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="64" target="70" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="64" value="모드(버튼)" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="64" value="모드(버튼)" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1035" y="220" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="92" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="69">
+                <mxCell id="92" value="" style="edgeStyle=none;html=1;" parent="1" source="69" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="1005" y="440" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="69" value="공격" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="69" value="공격" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="950" y="350" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="87" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="70" target="86">
+                <mxCell id="87" value="" style="edgeStyle=none;html=1;" parent="1" source="70" target="86" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="70" value="회복" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="70" value="회복" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1090" y="350" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="81" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="71" target="80">
+                <mxCell id="81" value="" style="edgeStyle=none;html=1;" parent="1" source="71" target="80" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="71" value="도망" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="71" value="도망" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1140" y="235" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="76" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="76" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1305" y="320" width="80" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="79" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="77" target="39">
+                <mxCell id="79" value="" style="edgeStyle=none;html=1;" parent="1" source="77" target="39" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="77" value="전투모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="77" value="전투모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="290" y="230" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="82" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="80" target="76">
+                <mxCell id="82" value="" style="edgeStyle=none;html=1;" parent="1" source="80" target="76" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="80" value="일반 모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="80" value="일반 모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1290" y="235" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="89" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="86" target="88">
+                <mxCell id="89" value="" style="edgeStyle=none;html=1;" parent="1" source="86" target="88" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="86" value="캐릭터 체력 회복" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="86" value="캐릭터 체력 회복" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1090" y="455" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="97" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="88" target="96">
+                <mxCell id="97" value="" style="edgeStyle=none;html=1;" parent="1" source="88" target="96" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="88" value="몬스터 공격" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="88" value="몬스터 공격" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1090" y="560" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="99" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="96">
+                <mxCell id="99" value="" style="edgeStyle=none;html=1;" parent="1" source="96" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="1245" y="720" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="96" value="캐릭터 생존" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="96" value="캐릭터 생존" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1105" y="680" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="100" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="100" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="1245" y="690" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="101" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="101" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1190" y="690" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="106" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="103" target="105">
+                <mxCell id="106" value="" style="edgeStyle=none;html=1;" parent="1" source="103" target="105" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="121" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="103" target="120">
+                <mxCell id="121" value="" style="edgeStyle=none;html=1;" parent="1" source="103" target="120" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="103" value="몬스터 생존" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="103" value="몬스터 생존" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="965" y="440" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="104" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="104" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="965" y="530" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="111" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="105" target="108">
+                <mxCell id="111" value="" style="edgeStyle=none;html=1;" parent="1" source="105" target="108" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="105" value="몬스터 공격" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="105" value="몬스터 공격" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="950" y="560" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="113" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="108" target="109">
+                <mxCell id="113" value="" style="edgeStyle=none;html=1;" parent="1" source="108" target="109" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="128" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="108" target="64">
+                <mxCell id="128" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="108" target="64" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="760" y="718"/>
@@ -228,48 +228,54 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="108" value="캐릭터 생존" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="108" value="캐릭터 생존" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="965" y="680" width="80" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="109" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                <mxCell id="109" value="끝" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
                     <mxGeometry x="975" y="810" width="60" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="110" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="110" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1010" y="770" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="114" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="114" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="350" y="490" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="116" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="116" value="&lt;font style=&quot;font-size: 22px&quot;&gt;No&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="925" y="450" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="126" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="120" target="123">
+                <mxCell id="126" value="" style="edgeStyle=none;html=1;" parent="1" source="120" target="123" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="120" value="일반모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="120" value="일반모드로 전환" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="810" y="455" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="123" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="123" value="대기" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="825" y="540" width="80" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="127" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                <mxCell id="127" value="&lt;font style=&quot;font-size: 22px&quot;&gt;Yes&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="920" y="690" width="40" height="20" as="geometry"/>
                 </mxCell>
-                <mxCell id="133" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="129" target="131">
+                <mxCell id="133" value="" style="edgeStyle=none;html=1;" parent="1" source="129" target="131" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="129" value="캐릭터 레벨업" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="129" value="캐릭터 레벨업" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="110" y="270" width="110" height="50" as="geometry"/>
                 </mxCell>
-                <mxCell id="134" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="131" target="15">
+                <mxCell id="134" style="edgeStyle=none;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="131" target="15" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
                             <mxPoint x="165" y="55"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="131" value="스탯 상승" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="131" value="스탯 상승" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="110" y="160" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="138" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="135" target="10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="135" value="캐릭터를 생성한다." style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="300" width="110" height="50" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
