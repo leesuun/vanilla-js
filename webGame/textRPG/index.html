@@ -72,7 +72,10 @@
                 border-radius: 0.3rem;
             }
             .charactor-info {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
+            }
+            .charactor-info span:nth-child(1) {
+                margin-right: 1rem;
             }
 
             .main {
@@ -89,8 +92,9 @@
             .explain-box {
                 margin: 0 auto;
                 width: 80%;
+                height: 150px;
                 border: 1px solid black;
-                box-sizing: border-box;
+                /* box-sizing: border-box; */
                 padding: 0.5rem;
                 font-size: 1.8rem;
             }
@@ -114,6 +118,7 @@
                         <span id="level">레벨: xxx</span>
                         <span id="power">공격력: xxx</span>
                         <span id="health">HP: xxx</span>
+                        <span id="xp">경험치: xxx</span>
                     </div>
                 </header>
                 <main class="main">
@@ -142,13 +147,13 @@
                         </div>
                     </nav>
 
-                    <p class="explain-box">
-                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
-                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
-                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
-                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
-                        askdjqkwejqkwejkqwejkqwekqwelkqweklqklwejlkwq
-                    </p>
+                    <div id="explainBox" class="explain-box">
+                        <div id="status">모험을 시작하세요.</div>
+                        <span id="monsterName"></span>
+                        <span id="monsterHp"></span>
+                        <span id="monsterMaxHp"></span>
+                        <span id="monsterPower"></span>
+                    </div>
                 </main>
             </div>
         </div>
@@ -161,12 +166,20 @@
             const nickInput = nickForm.querySelector("input");
             const mainScreen = document.getElementById("mainScreen");
 
+            const explainBox = document.getElementById("explainBox");
+            const monsterName = document.querySelector("#monsterName");
+            const monsterHp = document.querySelector("#monsterHp");
+            const monsterMaxHp = document.querySelector("#monsterMaxHp");
+            const monsterPower = document.querySelector("#monsterPower");
+            const status = document.querySelector("#status");
+
             // Screen header 관련
             const gameType = document.getElementById("gameType");
             const nick = document.getElementById("nick");
             const level = document.getElementById("level");
             const power = document.getElementById("power");
             const hp = document.getElementById("health");
+            const xp = document.getElementById("xp");
 
             // ------------------게임 모드 button ---------------------
 
@@ -188,20 +201,79 @@
             battleMode.hidden = true;
             // nickScreen.hidden = true;
 
+            //  초기 능력치
+            const LEVEL = 1;
+            const POWER = 10;
+            const HP = 100;
+            const XP = 0;
+            const MAXXP = 10;
+
             // 모험가 클래스
             const Hero = class {
-                constructor(nickname, level, power, hp) {
+                constructor(nickname, level, power, hp, xp, maxXp) {
                     this.nickname = nickname;
                     this.level = level;
                     this.power = power;
                     this.hp = hp;
+                    this.xp = xp;
+                    this.maxXp = maxXp;
+                }
+
+                levelUp(currenLevel) {
+                    this.level += 1;
+                    this.power += 10;
+                    this.hp += 20;
+                    this.maxXp += 20;
+
+                    //레벨업시 xp 초기화
+                    this.xp = 0;
+
+                    //레벨업시 체력 회복
+                    this.hp = HP + currenLevel * 20;
                 }
             };
 
-            //  초기 능력치
-            const LEVEL = 1;
-            const POWER = 1;
-            const HP = 10;
+            //몬스터 클래스
+            class Monster {
+                constructor(name, power, hp, maxHp, xp) {
+                    this.name = name;
+                    this.power = power;
+                    this.hp = hp;
+                    this.maxHp = maxHp;
+                    this.xp = xp;
+                }
+            }
+
+            const monsters = [
+                {
+                    name: "코로몬",
+                    power: 5,
+                    hp: 30,
+                    maxHp: 30,
+                    xp: 5,
+                },
+                {
+                    name: "아구몬",
+                    power: 10,
+                    hp: 50,
+                    maxHp: 50,
+                    xp: 10,
+                },
+                {
+                    name: "그레이몬",
+                    power: 20,
+                    hp: 100,
+                    maxHp: 100,
+                    xp: 15,
+                },
+                {
+                    name: "워그레이몬",
+                    power: 50,
+                    hp: 200,
+                    maxHp: 200,
+                    xp: 20,
+                },
+            ];
 
             // 게임 모드
             const mode = {
@@ -222,7 +294,58 @@
 
             let nickname;
             let hero;
+            let newMonster;
+            let currenLevel = 1;
 
+            const showStatusMessage = (msg) => {
+                status.innerText = msg;
+                monsterName.innerText = "";
+                monsterHp.innerText = "";
+                monsterMaxHp.innerText = "";
+                monsterPower.innerText = "";
+            };
+
+            const showHeroStat = (hero) => {
+                level.textContent = `Lv:${hero.level}`;
+                power.textContent = `Att:${hero.power}`;
+                hp.textContent = `Hp:${hero.hp}`;
+                xp.textContent = `xp:${hero.xp}/${hero.maxXp}`;
+            };
+
+            //모드 전환
+            const changeMode = (select) => {
+                if (select === mode.NORMAL) {
+                    gameType.textContent = mode.NORMAL;
+                    battleMode.hidden = true;
+                    nomalMode.hidden = false;
+                } else {
+                    gameType.textContent = mode.BATTLE;
+                    battleMode.hidden = false;
+                    nomalMode.hidden = true;
+                }
+            };
+
+            const createMonster = () => {
+                // 랜덤 몬스터 생성
+                const monster =
+                    monsters[Math.floor(Math.random() * monsters.length)];
+
+                newMonster = new Monster(
+                    monster.name,
+                    monster.power,
+                    monster.hp,
+                    monster.maxHp,
+                    monster.xp
+                );
+
+                status.innerText = `전투에서  ${monster.name}을 마주쳤습니다.`;
+                monsterName.innerText = `[${monster.name}]`;
+                monsterHp.innerText = `체력: ${monster.hp} /`;
+                monsterMaxHp.innerText = `${monster.maxHp} `;
+                monsterPower.innerText = `공격력: ${monster.power} `;
+
+                console.log(newMonster);
+            };
             // 전투 모드
             const handleBattleMode = (event) => {
                 const selecet = event.target.innerText;
@@ -230,14 +353,61 @@
                 switch (selecet) {
                     case act.ATTACK: {
                         console.log("공격");
+
+                        // 동시 타격
+                        // 히어로가 공격
+                        newMonster.hp = newMonster.hp - hero.power;
+                        // 몬스터가 공격
+                        hero.hp = hero.hp - newMonster.power;
+
+                        showHeroStat(hero);
+
+                        status.innerText = `${hero.power}의 데미지를 주고 ${newMonster.power}의 데미지를 입었다.`;
+                        monsterName.innerText = `[${newMonster.name}]`;
+                        monsterHp.innerText = `체력: ${newMonster.hp} /`;
+                        monsterMaxHp.innerText = `${newMonster.maxHp} `;
+                        monsterPower.innerText = `공격력: ${newMonster.power} `;
+
+                        if (newMonster.hp <= 0) {
+                            //몬스터 사망
+
+                            showStatusMessage(
+                                `${newMonster.name}을 잡아 ${newMonster.xp}의 경험치를 얻었습니다.`
+                            );
+
+                            //경험치 추가
+                            hero.xp += newMonster.xp;
+                            if (hero.xp >= hero.maxXp) {
+                                hero.levelUp(currenLevel);
+                                currenLevel++; // 레벨
+                            }
+
+                            showHeroStat(hero);
+                            changeMode(mode.NORMAL);
+
+                            return;
+                        }
+                        if (hero.hp <= 0) {
+                            //히어로 사망 게임 종료
+                            alert("히어로가 사망! 게임이 종료됩니다.");
+                            nickScreen.hidden = false;
+                            mainScreen.hidden = true;
+                            battleMode.hidden = true;
+                            nomalMode.hidden = false;
+                            currenLevel = 1;
+
+                            return;
+                        }
+                        break;
                     }
                     case act.HEAL: {
                         console.log("회복");
+                        break;
                     }
                     case act.RUN: {
-                        gameType.textContent = mode.NORMAL;
-                        nomalMode.hidden = false;
-                        battleMode.hidden = true;
+                        changeMode(mode.NORMAL);
+                        showStatusMessage("전투에서 도망쳤습니다.");
+                        break;
                     }
                     default: {
                         break;
@@ -251,15 +421,21 @@
 
                 switch (selecet) {
                     case act.BATTLE: {
-                        gameType.textContent = mode.BATTLE;
-                        battleMode.hidden = false;
-                        nomalMode.hidden = true;
+                        changeMode(mode.BATTLE);
+                        createMonster();
+                        break;
                     }
                     case act.REST: {
                         console.log("휴식모드");
+                        break;
                     }
                     case act.END: {
-                        console.log("게임종료");
+                        const existCheck = confirm("게임을 종료하시겠습니까? ");
+                        if (existCheck) {
+                            nickScreen.hidden = false;
+                            mainScreen.hidden = true;
+                        }
+                        break;
                     }
                     default: {
                         break;
@@ -276,12 +452,14 @@
                     return;
                 }
 
+                gameType.textContent = mode.NORMAL;
+
+                showStatusMessage("");
+
                 // 모험가 생성
-                hero = new Hero(nickname, LEVEL, POWER, HP);
-                nick.textContent = `닉네임: ${hero.nickname}`;
-                level.textContent = `레벨: ${hero.level}`;
-                power.textContent = `공격력: ${hero.power}`;
-                hp.textContent = `체력: ${hero.hp}`;
+                hero = new Hero(nickname, LEVEL, POWER, HP, XP, MAXXP);
+                nick.textContent = `닉네임:${hero.nickname}`;
+                showHeroStat(hero);
 
                 console.log(hero);
                 nickScreen.hidden = true;
@@ -299,23 +477,3 @@
         </script>
     </body>
 </html>
-
-<!-- const handleBattleMode = (event) => {
-                const { textContent } = event.target;
-
-                // 전투 모드
-                gameType.textContent = "전투모드";
-                battleBtn.textContent = "공격하기";
-                restBtn.textContent = "회복하기";
-                endBtn.textContent = "도망가기";
-
-                if (textContent === "공격하기") {
-                } else if (textContent === "회복하기") {
-                } else {
-                    battleMode = false;
-                    gameType.textContent = "일반모드";
-                    battleBtn.textContent = "전투시작";
-                    restBtn.textContent = "휴식하기";
-                    endBtn.textContent = "게임종료";
-                }
-            }; -->
