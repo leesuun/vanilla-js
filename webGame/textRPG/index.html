@@ -252,7 +252,7 @@
                 }
             }
 
-            const monsters = [
+            const monsterList = [
                 {
                     name: "코로몬",
                     power: 5,
@@ -336,8 +336,20 @@
 
             const createMonster = () => {
                 // 랜덤 몬스터 생성
-                const monster =
-                    monsters[Math.floor(Math.random() * monsters.length)];
+                const monster = JSON.parse(
+                    //깊은 복사 (서로 다른 객체)
+                    JSON.stringify(
+                        monsterList[
+                            Math.floor(Math.random() * monsterList.length)
+                        ]
+                    )
+                );
+
+                // 얕은 복사 참조 관계 형성( 위험)
+                // const monster =
+                //     monsterList[Math.floor(Math.random() * monsterList.length)];
+                // console.log(monster, monsterList[0]);
+                // console.log(monster === monsterList[0]);
 
                 newMonster = new Monster(
                     monster.name,
@@ -372,6 +384,8 @@
                         monsterHp.innerText = `체력: ${newMonster.hp} /`;
                         monsterMaxHp.innerText = `${newMonster.maxHp} `;
                         monsterPower.innerText = `공격력: ${newMonster.power} `;
+
+                        console.log(monsterList);
 
                         if (hero.hp <= 0) {
                             //히어로 사망 게임 종료

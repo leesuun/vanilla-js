@@ -4,141 +4,310 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <title>tictactoe</title>
-        <style>
-            table {
-                border-collapse: collapse;
-            }
-            td {
-                border: 1px solid black;
-                width: 70px;
-                height: 70px;
-                text-align: center;
-            }
-        </style>
+        <title>text-rpg</title>
     </head>
     <body>
+        <form id="start-screen">
+            <input id="name-input" placeholder="주인공 이름을 입력하세요!" />
+            <button id="start">시작</button>
+        </form>
+        <div id="screen">
+            <div id="hero-stat">
+                <span id="hero-name"></span>
+                <span id="hero-level"></span>
+                <span id="hero-hp"></span>
+                <span id="hero-xp"></span>
+                <span id="hero-att"></span>
+            </div>
+            <form id="game-menu" style="display: none">
+                <div id="menu-1">1.모험</div>
+                <div id="menu-2">2.휴식</div>
+                <div id="menu-3">3.종료</div>
+                <input id="menu-input" />
+                <button id="menu-button">입력</button>
+            </form>
+            <form id="battle-menu" style="display: none">
+                <div id="battle-1">1.공격</div>
+                <div id="battle-2">2.회복</div>
+                <div id="battle-3">3.도망</div>
+                <input id="battle-input" />
+                <button id="battle-button">입력</button>
+            </form>
+            <div id="message"></div>
+            <div id="monster-stat">
+                <span id="monster-name"></span>
+                <span id="monster-hp"></span>
+                <span id="monster-att"></span>
+            </div>
+        </div>
         <script>
-            const { body, createElement } = document;
-            const table = document.createElement("table");
-            const result = document.createElement("div");
+            const $startScreen = document.querySelector("#start-screen");
+            const $gameMenu = document.querySelector("#game-menu");
+            const $battleMenu = document.querySelector("#battle-menu");
+            const $heroName = document.querySelector("#hero-name");
+            const $heroLevel = document.querySelector("#hero-level");
+            const $heroHp = document.querySelector("#hero-hp");
+            const $heroXp = document.querySelector("#hero-xp");
+            const $heroAtt = document.querySelector("#hero-att");
+            const $monsterName = document.querySelector("#monster-name");
+            const $monsterHp = document.querySelector("#monster-hp");
+            const $monsterAtt = document.querySelector("#monster-att");
+            const $message = document.querySelector("#message");
 
-            ROW_MAX = 3;
-            COL_MAX = 3;
-
-            let turn = "O";
-            const rows = []; //행
-
-            const checkWinner = (target) => {
-                let rowIdx = target.parentNode.rowIndex; // rowIdx는 td의 부모노드 tr이 가지고 있음
-                let colIdx = target.cellIndex;
-
-                let hasWinner = false;
-
-                if (
-                    rows[rowIdx][0].textContent === turn &&
-                    rows[rowIdx][1].textContent === turn &&
-                    rows[rowIdx][2].textContent === turn
-                ) {
-                    hasWinner = true;
-                }
-                if (
-                    rows[0][colIdx].textContent === turn &&
-                    rows[1][colIdx].textContent === turn &&
-                    rows[2][colIdx].textContent === turn
-                ) {
-                    hasWinner = true;
-                }
-                if (
-                    rows[0][0].textContent === turn &&
-                    rows[1][1].textContent === turn &&
-                    rows[2][2].textContent === turn
-                ) {
-                    hasWinner = true;
-                }
-                if (
-                    rows[0][2].textContent === turn &&
-                    rows[1][1].textContent === turn &&
-                    rows[2][0].textContent === turn
-                ) {
-                    hasWinner = true;
-                }
-
-                return hasWinner;
+            // -------------MODE---------------- //
+            const normal = {
+                BATTLE: "1",
+                REST: "2",
+                QUIT: "3",
+            };
+            const battle = {
+                ATTACK: "1",
+                HEAL: "2",
+                RUN: "3",
             };
 
-            const checkWinnerAndDraw = (target) => {
-                const hasWinner = checkWinner(target);
-                //승자가 있으면
-                if (hasWinner) {
-                    result.textContent = `${turn}승리!!`;
-                    const table = document.querySelector("table");
-                    table.removeEventListener("click", handleSquareClick);
-                    return;
-                }
-                //무승부
-
-                let draw = rows.flat().every((cell) => cell.textContent);
-
-                if (draw) {
-                    result.textContent = "무승부";
-                    return;
+            class Game {
+                constructor(name) {
+                    this.monster = null;
+                    this.hero = null;
+                    this.monsterList = [
+                        { name: "슬라임", hp: 25, att: 10, xp: 10 },
+                        { name: "스컬", hp: 50, att: 20, xp: 20 },
+                        { name: "마왕", hp: 100, att: 30, xp: 30 },
+                    ];
+                    this.start(name);
                 }
 
-                turn = turn === "X" ? "O" : "X"; //순서 바꾸기
-            };
-
-            let clickable = true;
-
-            const handleSquareClick = (event) => {
-                if (!clickable) return; // 1초가 지나기 전에 두번 클릭시 checkWinnerAndDraw() 두번호출됨
-                if (event.target.textContent) return;
-
-                // 내 턴
-
-                event.target.textContent = turn;
-                checkWinnerAndDraw(event.target);
-
-                // 컴퓨터 턴
-                if (turn === "X") {
-                    clickable = false;
-                    setTimeout(() => {
-                        console.log("sd");
-                        const emptyCell = rows
-                            .flat()
-                            .filter((value) => !value.textContent);
-
-                        const randomCell =
-                            emptyCell[
-                                Math.floor(Math.random() * emptyCell.length)
-                            ];
-                        randomCell.textContent = "X";
-
-                        checkWinnerAndDraw(randomCell);
-                        clickable = true;
-                    }, 1000);
+                // 게임시작
+                start(name) {
+                    $gameMenu.addEventListener("submit", this.onGameMenuInput);
+                    $battleMenu.addEventListener(
+                        "submit",
+                        this.onBattleMenuInput
+                    );
+                    this.changeScreen("game");
+                    this.hero = new Hero(this, name);
+                    this.updateHeroStat();
                 }
-            };
-
-            for (let i = 0; i < ROW_MAX; i++) {
-                const tr = document.createElement("tr");
-                const col = []; //열
-                for (let j = 0; j < COL_MAX; j++) {
-                    const td = document.createElement("td");
-                    col.push(td);
-                    // 이벤트 버블링 현상 이해
-                    // td.addEventListener("click", handleSquareClick);
-                    tr.append(td);
+                //게임 종료
+                quit() {}
+                //화면 전환
+                changeScreen(screen) {
+                    if (screen === "start") {
+                        $startScreen.style.display = "block";
+                        $gameMenu.style.display = "none";
+                        $battleMenu.style.display = "none";
+                    } else if (screen === "game") {
+                        $startScreen.style.display = "none";
+                        $gameMenu.style.display = "block";
+                        $battleMenu.style.display = "none";
+                    } else if (screen === "battle") {
+                        $startScreen.style.display = "none";
+                        $gameMenu.style.display = "none";
+                        $battleMenu.style.display = "block";
+                    }
                 }
-                rows.push(col);
-                table.append(tr);
+                //일반 메뉴
+                onGameMenuInput = (event) => {
+                    event.preventDefault();
+                    const input = event.target["menu-input"].value;
+                    switch (input) {
+                        case normal.BATTLE: {
+                            this.changeScreen("battle");
+
+                            const randomIndex = Math.floor(
+                                Math.random() * this.monsterList.length
+                            );
+                            const randomMonster = this.monsterList[randomIndex];
+
+                            this.monster = new Monster(
+                                this,
+                                randomMonster.name,
+                                randomMonster.hp,
+                                randomMonster.att,
+                                randomMonster.xp
+                            );
+                            this.updateMonsterStat();
+                            this.showMessage(
+                                `${this.monster.name}을(를) 마주쳤다.`
+                            );
+
+                            break;
+                        }
+                        case normal.REST: {
+                            break;
+                        }
+                        case normal.QUIT: {
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                };
+                //전투 메뉴
+                onBattleMenuInput = (event) => {
+                    event.preventDefault();
+                    const input = event.target["battle-input"].value;
+                    switch (input) {
+                        case battle.ATTACK: {
+                            const { hero, monster } = this;
+
+                            //몬스터를 공격
+                            hero.attack(monster);
+                            //몬스터가 공격
+                            monster.attack(hero);
+
+                            if (hero.hp <= 0) {
+                                this.showMessage(
+                                    `${hero.lev}에서 전사, 새 주인공을 생성하세요.`
+                                );
+                                this.quit();
+                                return;
+                            }
+
+                            this.updateHeroStat(hero);
+                            this.updateMonsterStat(monster);
+
+                            this.showMessage(
+                                `${hero.att}만큼 데미지를 입히고 ${monster.att}만큼 데미지를 입었다.`
+                            );
+
+                            if (monster.hp <= 0) {
+                                this.showMessage(
+                                    `${monster.name}을 잡아 ${monster.xp}만큼 경험치를 얻었다.`
+                                );
+                                hero.getXp(monster);
+                                this.monster = null;
+                                this.updateHeroStat(hero);
+                                this.changeScreen("game");
+                            }
+                            if (hero.xp >= hero.maxXp) {
+                            }
+
+                            console.log(monster);
+                            break;
+                        }
+                        case battle.HEAL: {
+                            break;
+                        }
+                        case battle.RUN: {
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                };
+
+                updateHeroStat() {
+                    const { hero } = this;
+                    if (hero === null) {
+                        $heroName.textContent = "";
+                        $heroLevel.textContent = "";
+                        $heroHp.textContent = "";
+                        $heroXp.textContent = "";
+                        $heroAtt.textContent = "";
+                        return;
+                    }
+
+                    $heroName.textContent = `nick:${hero.name}`;
+                    $heroLevel.textContent = `Lv:${hero.lev}`;
+                    $heroHp.textContent = `Hp:${hero.hp}`;
+                    $heroXp.textContent = `Xp:${hero.xp}/${hero.maxXp}`;
+                    $heroAtt.textContent = `Att:${hero.att}`;
+                }
+
+                updateMonsterStat() {
+                    const { monster } = this;
+                    if (monster === null) {
+                        $monsterName.textContent = "";
+                        $monsterHp.textContent = "";
+                        $monsterAtt.textContent = "";
+                        return;
+                    }
+                    $monsterName.textContent = monster.name;
+                    $monsterHp.textContent = `HP: ${
+                        monster.hp <= 0 ? 0 : monster.hp
+                    }/${monster.maxHp}`;
+                    $monsterAtt.textContent = `ATT: ${monster.att}`;
+                }
+                showMessage(text) {
+                    $message.textContent = text;
+                }
+                quit() {
+                    this.hero = null;
+                    this.monster = null;
+                    this.updateHeroStat();
+                    this.updateMonsterStat();
+                    $gameMenu.removeEventListener(
+                        "submit",
+                        this.onGameMenuInput
+                    );
+                    $battleMenu.removeEventListener(
+                        "submit",
+                        this.onBattleMenuInput
+                    );
+                    this.changeScreen("start");
+                    game = null;
+                }
             }
 
-            // 이벤트 버블링 현상 이해
-            table.addEventListener("click", handleSquareClick);
-            body.append(table);
-            body.append(result);
+            class Unit {
+                constructor(game, name, hp, att, xp) {
+                    this.game = game;
+                    this.name = name;
+                    this.maxHp = hp;
+                    this.hp = hp;
+                    this.xp = xp;
+                    this.att = att;
+                }
+                attack(target) {
+                    target.hp -= this.att;
+                }
+            }
+
+            class Hero extends Unit {
+                constructor(game, name) {
+                    super(game, name, 100, 50, 0);
+                    this.lev = 1;
+                    this.maxXp = 30;
+                }
+                attack(target) {
+                    super.attack(target);
+                }
+                getXp(monster) {
+                    this.xp += monster.xp;
+
+                    if (this.xp >= this.maxXp) {
+                        this.xp = 0;
+                        this.lev += 1;
+                        this.maxHp += 20;
+                        this.hp = this.maxHp;
+                        this.att += 5;
+                        this.maxXp += this.lev * this.maxXp;
+                        this.game.showMessage(`레벨 업! Lv.${this.lev}`);
+                    }
+                }
+            }
+
+            class Monster extends Unit {
+                constructor(game, name, hp, xp, att) {
+                    super(game, name, hp, att, xp);
+                    this.maxHp = hp;
+                }
+                attack(target) {
+                    super.attack(target);
+                }
+            }
+
+            let game = null;
+
+            $startScreen.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const name = event.target["name-input"].value;
+                game = new Game(name);
+            });
         </script>
     </body>
 </html>
