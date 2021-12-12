@@ -5,8 +5,182 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>짝 맞추기 게임</title>
+        <style>
+            #wrapper {
+                margin: 0 auto;
+                width: 800px;
+            }
+            .card {
+                display: inline-block;
+                margin-right: 5px;
+                border: 1px solid black;
+                background: navy;
+                width: 100px;
+                height: 130px;
+            }
+
+            @keyframes flip-vertical-right {
+                0% {
+                    transform: rotateY(0);
+                }
+                100% {
+                    transform: rotateY(180deg);
+                }
+            }
+            @keyframes flip-vertical-left {
+                0% {
+                    transform: rotateY(180deg);
+                }
+                100% {
+                    transform: rotateY(0deg);
+                }
+            }
+            .flip-vertical-right {
+                animation: flip-vertical-right 0.4s
+                    cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+            }
+
+            .flip-vertical-left {
+                animation: flip-vertical-left 0.4s
+                    cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+            }
+        </style>
     </head>
     <body>
-        <script></script>
+        <div id="wrapper"></div>
+        <script>
+            const cardAry = [];
+            const wrapper = document.getElementById("wrapper");
+            const START_DELAY = 1000;
+            const SHOW_CARD_DELAY = 1000;
+            let startTime = null;
+
+            const colors = [
+                "red",
+                "orange",
+                "yellow",
+                "green",
+                "white",
+                "pink",
+                "cyan",
+                "violet",
+                "gray",
+                "black",
+            ];
+
+            let totalCard;
+
+            //카드 개수
+            do {
+                totalCard = parseInt(
+                    prompt("카드의 개수를 입력하세요. (20개 이하, 짝수)")
+                );
+                totalCard = totalCard > 20 ? 20 : totalCard;
+            } while (totalCard % 2 === 1);
+
+            //카드 개수 만큼 card element 생성
+            for (let i = 0; i < totalCard; i++) {
+                const div = document.createElement("div");
+                div.className = "card";
+                cardAry.push(div);
+                wrapper.appendChild(cardAry[i]);
+            }
+
+            //////// 랜덤 컬러 카드 생성
+            let randomColorAry = [];
+            for (let i = 0; i < totalCard / 2; i++) {
+                randomColorAry.push(colors[i], colors[i]);
+            }
+            for (let i = randomColorAry.length - 1; i >= 0; i--) {
+                const randomIdx = Math.floor(Math.random() * i + 1);
+
+                const tempAry = randomColorAry[i];
+                randomColorAry[i] = randomColorAry[randomIdx];
+                randomColorAry[randomIdx] = tempAry;
+            }
+
+            let clickCount = 0;
+            let winCount = 0;
+            let select = [];
+            //게임 컨트롤
+            function handleCardGame(event) {
+                clickCount++;
+
+                const {
+                    dataset: { index },
+                } = event.target;
+
+                console.log(randomColorAry[index], index);
+
+                // 한장만 뒤집혔는가?
+                if (clickCount === 1) {
+                    // 카드 뒤집어놓고 대기
+
+                    event.target.classList.remove("flip-vertical-right");
+                    event.target.classList.add("flip-vertical-right");
+                    event.target.style.background = randomColorAry[index];
+                    select.push(event.target);
+                }
+
+                // 두장 뒤집었을경우
+                if (clickCount === 2) {
+                    event.target.classList.remove("flip-vertical-right");
+                    event.target.classList.add("flip-vertical-right");
+                    event.target.style.background = randomColorAry[index];
+                    select.push(event.target);
+
+                    if (
+                        select[0].style.background ===
+                        select[1].style.background
+                    ) {
+                        winCount++;
+                        // 정답일때
+                        // 정답 카드 오픈 후 이벤트 지운 후 대기
+                    } else {
+                        select[0].classList.add("flip-vertical-left");
+                        select[1].classList.add("flip-vertical-left");
+
+                        select[0].style.background = "navy";
+                        select[1].style.background = "navy";
+
+                        // 오답일때
+                        // 오답 카드 전부 뒤집기
+                    }
+
+                    clickCount = 0;
+                    select = []; // 판정 배열 비우기
+                }
+                console.log(winCount);
+
+                if (winCount === totalCard / 2) {
+                    console.log("승리");
+                }
+            }
+
+            // 카드 on and off
+            setTimeout(() => {
+                cardAry.forEach((card, idx) => {
+                    setTimeout(() => {
+                        card.classList.add("flip-vertical-right");
+                        card.style.background = randomColorAry[idx];
+                    }, idx * 150);
+
+                    setTimeout(() => {
+                        card.classList.add("flip-vertical-left");
+                        card.classList.remove("flip-vertical-right");
+                        card.style.background = "navy";
+                        card.dataset.index = idx; // 데이터 인덱스 부여
+                        startTime = new Date(); // 시간 측정 시작
+                        card.addEventListener("click", handleCardGame);
+                    }, SHOW_CARD_DELAY + totalCard * 150);
+
+                    setTimeout(() => {
+                        card.classList.remove("flip-vertical-left");
+                    }, SHOW_CARD_DELAY + 400 + totalCard * 150);
+                });
+            }, START_DELAY);
+
+            // cardAry.forEach((card, idx) => {});
+        </script>
     </body>
 </html>
