@@ -51,7 +51,7 @@
         <script>
             const wrapper = document.getElementById("wrapper");
             const START_DELAY = 1000;
-            const SHOW_CARD_DELAY = 1000;
+            const SHOW_CARD_DELAY = 5000;
 
             const colors = [
                 "red",
@@ -67,11 +67,11 @@
             ];
 
             let cardAry = [];
-            let totalCard;
-            let startTime = null;
-            let completed = [];
-            let clicked = [];
-            let clickable = false;
+            let totalCard; // 카드 개수
+            let startTime = null; // 걸린시간 타이머
+            let completed = []; // 정답 카드 저장
+            let clicked = []; // 클릭한 카드 저장
+            let clickable = false; //비동기 컨트롤 플래그 변수
             let randomColorAry = [];
 
             //카드 개수
@@ -84,8 +84,8 @@
                 } while (totalCard % 2 === 1);
             }
 
+            //카드 개수 만큼 card element 생성
             function createCard() {
-                //카드 개수 만큼 card element 생성
                 for (let i = 0; i < totalCard; i++) {
                     const div = document.createElement("div");
                     div.className = "card";
@@ -95,7 +95,6 @@
             }
 
             //////// 랜덤 컬러 카드 생성
-
             function shuffleCard() {
                 for (let i = 0; i < totalCard / 2; i++) {
                     randomColorAry.push(colors[i], colors[i]);
@@ -135,11 +134,11 @@
                 const firstSelect = clicked[0].style.background;
                 const secondSelect = clicked[1].style.background;
                 if (firstSelect === secondSelect) {
+                    //선택한 카드가 같은가
                     completed.push(clicked[0]);
                     completed.push(clicked[1]);
                     clicked = [];
 
-                    console.log(completed.length, totalCard);
                     if (completed.length === parseInt(totalCard)) {
                         setTimeout(() => {
                             const finishTime = new Date();
@@ -166,6 +165,7 @@
                 }, 500);
             }
 
+            // 재시작
             function restartGame() {
                 totalCard = null;
                 startTime = null;
@@ -178,15 +178,11 @@
                 card.forEach((card) => {
                     card.remove();
                 });
-                // card.forEach((card) => {
-                //     card.classList.remove("flip-vertical-right");
-                //     card.style.background = "navy";
-                // });
-                // debugger;
-                console.log(card);
+
                 startGame();
             }
 
+            //게임 시작
             function startGame() {
                 selectCardNumber();
                 createCard();
@@ -204,7 +200,7 @@
                             card.classList.add("flip-vertical-left");
                             card.classList.remove("flip-vertical-right");
                             card.style.background = "navy";
-                            card.dataset.index = idx;
+                            card.dataset.index = idx; // cardAry의 위치를 기억
                             startTime = new Date(); // 시간 측정 시작
                             card.addEventListener("click", handleCardGame);
                         }, SHOW_CARD_DELAY + totalCard * 150);
@@ -212,8 +208,6 @@
                 }, START_DELAY);
             }
             startGame();
-
-            // cardAry.forEach((card, idx) => {});
         </script>
     </body>
 </html>
