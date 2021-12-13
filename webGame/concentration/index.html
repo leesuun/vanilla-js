@@ -49,11 +49,9 @@
     <body>
         <div id="wrapper"></div>
         <script>
-            const cardAry = [];
             const wrapper = document.getElementById("wrapper");
             const START_DELAY = 1000;
             const SHOW_CARD_DELAY = 1000;
-            let startTime = null;
 
             const colors = [
                 "red",
@@ -68,117 +66,152 @@
                 "black",
             ];
 
+            let cardAry = [];
             let totalCard;
+            let startTime = null;
+            let completed = [];
+            let clicked = [];
+            let clickable = false;
+            let randomColorAry = [];
 
             //카드 개수
-            do {
-                totalCard = parseInt(
-                    prompt("카드의 개수를 입력하세요. (20개 이하, 짝수)")
-                );
-                totalCard = totalCard > 20 ? 20 : totalCard;
-            } while (totalCard % 2 === 1);
+            function selectCardNumber() {
+                do {
+                    totalCard = parseInt(
+                        prompt("카드의 개수를 입력하세요. (20개 이하, 짝수)")
+                    );
+                    totalCard = totalCard > 20 ? 20 : totalCard;
+                } while (totalCard % 2 === 1);
+            }
 
-            //카드 개수 만큼 card element 생성
-            for (let i = 0; i < totalCard; i++) {
-                const div = document.createElement("div");
-                div.className = "card";
-                cardAry.push(div);
-                wrapper.appendChild(cardAry[i]);
+            function createCard() {
+                //카드 개수 만큼 card element 생성
+                for (let i = 0; i < totalCard; i++) {
+                    const div = document.createElement("div");
+                    div.className = "card";
+                    cardAry.push(div);
+                    wrapper.appendChild(cardAry[i]);
+                }
             }
 
             //////// 랜덤 컬러 카드 생성
-            let randomColorAry = [];
-            for (let i = 0; i < totalCard / 2; i++) {
-                randomColorAry.push(colors[i], colors[i]);
-            }
-            for (let i = randomColorAry.length - 1; i >= 0; i--) {
-                const randomIdx = Math.floor(Math.random() * i + 1);
 
-                const tempAry = randomColorAry[i];
-                randomColorAry[i] = randomColorAry[randomIdx];
-                randomColorAry[randomIdx] = tempAry;
+            function shuffleCard() {
+                for (let i = 0; i < totalCard / 2; i++) {
+                    randomColorAry.push(colors[i], colors[i]);
+                }
+                for (let i = randomColorAry.length - 1; i >= 0; i--) {
+                    const randomIdx = Math.floor(Math.random() * i + 1);
+
+                    const tempAry = randomColorAry[i];
+                    randomColorAry[i] = randomColorAry[randomIdx];
+                    randomColorAry[randomIdx] = tempAry;
+                }
             }
 
-            let clickCount = 0;
-            let winCount = 0;
-            let select = [];
             //게임 컨트롤
-            function handleCardGame(event) {
-                clickCount++;
 
+            function handleCardGame() {
+                if (
+                    !clickable ||
+                    completed.includes(this) ||
+                    clicked[0] === this
+                ) {
+                    return;
+                }
                 const {
                     dataset: { index },
-                } = event.target;
+                } = this;
 
-                console.log(randomColorAry[index], index);
+                this.classList.add("flip-vertical-right");
+                this.classList.remove("flip-vertical-left");
+                this.style.background = randomColorAry[index];
+                clicked.push(this);
 
-                // 한장만 뒤집혔는가?
-                if (clickCount === 1) {
-                    // 카드 뒤집어놓고 대기
-
-                    event.target.classList.remove("flip-vertical-right");
-                    event.target.classList.add("flip-vertical-right");
-                    event.target.style.background = randomColorAry[index];
-                    select.push(event.target);
+                if (clicked.length !== 2) {
+                    return;
                 }
 
-                // 두장 뒤집었을경우
-                if (clickCount === 2) {
-                    event.target.classList.remove("flip-vertical-right");
-                    event.target.classList.add("flip-vertical-right");
-                    event.target.style.background = randomColorAry[index];
-                    select.push(event.target);
+                const firstSelect = clicked[0].style.background;
+                const secondSelect = clicked[1].style.background;
+                if (firstSelect === secondSelect) {
+                    completed.push(clicked[0]);
+                    completed.push(clicked[1]);
+                    clicked = [];
 
-                    if (
-                        select[0].style.background ===
-                        select[1].style.background
-                    ) {
-                        winCount++;
-                        // 정답일때
-                        // 정답 카드 오픈 후 이벤트 지운 후 대기
-                    } else {
-                        select[0].classList.add("flip-vertical-left");
-                        select[1].classList.add("flip-vertical-left");
-
-                        select[0].style.background = "navy";
-                        select[1].style.background = "navy";
-
-                        // 오답일때
-                        // 오답 카드 전부 뒤집기
+                    console.log(completed.length, totalCard);
+                    if (completed.length === parseInt(totalCard)) {
+                        setTimeout(() => {
+                            const finishTime = new Date();
+                            alert(
+                                `승리!! 걸린시간: ${
+                                    (finishTime - startTime) / 1000
+                                }초`
+                            );
+                            restartGame();
+                        }, 500);
                     }
-
-                    clickCount = 0;
-                    select = []; // 판정 배열 비우기
+                    return;
                 }
-                console.log(winCount);
-
-                if (winCount === totalCard / 2) {
-                    console.log("승리");
-                }
+                clickable = false;
+                setTimeout(() => {
+                    clickable = true;
+                    clicked[0].classList.add("flip-vertical-left");
+                    clicked[0].classList.remove("flip-vertical-right");
+                    clicked[0].style.background = "navy";
+                    clicked[1].classList.add("flip-vertical-left");
+                    clicked[1].classList.remove("flip-vertical-right");
+                    clicked[1].style.background = "navy";
+                    clicked = [];
+                }, 500);
             }
 
-            // 카드 on and off
-            setTimeout(() => {
-                cardAry.forEach((card, idx) => {
-                    setTimeout(() => {
-                        card.classList.add("flip-vertical-right");
-                        card.style.background = randomColorAry[idx];
-                    }, idx * 150);
+            function restartGame() {
+                totalCard = null;
+                startTime = null;
+                completed = [];
+                cardAry = [];
+                clickable = false;
+                randomColorAry = [];
 
-                    setTimeout(() => {
-                        card.classList.add("flip-vertical-left");
-                        card.classList.remove("flip-vertical-right");
-                        card.style.background = "navy";
-                        card.dataset.index = idx; // 데이터 인덱스 부여
-                        startTime = new Date(); // 시간 측정 시작
-                        card.addEventListener("click", handleCardGame);
-                    }, SHOW_CARD_DELAY + totalCard * 150);
-
-                    setTimeout(() => {
-                        card.classList.remove("flip-vertical-left");
-                    }, SHOW_CARD_DELAY + 400 + totalCard * 150);
+                const card = document.querySelectorAll(".card ");
+                card.forEach((card) => {
+                    card.remove();
                 });
-            }, START_DELAY);
+                // card.forEach((card) => {
+                //     card.classList.remove("flip-vertical-right");
+                //     card.style.background = "navy";
+                // });
+                // debugger;
+                console.log(card);
+                startGame();
+            }
+
+            function startGame() {
+                selectCardNumber();
+                createCard();
+                shuffleCard();
+                // 카드 on and off
+                setTimeout(() => {
+                    cardAry.forEach((card, idx) => {
+                        setTimeout(() => {
+                            card.classList.add("flip-vertical-right");
+                            card.style.background = randomColorAry[idx];
+                        }, idx * 150);
+
+                        setTimeout(() => {
+                            clickable = true;
+                            card.classList.add("flip-vertical-left");
+                            card.classList.remove("flip-vertical-right");
+                            card.style.background = "navy";
+                            card.dataset.index = idx;
+                            startTime = new Date(); // 시간 측정 시작
+                            card.addEventListener("click", handleCardGame);
+                        }, SHOW_CARD_DELAY + totalCard * 150);
+                    });
+                }, START_DELAY);
+            }
+            startGame();
 
             // cardAry.forEach((card, idx) => {});
         </script>

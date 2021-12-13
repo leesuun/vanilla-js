@@ -30,7 +30,6 @@
                 background: navy;
             }
 
-            /* div 두개를 겹쳐 놓고 뒤집기 */
             .card-front,
             .card-back {
                 position: absolute;
@@ -71,7 +70,6 @@
                     const randomIndex = Math.floor(
                         Math.random() * colorCopy.length
                     );
-
                     shuffled = shuffled.concat(
                         colorCopy.splice(randomIndex, 1)
                     );
@@ -95,6 +93,9 @@
                 return card;
             }
 
+            // clicked : [2, 5, 8, 9]
+            // 태스크큐:
+            // 백: addEventListener(12),
             function onClickCard() {
                 if (
                     !clickable ||
@@ -103,10 +104,8 @@
                 ) {
                     return;
                 }
-
                 this.classList.toggle("flipped");
                 clicked.push(this);
-
                 if (clicked.length !== 2) {
                     return;
                 }
@@ -130,8 +129,8 @@
                     }, 1000);
                     return;
                 }
-
                 clickable = false;
+
                 setTimeout(() => {
                     clicked[0].classList.remove("flipped");
                     clicked[1].classList.remove("flipped");
@@ -139,6 +138,7 @@
                     clickable = true;
                 }, 500);
             }
+
             function startGame() {
                 clickable = false;
                 shuffle();
@@ -147,6 +147,7 @@
                     card.addEventListener("click", onClickCard);
                     $wrapper.appendChild(card);
                 }
+
                 document.querySelectorAll(".card").forEach((card, index) => {
                     // 초반 카드 공개
                     setTimeout(() => {
@@ -156,10 +157,10 @@
 
                 setTimeout(() => {
                     // 카드 감추기
-                    clickable = true;
                     document.querySelectorAll(".card").forEach((card) => {
                         card.classList.remove("flipped");
                     });
+                    clickable = true;
                 }, 5000);
             }
             startGame();
@@ -169,7 +170,6 @@
                 colorCopy = colors.concat(colors);
                 shuffled = [];
                 completed = [];
-                clickable = false;
                 startGame();
             }
         </script>
