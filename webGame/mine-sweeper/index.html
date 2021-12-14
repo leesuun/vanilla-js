@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <title>지뢰찾기</title>
+        <style>
+            .level__box {
+                margin: 0 auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wraaper">
+            <header>
+                <h1>지뢰찾기</h1>
+            </header>
+            <main>
+                <div id="level" class="level__box">
+                    <button class="btn btn-info">초급</button>
+                    <button class="btn btn-info">중급</button>
+                    <button class="btn btn-info">상급</button>
+                </div>
+            </main>
+        </div>
+
+        <script>
+            const levelBox = document.querySelector("#level");
+            const levelBtn = document.querySelectorAll("#level button");
+
+            levelBox.hidden = true;
+
+            function handleSelectLevel() {}
+
+            levelBtn.forEach((button) => {
+                button.addEventListener("click", handleSelectLevel);
+            });
+        </script>
+    </body>
+</html>
