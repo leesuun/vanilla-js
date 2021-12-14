@@ -4,11 +4,39 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
+        />
         <title>지뢰찾기</title>
         <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
             .level__box {
                 margin: 0 auto;
+                text-align: center;
+            }
+
+            table {
+                /* border-collapse: collapse; */
+                border-spacing: 0;
+                margin: 0 auto;
+            }
+
+            td {
+                background-color: green;
+                margin: 0;
+                width: 35px;
+                height: 35px;
+                border: 1px solid white;
                 text-align: center;
             }
         </style>
@@ -20,10 +48,14 @@
             </header>
             <main>
                 <div id="level" class="level__box">
-                    <button class="btn btn-info">초급</button>
-                    <button class="btn btn-info">중급</button>
-                    <button class="btn btn-info">상급</button>
+                    <button class="btn btn-info">쉬움</button>
+                    <button class="btn btn-info">보통</button>
+                    <button class="btn btn-info">어려움</button>
                 </div>
+
+                <table id="mineTable" oncontextmenu="return false">
+                    <tbody></tbody>
+                </table>
             </main>
         </div>
 
@@ -31,10 +63,153 @@
             const levelBox = document.querySelector("#level");
             const levelBtn = document.querySelectorAll("#level button");
 
-            levelBox.hidden = true;
+            const table = document.querySelector("#mineTable");
+            const tbody = table.querySelector("tbody");
+            table.addEventListener("contextmenu", (event) =>
+                event.preventDefault()
+            ); // 우클릭 팝업 이벤트 방지
 
-            function handleSelectLevel() {}
+            const LEVEL = {
+                easy: {
+                    col: 10,
+                    row: 8,
+                    mine: 10,
+                },
+                normal: {
+                    col: 18,
+                    row: 14,
+                    mine: 40,
+                },
+                hard: {
+                    col: 26,
+                    row: 18,
+                    mine: 100,
+                },
+            };
+            const LEFT_CLICK = 1;
+            const MIDDLE_CLICK = 2;
+            const RIGHT_CLICK = 3;
 
+            let tableCellAry = [];
+
+            // 지뢰찾기 테이블 생성
+            function createTableCells(level) {
+                for (let i = 0; i < level.row; i++) {
+                    const tr = document.createElement("tr");
+                    let cells = [];
+                    for (let j = 0; j < level.col; j++) {
+                        const td = document.createElement("td");
+                        cells.push(td);
+                        tr.appendChild(td);
+                    }
+                    tbody.appendChild(tr);
+                    tableCellAry.push(cells);
+                }
+                createMine(tbody, level.mine);
+            }
+
+            // 랜덤 위치에 지뢰 생성
+            function createMine(tbody, mineNum) {
+                const tds = tbody.querySelectorAll("td");
+                let randomIdx = [];
+
+                while (true) {
+                    randomIdx.push(Math.floor(Math.random() * tds.length));
+                    randomIdx = [...new Set(randomIdx)];
+                    if (randomIdx.length === mineNum) {
+                        for (let i = 0; i < randomIdx.length; i++) {
+                            const span = document.createElement("span");
+                            span.textContent = "💥";
+                            // span.hidden = true;
+                            tds[randomIdx[i]].appendChild(span);
+                        }
+                        break;
+                    }
+                }
+                // console.log(tbody);
+                console.log(tableCellAry);
+
+                const mines = table.querySelectorAll("span"); // 폭탄
+                // console.log(mines);
+                // setTimeout(() => {
+                //     mines.forEach((mine) => (mine.hidden = false));
+                // }, 1000);
+                // 🚩❗⚠💥
+            }
+
+            function handleCellClick(event) {
+                event.preventDefault();
+                const {
+                    which,
+                    target,
+                    target: { childElementCount },
+                } = event;
+
+                switch (which) {
+                    case LEFT_CLICK:
+                        console.log("마우스 좌 클릭");
+
+                        if (
+                            target.textContent === "❗" ||
+                            target.textContent === "🚩"
+                        ) {
+                            // 느낌표 or 깃발이 있는지
+                            return;
+                        }
+
+                        if (childElementCount) {
+                            // 지뢰 클릭
+                            // 지뢰 위치 표시하기
+                            return;
+                        }
+                        // 칸 정보 오픈
+                        //모든 칸을 열었나?
+                        if (true) {
+                            //네
+                            //승리 표시
+                            return;
+                        }
+                        // 열 수 있는 칸 개방
+
+                        break;
+                    case MIDDLE_CLICK:
+                        console.log("마우스 가운데 클릭");
+                        break;
+                    case RIGHT_CLICK:
+                        console.log("마우스 우 클릭");
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            function handleSelectLevel() {
+                const { textContent } = this;
+                levelBox.hidden = true;
+
+                switch (textContent) {
+                    case "쉬움":
+                        //   초급 가로8 , 세로 10, 지뢰 10개
+                        console.log(textContent);
+                        createTableCells(LEVEL.easy);
+                        break;
+                    case "보통":
+                        //   중급 가로14 , 세로 18, 지뢰 40개
+                        console.log(textContent);
+                        createTableCells(LEVEL.normal);
+                        break;
+                    case "어려움":
+                        //  상급 가로18 , 세로 26, 지뢰 100개
+                        console.log(textContent);
+                        createTableCells(LEVEL.hard);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            table.addEventListener("mousedown", handleCellClick);
             levelBtn.forEach((button) => {
                 button.addEventListener("click", handleSelectLevel);
             });
