@@ -68,6 +68,7 @@
             table.addEventListener("contextmenu", (event) =>
                 event.preventDefault()
             ); // 우클릭 팝업 이벤트 방지
+            let tds;
 
             const LEVEL = {
                 easy: {
@@ -90,7 +91,7 @@
             const MIDDLE_CLICK = 2;
             const RIGHT_CLICK = 3;
 
-            let tableCellAry = [];
+            let tableCells = [];
 
             // 지뢰찾기 테이블 생성
             function createTableCells(level) {
@@ -103,14 +104,14 @@
                         tr.appendChild(td);
                     }
                     tbody.appendChild(tr);
-                    tableCellAry.push(cells);
+                    tableCells.push(cells);
                 }
                 createMine(tbody, level.mine);
             }
 
             // 랜덤 위치에 지뢰 생성
             function createMine(tbody, mineNum) {
-                const tds = tbody.querySelectorAll("td");
+                tds = tbody.querySelectorAll("td");
                 let randomIdx = [];
 
                 while (true) {
@@ -120,25 +121,21 @@
                         for (let i = 0; i < randomIdx.length; i++) {
                             const span = document.createElement("span");
                             span.textContent = "💥";
-                            // span.hidden = true;
+                            span.hidden = true;
                             tds[randomIdx[i]].appendChild(span);
                         }
                         break;
                     }
                 }
-                // console.log(tbody);
-                console.log(tableCellAry);
 
-                const mines = table.querySelectorAll("span"); // 폭탄
-                // console.log(mines);
-                // setTimeout(() => {
-                //     mines.forEach((mine) => (mine.hidden = false));
-                // }, 1000);
+                // console.log(tableCells);
+
                 // 🚩❗⚠💥
             }
-
+            let mineCnt = 0;
             function handleCellClick(event) {
                 event.preventDefault();
+                const mines = table.querySelectorAll("span"); // 폭탄
                 const {
                     which,
                     target,
@@ -148,6 +145,8 @@
                 switch (which) {
                     case LEFT_CLICK:
                         console.log("마우스 좌 클릭");
+                        const rowIdx = target.parentNode.rowIndex;
+                        const cellIdx = target.cellIndex;
 
                         if (
                             target.textContent === "❗" ||
@@ -159,17 +158,84 @@
 
                         if (childElementCount) {
                             // 지뢰 클릭
-                            // 지뢰 위치 표시하기
+                            mines.forEach((mine) => (mine.hidden = false));
+                            setTimeout(() => {
+                                alert("패배");
+                            }, 500);
+
                             return;
                         }
-                        // 칸 정보 오픈
-                        //모든 칸을 열었나?
-                        if (true) {
+
+                        if (false) {
                             //네
                             //승리 표시
                             return;
                         }
                         // 열 수 있는 칸 개방
+                        mineCnt = 0;
+
+                        if (!childElementCount) {
+                            console.log("r:", rowIdx, "c:", cellIdx);
+
+                            for (let i = -1; i <= 1; i++) {
+                                if (
+                                    rowIdx + i === -1 ||
+                                    rowIdx + i === tableCells.length
+                                ) {
+                                    continue;
+                                }
+
+                                for (let j = -1; j <= 1; j++) {
+                                    if (
+                                        cellIdx + j === -1 ||
+                                        cellIdx + j === tableCells[0].length
+                                    ) {
+                                        continue;
+                                    }
+
+                                    mineCnt +=
+                                        tableCells[rowIdx + i][cellIdx + j]
+                                            .childElementCount;
+                                }
+                            }
+
+                            if (mineCnt !== 0) {
+                                target.textContent = mineCnt;
+                                target.style.background = "gray";
+                                return;
+                            }
+
+                            //전이 시켜
+
+                            for (let i = -1; i <= 1; i++) {
+                                if (
+                                    rowIdx + i === -1 ||
+                                    rowIdx + i === tableCells.length
+                                ) {
+                                    continue;
+                                }
+
+                                for (let j = -1; j <= 1; j++) {
+                                    if (
+                                        cellIdx + j === -1 ||
+                                        cellIdx + j === tableCells[0].length
+                                    ) {
+                                        continue;
+                                    }
+
+                                    if (
+                                        tableCells[rowIdx + i][cellIdx + j]
+                                            .childElementCount === 0
+                                    ) {
+                                        tableCells[rowIdx + i][
+                                            cellIdx + j
+                                        ].style.background = "gray";
+                                    }
+                                }
+                            }
+
+                            console.log(mineCnt);
+                        }
 
                         break;
                     case MIDDLE_CLICK:
@@ -177,6 +243,29 @@
                         break;
                     case RIGHT_CLICK:
                         console.log("마우스 우 클릭");
+                        console.log(target);
+                        if (target.textContent === "") {
+                            target.textContent = "❓";
+                            target.removeEventListener(
+                                "mousedown",
+                                handleCellClick
+                            );
+                            return;
+                        }
+                        if (target.textContent === "❓") {
+                            target.textContent = "🚩";
+
+                            return;
+                        }
+                        if ((target.textContent = "🚩")) {
+                            target.textContent = "";
+                            target.addEventListener(
+                                "mousedown",
+                                handleCellClick
+                            );
+                            return;
+                        }
+
                         break;
 
                     default:
@@ -191,7 +280,7 @@
                 switch (textContent) {
                     case "쉬움":
                         //   초급 가로8 , 세로 10, 지뢰 10개
-                        console.log(textContent);
+
                         createTableCells(LEVEL.easy);
                         break;
                     case "보통":
@@ -216,3 +305,6 @@
         </script>
     </body>
 </html>
+
+<!-- [i-1][j-1] 지뢰[i-1][j] [i-1][j+1] // [i][j-1] 지뢰[i][j] [i][j+1] // -->
+<!-- [i+1][j-1] 지뢰[i+1][j] [i+1][j+1] -->
