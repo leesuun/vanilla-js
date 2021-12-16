@@ -204,36 +204,9 @@
                                 target.style.background = "gray";
                                 return;
                             }
+                            target.style.background = "gray";
 
                             //전이 시켜
-
-                            for (let i = -1; i <= 1; i++) {
-                                if (
-                                    rowIdx + i === -1 ||
-                                    rowIdx + i === tableCells.length
-                                ) {
-                                    continue;
-                                }
-
-                                for (let j = -1; j <= 1; j++) {
-                                    if (
-                                        cellIdx + j === -1 ||
-                                        cellIdx + j === tableCells[0].length
-                                    ) {
-                                        continue;
-                                    }
-
-                                    if (
-                                        tableCells[rowIdx + i][cellIdx + j]
-                                            .childElementCount === 0
-                                    ) {
-                                        tableCells[rowIdx + i][
-                                            cellIdx + j
-                                        ].style.background = "gray";
-                                    }
-                                }
-                            }
-
                             console.log(mineCnt);
                         }
 
