@@ -20,12 +20,6 @@
             td.opened {
                 background: white;
             }
-            td.flag {
-                background: red;
-            }
-            td.question {
-                background: orange;
-            }
         </style>
     </head>
     <body>
@@ -67,7 +61,8 @@
             let openCellCnt = 0;
             let intervalId;
 
-            let devMode = false;
+            let devMode = true;
+            let firstClick = true;
 
             function mineCount(rI, cI) {
                 const mines = [CODE.MINE, CODE.FLAG_MINE];
@@ -140,11 +135,52 @@
                 });
             }
 
+            function switchMine(rI, cI, SrI, ScI) {
+                const switchedTarget = tbody.children[SrI].children[ScI];
+
+                const temp = data[SrI][ScI];
+                data[SrI][ScI] = data[rI][cI];
+                data[rI][cI] = temp;
+                // switchedTarget.textContent = "🥶";
+                return true;
+            }
+            function moveMine(rI, cI) {
+                const target = tbody.children[rI].children[cI];
+                const mines = [CODE.MINE, CODE.FLAG_MINE];
+                let spaceCheck = true;
+
+                if (mines.includes(data[rI][cI])) {
+                    !mines.includes(data[rI - 1]?.[cI - 1]) &&
+                        switchMine(rI, cI, rI - 1, cI - 1);
+                    !mines.includes(data[rI - 1]?.[cI]) && switchMine(rI, cI, rI - 1, cI);
+                    !mines.includes(data[rI - 1]?.[cI + 1]) &&
+                        switchMine(rI, cI, rI - 1, cI + 1);
+                    !mines.includes(data[rI]?.[cI - 1]) && switchMine(rI, cI, rI, cI - 1);
+                    !mines.includes(data[rI]?.[cI + 1]) && switchMine(rI, cI, rI, cI + 1);
+                    !mines.includes(data[rI + 1]?.[cI - 1]) &&
+                        switchMine(rI, cI, rI + 1, cI - 1);
+                    !mines.includes(data[rI + 1]?.[cI]) && switchMine(rI, cI, rI + 1, cI);
+                    !mines.includes(data[rI + 1]?.[cI + 1]) &&
+                        switchMine(rI, cI, rI + 1, cI + 1);
+                }
+
+                firstClick = false;
+            }
             function handleLeftClick(event) {
                 const target = event.target;
                 const rowIdx = target.parentNode.rowIndex; // row 인덱스
                 const cellIdx = target.cellIndex; // cell 인덱스
-                const cellCode = data[rowIdx][cellIdx];
+                let cellCode = data[rowIdx][cellIdx];
+
+                console.log(cellCode);
+
+                // 첫번째 누른칸이 지뢰면 지뢰 위치 이동
+                if (firstClick) {
+                    moveMine(rowIdx, cellIdx);
+                    cellCode = data[rowIdx][cellIdx];
+                    // console.log(data);
+                    console.log(cellCode);
+                }
 
                 if (cellCode === CODE.BLANK) {
                     // 닫힌칸 ,칸 열고
@@ -196,7 +232,6 @@
                         target.textContent = "🥶";
                     }
                 }
-                console.log(data[rowIdx][cellIdx]);
             }
 
             function plantMine() {
@@ -244,7 +279,7 @@
 
                         if (devMode) {
                             if (cell === CODE.MINE) {
-                                // td.textContent = "🥶";
+                                td.textContent = "🥶";
                             }
                         }
                         tr.append(td);
@@ -272,6 +307,10 @@
                 cell = parseInt(event.target.cell.value);
                 mine = parseInt(event.target.mine.value);
 
+                const tr = tbody.querySelectorAll("tr");
+                tr.forEach((tr) => tr.remove());
+
+                firstClick = true;
                 data = [];
                 openCellCnt = 0;
                 clearInterval(intervalId);
