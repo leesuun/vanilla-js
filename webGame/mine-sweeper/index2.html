@@ -61,7 +61,7 @@
             let openCellCnt = 0;
             let intervalId;
 
-            let devMode = true;
+            let devMode = false;
             let firstClick = true;
 
             function mineCount(rI, cI) {
@@ -263,9 +263,12 @@
 
                 // 지뢰 심기
                 for (let i = 0; i < shuffle.length; i++) {
-                    const row = Math.floor(shuffle[i] / 10);
-                    const col = shuffle[i] % 10;
-                    cellAry[row][col] = CODE.MINE;
+                    const rowIdx = Math.floor(shuffle[i] / row);
+                    const colIdx = shuffle[i] % cell;
+                    console.log(cellAry);
+                    console.log(shuffle);
+                    console.log(rowIdx, colIdx);
+                    cellAry[rowIdx][colIdx] = CODE.MINE;
                 }
                 return cellAry;
             }
