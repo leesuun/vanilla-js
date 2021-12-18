@@ -4,280 +4,337 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="stylesheet"
-            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"
-        />
         <title>지뢰찾기</title>
         <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            header {
-                text-align: center;
-                margin-bottom: 3rem;
-            }
-            .level__box {
-                margin: 0 auto;
-                text-align: center;
-            }
-
             table {
-                /* border-collapse: collapse; */
-                border-spacing: 0;
-                margin: 0 auto;
+                border-collapse: collapse;
             }
-
             td {
-                background-color: green;
-                margin: 0;
-                width: 35px;
-                height: 35px;
-                border: 1px solid white;
+                border: 1px solid #bbb;
                 text-align: center;
+                line-height: 25px;
+                width: 25px;
+                height: 25px;
+                background: #888;
+            }
+            td.opened {
+                background: white;
             }
         </style>
     </head>
     <body>
-        <div class="wraaper">
-            <header>
-                <h1>지뢰찾기</h1>
-            </header>
-            <main>
-                <div id="level" class="level__box">
-                    <button class="btn btn-info">쉬움</button>
-                    <button class="btn btn-info">보통</button>
-                    <button class="btn btn-info">어려움</button>
-                </div>
-
-                <table id="mineTable" oncontextmenu="return false">
-                    <tbody></tbody>
-                </table>
-            </main>
-        </div>
-
+        <header>
+            <h1>지뢰찾기</h1>
+        </header>
+        <main>
+            <form>
+                <input id="row" type="number" placeholder="가로(행)" />
+                <input id="cell" type="number" placeholder="세로(열)" />
+                <input id="mine" type="number" placeholder="지뢰" />
+                <button type="submit">시작</button>
+            </form>
+            <div id="time">걸린 시간: 00:00</div>
+            <table id="table">
+                <tbody></tbody>
+            </table>
+            <div id="result"></div>
+        </main>
         <script>
-            const levelBox = document.querySelector("#level");
-            const levelBtn = document.querySelectorAll("#level button");
+            const form = document.querySelector("form");
 
-            const table = document.querySelector("#mineTable");
-            const tbody = table.querySelector("tbody");
-            table.addEventListener("contextmenu", (event) =>
-                event.preventDefault()
-            ); // 우클릭 팝업 이벤트 방지
-            let tds;
+            const tbody = document.querySelector("#table tbody");
+            const result = document.querySelector("#result");
+            const time = document.querySelector("#time");
 
-            const LEVEL = {
-                easy: {
-                    col: 10,
-                    row: 8,
-                    mine: 10,
-                },
-                normal: {
-                    col: 18,
-                    row: 14,
-                    mine: 40,
-                },
-                hard: {
-                    col: 26,
-                    row: 18,
-                    mine: 100,
-                },
+            let row;
+            let cell;
+            let mine;
+
+            const CODE = {
+                BLANK: -1,
+                FLAG: -2,
+                MINE: -3,
+                FLAG_MINE: -4,
+                OPENED: 0, // 0~8 지뢰 개수
             };
-            const LEFT_CLICK = 1;
-            const MIDDLE_CLICK = 2;
-            const RIGHT_CLICK = 3;
+            let data = [];
+            let openCellCnt = 0;
+            let intervalId;
 
-            let tableCells = [];
+            let devMode = false;
+            let firstClick = true;
 
-            // 지뢰찾기 테이블 생성
-            function createTableCells(level) {
-                for (let i = 0; i < level.row; i++) {
-                    const tr = document.createElement("tr");
-                    let cells = [];
-                    for (let j = 0; j < level.col; j++) {
-                        const td = document.createElement("td");
-                        cells.push(td);
-                        tr.appendChild(td);
-                    }
-                    tbody.appendChild(tr);
-                    tableCells.push(cells);
-                }
-                createMine(tbody, level.mine);
+            //지뢰 개수 세기
+            function mineCount(rI, cI) {
+                const mines = [CODE.MINE, CODE.FLAG_MINE];
+
+                let mineCnt = 0;
+
+                mines.includes(data[rI - 1]?.[cI - 1]) && mineCnt++;
+                mines.includes(data[rI - 1]?.[cI]) && mineCnt++;
+                mines.includes(data[rI - 1]?.[cI + 1]) && mineCnt++;
+                mines.includes(data[rI][cI - 1]) && mineCnt++;
+                mines.includes(data[rI][cI + 1]) && mineCnt++;
+                mines.includes(data[rI + 1]?.[cI - 1]) && mineCnt++;
+                mines.includes(data[rI + 1]?.[cI]) && mineCnt++;
+                mines.includes(data[rI + 1]?.[cI + 1]) && mineCnt++;
+
+                return mineCnt;
             }
 
-            // 랜덤 위치에 지뢰 생성
-            function createMine(tbody, mineNum) {
-                tds = tbody.querySelectorAll("td");
-                let randomIdx = [];
+            //빈칸 열기
+            function open(rI, cI) {
+                if (data[rI]?.[cI] >= CODE.OPENED) return;
+                const target = tbody.children[rI]?.children[cI];
+                if (!target) {
+                    return;
+                }
 
-                while (true) {
-                    randomIdx.push(Math.floor(Math.random() * tds.length));
-                    randomIdx = [...new Set(randomIdx)];
-                    if (randomIdx.length === mineNum) {
-                        for (let i = 0; i < randomIdx.length; i++) {
-                            const span = document.createElement("span");
-                            span.textContent = "💥";
-                            span.hidden = true;
-                            tds[randomIdx[i]].appendChild(span);
+                let count = mineCount(rI, cI);
+                target.textContent = count || "";
+                target.className = "opened";
+                data[rI][cI] = count;
+
+                openCellCnt++; //열린 칸수
+                console.log(openCellCnt);
+
+                if (openCellCnt === cell * row - mine) {
+                    console.log(openCellCnt);
+                    tbody.removeEventListener("contextmenu", handleRightClick);
+                    tbody.removeEventListener("click", handleLeftClick);
+                    clearInterval(intervalId);
+                    setTimeout(() => {
+                        alert("승리");
+                    }, 400);
+                }
+
+                return count;
+            }
+
+            //빈칸 전이 시키기(재귀)
+            function openAround(rI, cI) {
+                setTimeout(() => {
+                    const count = open(rI, cI); //지뢰의 개수 카운트
+                    if (count === 0) {
+                        openAround(rI - 1, cI - 1);
+                        openAround(rI - 1, cI);
+                        openAround(rI - 1, cI + 1);
+                        openAround(rI, cI - 1);
+                        openAround(rI, cI + 1);
+                        openAround(rI + 1, cI - 1);
+                        openAround(rI + 1, cI);
+                        openAround(rI + 1, cI + 1);
+                    }
+                }, 0);
+            }
+
+            // 지뢰 위치
+            function showMines() {
+                const mines = [CODE.MINE, CODE.FLAG_MINE];
+                data.forEach((row, rI) => {
+                    row.forEach((cell, cI) => {
+                        if (mines.includes(data[rI][cI])) {
+                            const target = tbody.children[rI].children[cI];
+                            target.textContent = "🥶";
+                            target.className = "opened";
                         }
-                        break;
-                    }
+                    });
+                });
+            }
+
+            // 첫 클릭 지뢰 방지
+            function switchMine(rI, cI, SrI, ScI) {
+                const switchedTarget = tbody.children[SrI].children[ScI];
+
+                const temp = data[SrI][ScI];
+                data[SrI][ScI] = data[rI][cI];
+                data[rI][cI] = temp;
+                // switchedTarget.textContent = "🥶";
+                return true;
+            }
+            // 첫 클릭 지뢰 방지
+            function moveMine(rI, cI) {
+                const target = tbody.children[rI].children[cI];
+                const mines = [CODE.MINE, CODE.FLAG_MINE];
+                let spaceCheck = true;
+
+                if (mines.includes(data[rI][cI])) {
+                    !mines.includes(data[rI - 1]?.[cI - 1]) &&
+                        switchMine(rI, cI, rI - 1, cI - 1);
+                    !mines.includes(data[rI - 1]?.[cI]) && switchMine(rI, cI, rI - 1, cI);
+                    !mines.includes(data[rI - 1]?.[cI + 1]) &&
+                        switchMine(rI, cI, rI - 1, cI + 1);
+                    !mines.includes(data[rI]?.[cI - 1]) && switchMine(rI, cI, rI, cI - 1);
+                    !mines.includes(data[rI]?.[cI + 1]) && switchMine(rI, cI, rI, cI + 1);
+                    !mines.includes(data[rI + 1]?.[cI - 1]) &&
+                        switchMine(rI, cI, rI + 1, cI - 1);
+                    !mines.includes(data[rI + 1]?.[cI]) && switchMine(rI, cI, rI + 1, cI);
+                    !mines.includes(data[rI + 1]?.[cI + 1]) &&
+                        switchMine(rI, cI, rI + 1, cI + 1);
                 }
 
-                // console.log(tableCells);
-
-                // 🚩❗⚠💥
+                firstClick = false;
             }
-            let mineCnt = 0;
-            function handleCellClick(event) {
+
+            //좌클릭
+            function handleLeftClick(event) {
+                const target = event.target;
+                const rowIdx = target.parentNode.rowIndex; // row 인덱스
+                const cellIdx = target.cellIndex; // cell 인덱스
+                let cellCode = data[rowIdx][cellIdx];
+
+                console.log(cellCode);
+
+                // 첫번째 누른칸이 지뢰면 지뢰 위치 이동
+                if (firstClick) {
+                    moveMine(rowIdx, cellIdx);
+                    // cellCode = data[rowIdx][cellIdx];
+                    // console.log(data);
+                    console.log(cellCode);
+                }
+
+                if (cellCode === CODE.BLANK) {
+                    // 닫힌칸 ,칸 열고
+                    openAround(rowIdx, cellIdx);
+                    return;
+                }
+                if (cellCode === CODE.MINE) {
+                    // 지뢰칸 , 지뢰 위치 보여주고 패배
+                    showMines();
+                    clearInterval(intervalId);
+                    tbody.removeEventListener("contextmenu", handleRightClick);
+                    tbody.removeEventListener("click", handleLeftClick);
+                    setTimeout(() => {
+                        alert("패배");
+                    }, 400);
+
+                    return;
+                }
+            }
+
+            //우클릭
+            function handleRightClick(event) {
                 event.preventDefault();
-                const mines = table.querySelectorAll("span"); // 폭탄
-                const {
-                    which,
-                    target,
-                    target: { childElementCount },
-                } = event;
 
-                switch (which) {
-                    case LEFT_CLICK:
-                        console.log("마우스 좌 클릭");
-                        const rowIdx = target.parentNode.rowIndex;
-                        const cellIdx = target.cellIndex;
+                const target = event.target;
+                const rowIdx = target.parentNode.rowIndex; // row 인덱스
+                const cellIdx = target.cellIndex; // cell 인덱스
+                const cellCode = data[rowIdx][cellIdx];
 
-                        if (
-                            target.textContent === "❗" ||
-                            target.textContent === "🚩"
-                        ) {
-                            // 느낌표 or 깃발이 있는지
-                            return;
-                        }
+                if (cellCode === CODE.OPENED) {
+                    return;
+                }
 
-                        if (childElementCount) {
-                            // 지뢰 클릭
-                            mines.forEach((mine) => (mine.hidden = false));
-                            setTimeout(() => {
-                                alert("패배");
-                            }, 500);
-
-                            return;
-                        }
-
-                        if (false) {
-                            //네
-                            //승리 표시
-                            return;
-                        }
-                        // 열 수 있는 칸 개방
-                        mineCnt = 0;
-
-                        if (!childElementCount) {
-                            console.log("r:", rowIdx, "c:", cellIdx);
-
-                            for (let i = -1; i <= 1; i++) {
-                                if (
-                                    rowIdx + i === -1 ||
-                                    rowIdx + i === tableCells.length
-                                ) {
-                                    continue;
-                                }
-
-                                for (let j = -1; j <= 1; j++) {
-                                    if (
-                                        cellIdx + j === -1 ||
-                                        cellIdx + j === tableCells[0].length
-                                    ) {
-                                        continue;
-                                    }
-
-                                    mineCnt +=
-                                        tableCells[rowIdx + i][cellIdx + j]
-                                            .childElementCount;
-                                }
-                            }
-
-                            if (mineCnt !== 0) {
-                                target.textContent = mineCnt;
-                                target.style.background = "gray";
-                                return;
-                            }
-                            target.style.background = "gray";
-
-                            //전이 시켜
-                            console.log(mineCnt);
-                        }
-
-                        break;
-                    case MIDDLE_CLICK:
-                        console.log("마우스 가운데 클릭");
-                        break;
-                    case RIGHT_CLICK:
-                        console.log("마우스 우 클릭");
-                        console.log(target);
-                        if (target.textContent === "") {
-                            target.textContent = "❓";
-                            target.removeEventListener(
-                                "mousedown",
-                                handleCellClick
-                            );
-                            return;
-                        }
-                        if (target.textContent === "❓") {
-                            target.textContent = "🚩";
-
-                            return;
-                        }
-                        if ((target.textContent = "🚩")) {
-                            target.textContent = "";
-                            target.addEventListener(
-                                "mousedown",
-                                handleCellClick
-                            );
-                            return;
-                        }
-
-                        break;
-
-                    default:
-                        break;
+                if (cellCode === CODE.BLANK) {
+                    //빈칸 (지뢰 X)
+                    data[rowIdx][cellIdx] = CODE.FLAG;
+                    target.textContent = "🚩";
+                } else if (cellCode === CODE.FLAG) {
+                    data[rowIdx][cellIdx] = CODE.BLANK;
+                    target.textContent = "";
+                    // 깃발 (지뢰 X)
+                } else if (cellCode === CODE.MINE) {
+                    //빈칸 (지뢰 O)
+                    data[rowIdx][cellIdx] = CODE.FLAG_MINE;
+                    target.textContent = "🚩";
+                } else if (cellCode === CODE.FLAG_MINE) {
+                    // 깃발 (지뢰 O)
+                    data[rowIdx][cellIdx] = CODE.MINE;
+                    if (devMode) {
+                        target.textContent = "🥶";
+                    }
                 }
             }
 
-            function handleSelectLevel() {
-                const { textContent } = this;
-                levelBox.hidden = true;
+            //지뢰 심기
+            function plantMine() {
+                //data 배열 생성
+                const dataAry = Array(cell * row)
+                    .fill()
+                    .map((_, idx) => idx);
 
-                switch (textContent) {
-                    case "쉬움":
-                        //   초급 가로8 , 세로 10, 지뢰 10개
-
-                        createTableCells(LEVEL.easy);
-                        break;
-                    case "보통":
-                        //   중급 가로14 , 세로 18, 지뢰 40개
-                        console.log(textContent);
-                        createTableCells(LEVEL.normal);
-                        break;
-                    case "어려움":
-                        //  상급 가로18 , 세로 26, 지뢰 100개
-                        console.log(textContent);
-                        createTableCells(LEVEL.hard);
-                        break;
-                    default:
-                        break;
+                // 2차원 테이블 데이터
+                const cellAry = [];
+                for (let i = 0; i < cell; i++) {
+                    const rowIdx = [];
+                    for (let j = 0; j < cell; j++) {
+                        rowIdx.push(CODE.BLANK);
+                    }
+                    cellAry.push(rowIdx);
                 }
+
+                // 피셔에이츠 랜덤 지뢰 생성
+                const shuffle = [];
+                while (true) {
+                    const randomIdx = dataAry.splice(
+                        Math.floor(Math.random() * dataAry.length),
+                        1
+                    )[0];
+                    shuffle.push(randomIdx);
+                    if (shuffle.length === mine) break;
+                }
+
+                // [120, 140, 230]
+                // 지뢰 심기
+                for (let i = 0; i < shuffle.length; i++) {
+                    const rowIdx = Math.floor(shuffle[i] / cell);
+                    const colIdx = shuffle[i] % cell;
+                    cellAry[rowIdx][colIdx] = CODE.MINE;
+                }
+
+                return cellAry;
             }
 
-            table.addEventListener("mousedown", handleCellClick);
-            levelBtn.forEach((button) => {
-                button.addEventListener("click", handleSelectLevel);
-            });
+            // 지뢰 데이터 그리기
+            function drawTable() {
+                data = plantMine();
+                data.forEach((row) => {
+                    const tr = document.createElement("tr");
+                    row.forEach((cell) => {
+                        const td = document.createElement("td");
+
+                        if (devMode) {
+                            if (cell === CODE.MINE) {
+                                td.textContent = "🥶";
+                            }
+                        }
+                        tr.append(td);
+                    });
+                    tbody.append(tr);
+                });
+
+                tbody.addEventListener("contextmenu", handleRightClick);
+                tbody.addEventListener("click", handleLeftClick);
+
+                let i = 0;
+                intervalId = setInterval(() => {
+                    let startTime = new Date(1000 * i);
+                    i++;
+                    time.textContent = `걸린 시간: ${startTime
+                        .toISOString()
+                        .slice(14, 19)}`;
+                }, 1000);
+            }
+
+            function handleSubmit(event) {
+                event.preventDefault();
+                //event.target으로 찾은 node value는 string으로 넘어오네
+                row = parseInt(event.target.row.value);
+                cell = parseInt(event.target.cell.value);
+                mine = parseInt(event.target.mine.value);
+
+                const tr = tbody.querySelectorAll("tr");
+                tr.forEach((tr) => tr.remove());
+
+                firstClick = true;
+                data = [];
+                openCellCnt = 0;
+                clearInterval(intervalId);
+
+                drawTable();
+            }
+
+            form.addEventListener("submit", handleSubmit);
         </script>
     </body>
 </html>
-
-<!-- [i-1][j-1] 지뢰[i-1][j] [i-1][j+1] // [i][j-1] 지뢰[i][j] [i][j+1] // -->
-<!-- [i+1][j-1] 지뢰[i+1][j] [i+1][j+1] -->
