@@ -61,6 +61,7 @@
             let openCellCnt = 0;
             let intervalId;
 
+            // let devMode = true;
             let devMode = false;
             let firstClick = true;
 
@@ -90,16 +91,14 @@
                     return;
                 }
 
-                let count = mineCount(rI, cI);
+                const count = mineCount(rI, cI);
                 target.textContent = count || "";
                 target.className = "opened";
                 data[rI][cI] = count;
 
                 openCellCnt++; //열린 칸수
-                console.log(openCellCnt);
 
                 if (openCellCnt === cell * row - mine) {
-                    console.log(openCellCnt);
                     tbody.removeEventListener("contextmenu", handleRightClick);
                     tbody.removeEventListener("click", handleLeftClick);
                     clearInterval(intervalId);
@@ -115,6 +114,7 @@
             function openAround(rI, cI) {
                 setTimeout(() => {
                     const count = open(rI, cI); //지뢰의 개수 카운트
+
                     if (count === 0) {
                         openAround(rI - 1, cI - 1);
                         openAround(rI - 1, cI);
@@ -142,35 +142,28 @@
                 });
             }
 
-            // 첫 클릭 지뢰 방지
-            function switchMine(rI, cI, SrI, ScI) {
-                const switchedTarget = tbody.children[SrI].children[ScI];
-
-                const temp = data[SrI][ScI];
-                data[SrI][ScI] = data[rI][cI];
-                data[rI][cI] = temp;
-                // switchedTarget.textContent = "🥶";
-                return true;
-            }
-            // 첫 클릭 지뢰 방지
+            let spaceCheck = false;
+            let searched;
             function moveMine(rI, cI) {
+                if (spaceCheck) return;
+                if (rI >= row || rI < 0 || cI >= cell || cI < 0) return;
+                if (searched[rI][cI]) return; // 이미 찾은 칸이면 종료
                 const target = tbody.children[rI].children[cI];
                 const mines = [CODE.MINE, CODE.FLAG_MINE];
-                let spaceCheck = true;
 
-                if (mines.includes(data[rI][cI])) {
-                    !mines.includes(data[rI - 1]?.[cI - 1]) &&
-                        switchMine(rI, cI, rI - 1, cI - 1);
-                    !mines.includes(data[rI - 1]?.[cI]) && switchMine(rI, cI, rI - 1, cI);
-                    !mines.includes(data[rI - 1]?.[cI + 1]) &&
-                        switchMine(rI, cI, rI - 1, cI + 1);
-                    !mines.includes(data[rI]?.[cI - 1]) && switchMine(rI, cI, rI, cI - 1);
-                    !mines.includes(data[rI]?.[cI + 1]) && switchMine(rI, cI, rI, cI + 1);
-                    !mines.includes(data[rI + 1]?.[cI - 1]) &&
-                        switchMine(rI, cI, rI + 1, cI - 1);
-                    !mines.includes(data[rI + 1]?.[cI]) && switchMine(rI, cI, rI + 1, cI);
-                    !mines.includes(data[rI + 1]?.[cI + 1]) &&
-                        switchMine(rI, cI, rI + 1, cI + 1);
+                if (data[rI][cI] === CODE.BLANK) {
+                    data[rI][cI] = CODE.MINE;
+                    spaceCheck = true;
+                } else {
+                    searched[rI][cI] = true;
+                    moveMine(rI - 1, cI - 1);
+                    moveMine(rI - 1, cI);
+                    moveMine(rI - 1, cI + 1);
+                    moveMine(rI, cI - 1);
+                    moveMine(rI, cI + 1);
+                    moveMine(rI + 1, cI - 1);
+                    moveMine(rI + 1, cI);
+                    moveMine(rI + 1, cI + 1);
                 }
 
                 firstClick = false;
@@ -183,14 +176,16 @@
                 const cellIdx = target.cellIndex; // cell 인덱스
                 let cellCode = data[rowIdx][cellIdx];
 
-                console.log(cellCode);
-
                 // 첫번째 누른칸이 지뢰면 지뢰 위치 이동
                 if (firstClick) {
-                    moveMine(rowIdx, cellIdx);
-                    // cellCode = data[rowIdx][cellIdx];
-                    // console.log(data);
-                    console.log(cellCode);
+                    searched = Array(row)
+                        .fill()
+                        .map(() => []);
+                    if (cellCode === CODE.MINE) {
+                        moveMine(rowIdx, cellIdx);
+                        data[rowIdx][cellIdx] = CODE.BLANK;
+                        cellCode = CODE.BLANK;
+                    }
                 }
 
                 if (cellCode === CODE.BLANK) {
@@ -255,7 +250,7 @@
 
                 // 2차원 테이블 데이터
                 const cellAry = [];
-                for (let i = 0; i < cell; i++) {
+                for (let i = 0; i < row; i++) {
                     const rowIdx = [];
                     for (let j = 0; j < cell; j++) {
                         rowIdx.push(CODE.BLANK);
@@ -276,6 +271,7 @@
 
                 // [120, 140, 230]
                 // 지뢰 심기
+
                 for (let i = 0; i < shuffle.length; i++) {
                     const rowIdx = Math.floor(shuffle[i] / cell);
                     const colIdx = shuffle[i] % cell;
@@ -323,10 +319,21 @@
                 cell = parseInt(event.target.cell.value);
                 mine = parseInt(event.target.mine.value);
 
+                if (mine < 1) {
+                    alert("지뢰 개수 1개이상");
+                    return;
+                }
+                if (row * cell < mine) {
+                    alert("칸보다 지뢰 개수가 더 많습니다.");
+                    return;
+                }
+
                 const tr = tbody.querySelectorAll("tr");
                 tr.forEach((tr) => tr.remove());
 
                 firstClick = true;
+                spaceCheck = false;
+                searched = null;
                 data = [];
                 openCellCnt = 0;
                 clearInterval(intervalId);

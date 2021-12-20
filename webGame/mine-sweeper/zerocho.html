@@ -195,6 +195,7 @@
             function openAround(rI, cI) {
                 setTimeout(() => {
                     const count = open(rI, cI);
+                    console.log("count:", count);
                     if (count === 0) {
                         openAround(rI - 1, cI - 1);
                         openAround(rI - 1, cI);
@@ -238,9 +239,8 @@
                 data.forEach((row, rowIndex) => {
                     row.forEach((cell, cellIndex) => {
                         if (mines.includes(cell)) {
-                            $tbody.children[rowIndex].children[
-                                cellIndex
-                            ].textContent = "X";
+                            $tbody.children[rowIndex].children[cellIndex].textContent =
+                                "X";
                         }
                     });
                 });
