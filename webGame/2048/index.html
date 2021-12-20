@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="style.css" />
+        <title>2048</title>
+    </head>
+    <body>
+        <table id="table"></table>
+        <div class="score"></div>
+        <button>reset</button>
+
+        <script>
+            const table = document.querySelector("#table");
+
+            let data = [];
+
+            function startGame() {
+                const fragment = document.createDocumentFragment();
+
+                [1, 2, 3, 4].forEach(() => {
+                    const tr = document.createElement("tr");
+                    const rowData = [];
+                    data.push(rowData);
+
+                    [1, 2, 3, 4].forEach(() => {
+                        const td = document.createElement("td");
+                        rowData.push(0);
+                        tr.appendChild(td);
+                    });
+                    fragment.appendChild(tr);
+                });
+                table.appendChild(fragment);
+
+                put2ToRandomCell();
+                draw();
+            }
+
+            function put2ToRandomCell() {
+                const emptyCells = [];
+                data.forEach((rowData, i) => {
+                    rowData.forEach((cellData, j) => {
+                        if (!cellData) {
+                            emptyCells.push([i, j]);
+                        }
+                    });
+                });
+                console.log(emptyCells);
+
+                const randomCell =
+                    emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                data[randomCell[0]][randomCell[1]] = 2;
+            }
+
+            function draw() {
+                data.forEach((rowData, i) => {
+                    rowData.forEach((cellData, j) => {
+                        const target = table.children[i].children[j];
+                        if (cellData > 0) {
+                            target.textContent = cellData;
+                            target.className = `color-` + cellData;
+                        } else {
+                            target.textContent = "";
+                            target.className = "";
+                        }
+                    });
+                });
+            }
+
+            startGame();
+        </script>
+    </body>
+</html>
