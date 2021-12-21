@@ -21,46 +21,38 @@
                 const fragment = document.createDocumentFragment();
 
                 [1, 2, 3, 4].forEach(() => {
-                    const tr = document.createElement("tr");
                     const rowData = [];
                     data.push(rowData);
-
+                    const tr = document.createElement("tr");
                     [1, 2, 3, 4].forEach(() => {
-                        const td = document.createElement("td");
                         rowData.push(0);
+                        const td = document.createElement("td");
                         tr.appendChild(td);
                     });
                     fragment.appendChild(tr);
                 });
                 table.appendChild(fragment);
-
                 put2ToRandomCell();
                 draw();
             }
-
             function put2ToRandomCell() {
-                const emptyCells = [];
-                data.forEach((rowData, i) => {
-                    rowData.forEach((cellData, j) => {
-                        if (!cellData) {
-                            emptyCells.push([i, j]);
-                        }
+                const tableData = [];
+
+                data.forEach((rowData, rI) => {
+                    rowData.forEach((cellData, cI) => {
+                        tableData.push([rI, cI]);
                     });
                 });
-                console.log(emptyCells);
-
-                const randomCell =
-                    emptyCells[Math.floor(Math.random() * emptyCells.length)];
-                data[randomCell[0]][randomCell[1]] = 2;
+                const randomIdx = tableData[Math.floor(Math.random() * tableData.length)];
+                data[randomIdx[0]][randomIdx[1]] = 2;
             }
-
             function draw() {
-                data.forEach((rowData, i) => {
-                    rowData.forEach((cellData, j) => {
-                        const target = table.children[i].children[j];
+                data.forEach((rowData, rI) => {
+                    rowData.forEach((cellData, cI) => {
+                        const target = table.children[rI].children[cI];
                         if (cellData > 0) {
                             target.textContent = cellData;
-                            target.className = `color-` + cellData;
+                            target.className = "color-" + cellData;
                         } else {
                             target.textContent = "";
                             target.className = "";
@@ -69,7 +61,149 @@
                 });
             }
 
+            function mergeCells() {}
+
             startGame();
+
+            data = [
+                [0, 2, 4, 2],
+                [0, 0, 0, 8],
+                [2, 2, 2, 2],
+                [0, 16, 0, 4],
+            ];
+
+            draw();
+
+            function moveCells(direction) {
+                const sortData = [[], [], [], []];
+                switch (direction) {
+                    case "Up":
+                        data.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData) {
+                                    sortData[cI].push(cellData);
+                                }
+                            });
+                        });
+
+                        [1, 2, 3, 4].forEach((rowData, rI) => {
+                            [1, 2, 3, 4].forEach((cellData, cI) => {
+                                data[cI][rI] = sortData[rI][cI] || 0;
+                            });
+                        });
+
+                        draw();
+
+                        break;
+                    case "Right":
+                        data.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData) {
+                                    sortData[rI].push(cellData);
+                                }
+                                if (cI === 3 && sortData[rI].length < 4) {
+                                    while (sortData[rI].length !== 4) {
+                                        sortData[rI].unshift(0);
+                                    }
+                                }
+                            });
+                        });
+                        [1, 2, 3, 4].forEach((rowData, rI) => {
+                            [1, 2, 3, 4].forEach((cellData, cI) => {
+                                data[rI][cI] = sortData[rI][cI] || 0;
+                            });
+                        });
+                        console.log(sortData);
+                        console.log(data);
+                        draw();
+
+                        break;
+                    case "Down":
+                        data.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData) {
+                                    sortData[cI].push(cellData);
+                                }
+                                if (rI === 3 && sortData[cI].length < 4) {
+                                    while (sortData[cI].length !== 4) {
+                                        sortData[cI].unshift(0);
+                                    }
+                                }
+                            });
+                        });
+
+                        [1, 2, 3, 4].forEach((rowData, rI) => {
+                            [1, 2, 3, 4].forEach((cellData, cI) => {
+                                data[cI][rI] = sortData[rI][cI] || 0;
+                            });
+                        });
+
+                        draw();
+                        break;
+                    case "Left":
+                        // console.log(data);
+                        data.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData) {
+                                    sortData[rI].push(cellData);
+                                }
+                            });
+                        });
+                        [1, 2, 3, 4].forEach((_, rI) => {
+                            [1, 2, 3, 4].forEach((_, cI) => {
+                                data[rI][cI] = sortData[rI][cI] || 0;
+                            });
+                        });
+
+                        console.log(sortData);
+                        console.log(data);
+
+                        // 합칠 숫자 합치기
+                        // mergeCells();
+                        // 숫자 위로 정렬
+
+                        // 비어있는 랜덤 위치에 2추가
+                        // put2ToRandomCell();
+                        // 화면 그리기
+                        draw();
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            let mouseDownX;
+            let mouseDownY;
+
+            function handleKeyUp(event) {
+                const direction = event.key.slice(5);
+                moveCells(direction);
+            }
+
+            function handleMouseUp(event) {
+                const { clientX: mouseUpX, clientY: mouseUpY } = event;
+                let direction;
+                let diffX = Math.abs(mouseDownX - mouseUpX);
+                let diffY = Math.abs(mouseDownY - mouseUpY);
+
+                if (diffX > diffY) {
+                    mouseDownX > mouseUpX ? (direction = "Left") : (direction = "Right");
+                } else if (diffX < diffY) {
+                    mouseDownY > mouseUpY ? (direction = "Up") : (direction = "Down");
+                }
+
+                moveCells(direction);
+            }
+            function handleMouseDown(event) {
+                const { clientX, clientY } = event;
+                mouseDownX = clientX;
+                mouseDownY = clientY;
+            }
+
+            window.addEventListener("keyup", handleKeyUp);
+            window.addEventListener("mouseup", handleMouseUp);
+            window.addEventListener("mousedown", handleMouseDown);
         </script>
     </body>
 </html>
