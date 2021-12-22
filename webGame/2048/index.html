@@ -40,7 +40,9 @@
 
                 data.forEach((rowData, rI) => {
                     rowData.forEach((cellData, cI) => {
-                        tableData.push([rI, cI]);
+                        if (!cellData) {
+                            tableData.push([rI, cI]);
+                        }
                     });
                 });
                 const randomIdx = tableData[Math.floor(Math.random() * tableData.length)];
@@ -66,15 +68,18 @@
             startGame();
 
             data = [
-                [0, 2, 4, 2],
-                [0, 0, 0, 8],
-                [2, 2, 2, 2],
-                [0, 16, 0, 4],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
+                [0, 0, 0, 0],
             ];
 
             draw();
 
             function moveCells(direction) {
+                if (!direction) {
+                    return;
+                }
                 const sortData = [[], [], [], []];
                 switch (direction) {
                     case "Up":
@@ -85,6 +90,14 @@
                                 }
                             });
                         });
+                        sortData.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData === sortData[rI][cI + 1]) {
+                                    sortData[rI][cI] *= 2;
+                                    sortData[rI].splice(cI + 1, 1);
+                                }
+                            });
+                        });
 
                         [1, 2, 3, 4].forEach((rowData, rI) => {
                             [1, 2, 3, 4].forEach((cellData, cI) => {
@@ -92,29 +105,7 @@
                             });
                         });
 
-                        draw();
-
-                        break;
-                    case "Right":
-                        data.forEach((rowData, rI) => {
-                            rowData.forEach((cellData, cI) => {
-                                if (cellData) {
-                                    sortData[rI].push(cellData);
-                                }
-                                if (cI === 3 && sortData[rI].length < 4) {
-                                    while (sortData[rI].length !== 4) {
-                                        sortData[rI].unshift(0);
-                                    }
-                                }
-                            });
-                        });
-                        [1, 2, 3, 4].forEach((rowData, rI) => {
-                            [1, 2, 3, 4].forEach((cellData, cI) => {
-                                data[rI][cI] = sortData[rI][cI] || 0;
-                            });
-                        });
-                        console.log(sortData);
-                        console.log(data);
+                        put2ToRandomCell();
                         draw();
 
                         break;
@@ -124,24 +115,34 @@
                                 if (cellData) {
                                     sortData[cI].push(cellData);
                                 }
-                                if (rI === 3 && sortData[cI].length < 4) {
-                                    while (sortData[cI].length !== 4) {
-                                        sortData[cI].unshift(0);
-                                    }
+                            });
+                        });
+
+                        sortData.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                const rowLastIdx = rowData.length - cI;
+                                if (
+                                    sortData[rI][rowLastIdx - 1] ===
+                                    sortData[rI][rowLastIdx]
+                                ) {
+                                    sortData[rI][rowLastIdx] *= 2;
+                                    sortData[rI].splice(rowLastIdx - 1, 1);
                                 }
                             });
                         });
 
                         [1, 2, 3, 4].forEach((rowData, rI) => {
                             [1, 2, 3, 4].forEach((cellData, cI) => {
-                                data[cI][rI] = sortData[rI][cI] || 0;
+                                while (sortData[rI].length <= 3) {
+                                    sortData[rI].unshift(0);
+                                }
+                                data[cI][rI] = sortData[rI][cI];
                             });
                         });
-
+                        put2ToRandomCell();
                         draw();
                         break;
-                    case "Left":
-                        // console.log(data);
+                    case "Right":
                         data.forEach((rowData, rI) => {
                             rowData.forEach((cellData, cI) => {
                                 if (cellData) {
@@ -149,22 +150,64 @@
                                 }
                             });
                         });
+
+                        sortData.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                const rowLastIdx = rowData.length - cI;
+                                if (
+                                    sortData[rI][rowLastIdx - 1] ===
+                                    sortData[rI][rowLastIdx]
+                                ) {
+                                    sortData[rI][rowLastIdx] *= 2;
+                                    sortData[rI].splice(rowLastIdx - 1, 1);
+                                }
+                            });
+                        });
+
+                        [1, 2, 3, 4].forEach((rowData, rI) => {
+                            [1, 2, 3, 4].forEach((cellData, cI) => {
+                                while (sortData[rI].length <= 3) {
+                                    sortData[rI].unshift(0);
+                                    data[rI][cI] = sortData[rI][cI];
+                                }
+                            });
+                            data[rI] = sortData[rI];
+                        });
+
+                        put2ToRandomCell();
+                        draw();
+                        break;
+
+                    case "Left":
+                        // 빈 칸 없애기
+                        data.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData) {
+                                    sortData[rI].push(cellData);
+                                }
+                            });
+                        });
+
+                        // 같은 숫자 합치기
+                        sortData.forEach((rowData, rI) => {
+                            rowData.forEach((cellData, cI) => {
+                                if (cellData === sortData[rI][cI + 1]) {
+                                    sortData[rI][cI] *= 2;
+                                    sortData[rI].splice(cI + 1, 1);
+                                }
+                            });
+                        });
+
+                        // 정렬
                         [1, 2, 3, 4].forEach((_, rI) => {
                             [1, 2, 3, 4].forEach((_, cI) => {
                                 data[rI][cI] = sortData[rI][cI] || 0;
                             });
                         });
 
-                        console.log(sortData);
-                        console.log(data);
-
-                        // 합칠 숫자 합치기
-                        // mergeCells();
-                        // 숫자 위로 정렬
-
-                        // 비어있는 랜덤 위치에 2추가
-                        // put2ToRandomCell();
-                        // 화면 그리기
+                        //랜덤 비어있는 위치에 2추가
+                        put2ToRandomCell();
+                        // 그리기
                         draw();
 
                         break;
