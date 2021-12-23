@@ -63,14 +63,12 @@
                 });
             }
 
-            function mergeCells() {}
-
             startGame();
 
             data = [
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
-                [0, 0, 0, 0],
+                [0, 1024, 0, 0],
                 [0, 0, 0, 0],
             ];
 
@@ -105,8 +103,9 @@
                             });
                         });
 
-                        put2ToRandomCell();
-                        draw();
+                        data.forEach((rowData, rI) => {
+                            console.log(rowData.includes(0));
+                        });
 
                         break;
                     case "Down":
@@ -139,8 +138,7 @@
                                 data[cI][rI] = sortData[rI][cI];
                             });
                         });
-                        put2ToRandomCell();
-                        draw();
+
                         break;
                     case "Right":
                         data.forEach((rowData, rI) => {
@@ -174,8 +172,6 @@
                             data[rI] = sortData[rI];
                         });
 
-                        put2ToRandomCell();
-                        draw();
                         break;
 
                     case "Left":
@@ -187,7 +183,6 @@
                                 }
                             });
                         });
-
                         // 같은 숫자 합치기
                         sortData.forEach((rowData, rI) => {
                             rowData.forEach((cellData, cI) => {
@@ -197,7 +192,6 @@
                                 }
                             });
                         });
-
                         // 정렬
                         [1, 2, 3, 4].forEach((_, rI) => {
                             [1, 2, 3, 4].forEach((_, cI) => {
@@ -205,14 +199,21 @@
                             });
                         });
 
-                        //랜덤 비어있는 위치에 2추가
-                        put2ToRandomCell();
-                        // 그리기
-                        draw();
-
                         break;
                     default:
                         break;
+                }
+                if (data.flat().includes(2048)) {
+                    draw();
+                    setTimeout(() => {
+                        alert("축하합니다. 2048을 만들었습니다.");
+                    }, 0);
+                } else if (!data.flat().includes(0)) {
+                    draw();
+                    alert("패배");
+                } else {
+                    put2ToRandomCell();
+                    draw();
                 }
             }
 
