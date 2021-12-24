@@ -25,6 +25,11 @@ td {
     width: 100px;
     height: 100px;
 }
+
+.controller {
+    margin-top: 1rem;
+}
+
 #score {
     user-select: none;
 }

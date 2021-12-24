@@ -10,13 +10,26 @@
     <body>
         <table id="table"></table>
         <div class="score"></div>
-        <button>reset</button>
+        <div class="controller">
+            <button id="reset">게임리셋</button>
+            <button id="back">되돌리기</button>
+        </div>
 
         <script>
             const table = document.querySelector("#table");
+            const resetBtn = document.querySelector("#reset");
+            const backBtn = document.querySelector("#back");
 
             let data = [];
+            let preData = [];
 
+            function resetGame() {
+                const trs = document.querySelectorAll("#table tr");
+                trs.forEach((tr) => tr.remove());
+
+                data = [];
+                startGame();
+            }
             function startGame() {
                 const fragment = document.createDocumentFragment();
 
@@ -47,6 +60,9 @@
                 });
                 const randomIdx = tableData[Math.floor(Math.random() * tableData.length)];
                 data[randomIdx[0]][randomIdx[1]] = 2;
+                preData.push(data);
+                console.log(data);
+                console.log(preData);
             }
             function draw() {
                 data.forEach((rowData, rI) => {
@@ -65,14 +81,18 @@
 
             startGame();
 
-            data = [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 1024, 0, 0],
-                [0, 0, 0, 0],
-            ];
+            // data = [
+            //     [0, 0, 0, 0],
+            //     [0, 0, 0, 0],
+            //     [0, 1024, 0, 0],
+            //     [0, 0, 0, 0],
+            // ];
 
-            draw();
+            // draw();
+
+            function preMoveCells() {
+                console.log(preData);
+            }
 
             function moveCells(direction) {
                 if (!direction) {
@@ -101,10 +121,6 @@
                             [1, 2, 3, 4].forEach((cellData, cI) => {
                                 data[cI][rI] = sortData[rI][cI] || 0;
                             });
-                        });
-
-                        data.forEach((rowData, rI) => {
-                            console.log(rowData.includes(0));
                         });
 
                         break;
@@ -203,6 +219,12 @@
                     default:
                         break;
                 }
+
+                console.log(data);
+                console.log(JSON.parse(JSON.stringify(data)));
+                // preData.push(JSON.parse(JSON.stringify(data)));
+                // console.log(preData);
+
                 if (data.flat().includes(2048)) {
                     draw();
                     setTimeout(() => {
@@ -248,6 +270,8 @@
             window.addEventListener("keyup", handleKeyUp);
             window.addEventListener("mouseup", handleMouseUp);
             window.addEventListener("mousedown", handleMouseDown);
+            resetBtn.addEventListener("click", resetGame);
+            backBtn.addEventListener("click", preMoveCells);
         </script>
     </body>
 </html>
