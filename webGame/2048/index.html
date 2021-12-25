@@ -8,6 +8,9 @@
         <title>2048</title>
     </head>
     <body>
+        <header>
+            <h1 style="text-align: center; margin-bottom: 2rem">2048 게임</h1>
+        </header>
         <table id="table"></table>
         <div class="score"></div>
         <div class="controller">
@@ -28,6 +31,7 @@
                 trs.forEach((tr) => tr.remove());
 
                 data = [];
+                preData = [];
                 startGame();
             }
             function startGame() {
@@ -60,9 +64,7 @@
                 });
                 const randomIdx = tableData[Math.floor(Math.random() * tableData.length)];
                 data[randomIdx[0]][randomIdx[1]] = 2;
-                preData.push(data);
-                console.log(data);
-                console.log(preData);
+                preData.push(JSON.parse(JSON.stringify(data)));
             }
             function draw() {
                 data.forEach((rowData, rI) => {
@@ -84,20 +86,26 @@
             // data = [
             //     [0, 0, 0, 0],
             //     [0, 0, 0, 0],
-            //     [0, 1024, 0, 0],
+            //     [0, 1024, 1024, 0],
             //     [0, 0, 0, 0],
             // ];
 
             // draw();
 
             function preMoveCells() {
-                console.log(preData);
+                if (preData.length <= 1) {
+                    return;
+                }
+                data = JSON.parse(JSON.stringify(preData[preData.length - 2]));
+                preData.pop();
+                draw();
             }
 
             function moveCells(direction) {
                 if (!direction) {
                     return;
                 }
+
                 const sortData = [[], [], [], []];
                 switch (direction) {
                     case "Up":
@@ -220,23 +228,16 @@
                         break;
                 }
 
-                console.log(data);
-                console.log(JSON.parse(JSON.stringify(data)));
-                // preData.push(JSON.parse(JSON.stringify(data)));
-                // console.log(preData);
-
                 if (data.flat().includes(2048)) {
-                    draw();
                     setTimeout(() => {
                         alert("축하합니다. 2048을 만들었습니다.");
                     }, 0);
                 } else if (!data.flat().includes(0)) {
-                    draw();
                     alert("패배");
                 } else {
                     put2ToRandomCell();
-                    draw();
                 }
+                draw();
             }
 
             let mouseDownX;
