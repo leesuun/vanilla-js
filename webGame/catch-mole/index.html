@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            .cell {
+                display: inline-block;
+                position: relative;
+                width: 200px;
+                height: 200px;
+                background: "yellow";
+                overflow: hidden;
+            }
+            .gopher,
+            .bomb {
+                width: 200px;
+                height: 200px;
+                bottom: 0;
+                position: absolute;
+                transition: bottom 1s;
+            }
+            .gopher {
+                background: url(" img/gopher.png") center center no-repeat;
+                background-size: 200px 200px;
+            }
+            .dead {
+                background: url("img/dead_gopher.png") center center no-repeat;
+                background-size: 200px 200px;
+            }
+            .bomb {
+                background: url("img/bomb.png") center center no-repeat;
+                background-size: 200px 200px;
+            }
+            .boom {
+                background: url("img/explode.png") center center no-repeat;
+                background-size: 200px 200px;
+            }
+            .hidden {
+                bottom: -200px;
+            }
+            .hole {
+                width: 200px;
+                height: 150px;
+                position: absolute;
+                bottom: 0;
+                background: url("img/mole-hole.png") center center no-repeat;
+                background-size: 200px 150px;
+            }
+            .hole-front {
+                width: 200px;
+                height: 30px;
+                position: absolute;
+                bottom: 0;
+                background: url("img/mole-hole-front.png") center center no-repeat;
+                background-size: 200px 30px;
+            }
+        </style>
+        <title>두더지 잡기</title>
+    </head>
+    <body>
+        <div>
+            <span id="timer">8</span>초&nbsp; <span id="score">0</span>점
+            <button id="start">시작</button>
+        </div>
+        <div id="game">
+            <div class="row">
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="cell">
+                    <div class="hole"></div>
+                    <div class="gopher hidden"></div>
+                    <div class="bomb hidden"></div>
+                    <div class="hole-front"></div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const timer = document.querySelector("#timer");
+            const start = document.querySelector("#start");
+            const game = document.querySelector("#game");
+            const cells = document.querySelectorAll(".cell");
+
+            const holes = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+            let started = false;
+
+            start.addEventListener("click", () => {
+                if (started) return;
+                started = true;
+                console.log("시작");
+                const tickId = setInterval(tick, 1000);
+                tick();
+            });
+
+            let gopherPercent = 0.3;
+            let bombPercent = 0.5;
+
+            function tick() {
+                holes.forEach((hole, idx) => {
+                    if (hole) return;
+                    const randomValue = Math.random();
+                    if (Math.random() < gopherPercent) {
+                        const gopher = cells[idx].querySelector(".gopher");
+                        holes[idx] = setTimeout(() => {
+                            gopher.classList.add("hidden");
+                            holes[idx] = 0;
+                        }, 1000);
+                        gopher.classList.remove("hidden");
+                    } else if (Math.random() < bombPercent) {
+                        const bomb = cells[idx].querySelector(".bomb");
+                        holes[idx] = setTimeout(() => {
+                            bomb.classList.add("hidden");
+                            holes[idx] = 0;
+                        }, 1000);
+                        bomb.classList.remove("hidden");
+                    }
+                });
+            }
+
+            cells.forEach((cell, idx) => {
+                cell.querySelector(".gopher").addEventListener("click", (event) => {
+                    event.target.classList.add("dead");
+                    event.target.classList.add("hidden");
+                    clearTimeout(holes[idx]);
+                    setTimeout(() => {
+                        holes[idx] = 0;
+                        event.target.classList.remove("dead");
+                    }, 1000);
+                });
+            });
+
+            cells.forEach((cell, idx) => {
+                cell.querySelector(".bomb").addEventListener("click", (event) => {
+                    event.target.classList.add("boom");
+                    event.target.classList.add("hidden");
+                    clearTimeout(holes[idx]);
+                    setTimeout(() => {
+                        holes[idx] = 0;
+                        event.target.classList.remove("boom");
+                    }, 1000);
+                });
+            });
+        </script>
+    </body>
+</html>

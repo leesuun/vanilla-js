@@ -96,7 +96,8 @@
                 if (preData.length <= 1) {
                     return;
                 }
-                data = JSON.parse(JSON.stringify(preData[preData.length - 2]));
+                // data = JSON.parse(JSON.stringify(preData[preData.length - 2]));
+                data = preData[preData.length - 2];
                 preData.pop();
                 draw();
             }
