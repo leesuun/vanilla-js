@@ -162,3 +162,9 @@ userStorage.loginUser(id, pass).then((user) => {
 // } catch (err) {
 //     console.log(err);
 // }
+
+var solution = (_, $) =>
+    _.find(
+        (_) => !$[_]--,
+        $.map((_) => ($[_] = ($[_] | 0) + 1))
+    );
