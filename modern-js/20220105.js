@@ -34,13 +34,6 @@
 //     console.log(obj[key]);
 // }
 
-// /* 포스팅
-//     1. nullish 연산자
-//     2. 논리 연산자 우선순위
-//     3. use strict
-//     4. 주석에 들어가면 좋은 내용
-//     5. 테스트 자동화
-
 // */
 
 // // describe("pow", function () {
@@ -86,11 +79,73 @@
 // console.log(copy);
 // console.log(human);
 
-let user = {
-    name: "sdasd",
-};
+// function marry(man, woman) {
+//     woman.husband = man;
+//     man.wife = woman;
 
-let admin = user;
+//     return {
+//         father: man,
+//         mother: woman,
+//     };
+// }
 
-user = null;
-console.log(user);
+// let family = marry(
+//     {
+//         name: "John",
+//     },
+//     {
+//         name: "Ann",
+//     }
+// );
+
+// delete family.father;
+// delete family.mother.husband;
+// console.log(family.father);
+
+// family = null;
+// console.log(family.father);
+
+// let user = {
+//     name: "hoho",
+
+//     sayHi() {
+//         return this.name;
+//     },
+// };
+
+// const admin = user;
+
+// user = null;
+
+// console.log(admin.sayHi());
+
+// function makeUser() {
+//     return {
+//         name: "jon",
+//         ref: this,
+//     };
+// }
+
+// let user = makeUser();
+// console.log(user.name);
+
+// let ladder = {
+//     step: 0,
+//     up() {
+//         this.step++;
+//         console.log(this);
+//         return this;
+//     },
+//     down() {
+//         this.step--;
+//     },
+//     showStep: function () {
+//         // 사다리에서 몇 번째 단에 올라와 있는지 보여줌
+//         alert(this.step);
+//         return this;
+//     },
+// };
+
+// ladder.up().showStep();
+// ladder.showStep();
+// ladder.up().up().down().up().down().showStep(); // 1
