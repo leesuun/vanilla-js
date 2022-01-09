@@ -124,20 +124,87 @@
 // let g = f();
 // g();
 
-"use strict";
-function makeWorker() {
-    // let name = "Pete";
+// "use strict";
+// function makeWorker() {
+//     // let name = "Pete";
 
-    return function () {
-        // let name = "jet";
-        alert(name);
-    };
+//     return function () {
+//         // let name = "jet";
+//         alert(name);
+//     };
+// }
+
+// let name = "John";
+
+// // create a function
+// let work = makeWorker();
+
+// // call it
+// work(); // what will it show?
+
+// "use strict";
+// let phrase = "Hello";
+
+// if (true) {
+//     let user = "John";
+
+//     function sayHi() {
+//         alert(`${phrase}, ${user}`);
+//     }
+// }
+
+// function sum(fir) {
+//     return function (sec) {
+//         return fir + sec;
+//     };
+// }
+
+// // sum(1)(2) = 3
+// // sum(5)(-1) = 4
+// console.log(sum(5)(-1));
+
+// let x = 1;
+
+// function func() {
+//     console.log(x); // ?
+//     // let x = 2;
+// }
+
+// func();
+/* ... 여기에 두 함수 inBetween과 inArray을 만들어주세요 ...*/
+
+// let arr = [1, 2, 3, 4, 5, 6, 7];
+// function inBetween(start, finish) {
+//     return (val) => start <= val && val <= finish;
+// }
+// function inArray(ary) {
+//     return (val) => {
+//         return ary.includes(val);
+//     };
+// }
+
+// alert(arr.filter(inBetween(3, 6))); // 3,4,5,6
+
+// alert(arr.filter(inArray([1, 2, 10]))); // 1,2
+
+function makeArmy() {
+    let shooters = [];
+
+    let i = 0;
+    while (i < 10) {
+        let j = i;
+        let shooter = function () {
+            alert(j);
+        };
+        shooters.push(shooter);
+        i++;
+    }
+
+    return shooters;
 }
 
-let name = "John";
+let army = makeArmy();
 
-// create a function
-let work = makeWorker();
-
-// call it
-work(); // what will it show?
+army[0](); // 0번째 shooter가 10을 출력함
+army[5](); // 5번째 shooter 역시 10을 출력함
+// 모든 shooter가 자신의 번호 대신 10을 출력하고 있음
