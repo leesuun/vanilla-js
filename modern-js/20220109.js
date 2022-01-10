@@ -187,24 +187,24 @@
 
 // alert(arr.filter(inArray([1, 2, 10]))); // 1,2
 
-function makeArmy() {
-    let shooters = [];
+// function makeArmy() {
+//     let shooters = [];
 
-    let i = 0;
-    while (i < 10) {
-        let j = i;
-        let shooter = function () {
-            alert(j);
-        };
-        shooters.push(shooter);
-        i++;
-    }
+//     let i = 0;
+//     while (i < 10) {
+//         let j = i;
+//         let shooter = function () {
+//             alert(j);
+//         };
+//         shooters.push(shooter);
+//         i++;
+//     }
 
-    return shooters;
-}
+//     return shooters;
+// }
 
-let army = makeArmy();
+// let army = makeArmy();
 
-army[0](); // 0번째 shooter가 10을 출력함
-army[5](); // 5번째 shooter 역시 10을 출력함
-// 모든 shooter가 자신의 번호 대신 10을 출력하고 있음
+// army[0](); // 0번째 shooter가 10을 출력함
+// army[5](); // 5번째 shooter 역시 10을 출력함
+// // 모든 shooter가 자신의 번호 대신 10을 출력하고 있음
