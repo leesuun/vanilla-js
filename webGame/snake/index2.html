@@ -42,25 +42,9 @@
 
             .table td {
                 /* border: 1px solid black; */
+
                 width: 27px;
                 height: 27px;
-            }
-
-            /* background color1 */
-            .color-1 {
-                background-color: #a9d751;
-            }
-            /* background color2 */
-            .color-2 {
-                background-color: #a3d14a;
-            }
-            /* snake color */
-            .color-3 {
-                background-color: black;
-            }
-            /* feed color */
-            .color-4 {
-                background-color: red;
             }
         </style>
     </head>
@@ -102,14 +86,12 @@
             };
 
             const CODE = {
-                BLANK_1: 1, //빈 공간 1
-                BLANK_2: -1, //빈 공간 2
-                SNAKE: 2, //뱀 위치한 공간
-                FEED: 3, //먹이 위치한 공간
+                BLANK: 0, //빈 공간
+                SNAKE: 1, //뱀 위치한 공간
+                FEED: 2, //먹이 위치한 공간
             };
 
-            // 뱀 위치 기록
-            let snake = [];
+            let snake = Array(4).fill(1);
 
             //테이블 데이터 생성
             let snakeData = [];
@@ -129,58 +111,19 @@
                 // snakeData[19][6] = 1;
             }
 
-            // 테이블 데이터, 뱀 , 먹이
-            function createSnakeFeed() {
-                //테이블 데이터
-                const data = [];
-                for (let i = 0; i < row; i++) {
-                    let cellAry = [];
-                    for (let j = 0; j < cell; j++) {
-                        if ((!(i % 2) && !(j % 2)) || (i % 2 && j % 2)) {
-                            cellAry.push(CODE.BLANK_1);
-                        } else {
-                            cellAry.push(CODE.BLANK_2);
-                        }
-                    }
-                    data.push(cellAry);
-                }
-
-                // 뱀 위치
-                for (let i = 5; i <= 8; i++) {
-                    data[10][i] = CODE.SNAKE;
-                    snake.push([10, i]);
-                }
-                console.log(snake);
-
-                // 먹이 위치
-                data[10][15] = CODE.FEED;
-
-                return data;
-            }
-
+            // 테이블 draw
             function drawTable() {
-                snakeData = createSnakeFeed();
-                console.log(snakeData);
-
+                snakeData = Array(row * cell).fill(0);
                 const fragment = document.createDocumentFragment();
                 snakeData.forEach((row, rI) => {
                     const tr = document.createElement("tr");
                     row.forEach((cell, cI) => {
                         const td = document.createElement("td");
-                        if (cell === CODE.BLANK_1) {
-                            td.classList.add("color-1");
+                        if ((!(rI % 2) && !(cI % 2)) || (rI % 2 && cI % 2)) {
+                            td.style.background = "#A9D751";
+                        } else {
+                            td.style.background = "#a3d14a";
                         }
-                        if (cell === CODE.BLANK_2) {
-                            td.classList.add("color-2");
-                        }
-
-                        if (cell === CODE.SNAKE) {
-                            td.classList.add("color-3");
-                        }
-                        if (cell === CODE.FEED) {
-                            td.classList.add("color-4");
-                        }
-
                         tr.appendChild(td);
                     });
                     fragment.appendChild(tr);
@@ -212,16 +155,12 @@
                         break;
                     case "ArrowRight":
                         // 우로 이동
-
-                        for (let i = 6; i <= 9; i++) {
-                            snakeData[10][i] = CODE.SNAKE;
-                        }
-                        console.log(snakeData);
                         break;
                 }
             }
 
             drawTable();
+            // createSnake();
 
             window.addEventListener("keyup", handleKeyInput);
         </script>
@@ -234,6 +173,5 @@
     3. 테이블 그리기
     4. 게임 컨트롤 key 이벤트 받기
     5. 뱀 만들어서 테이블 데이터에 일치 시켜보기
-        - 방향키로 뱀 이동시키기
 
  -->
