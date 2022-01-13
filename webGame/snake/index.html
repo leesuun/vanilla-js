@@ -15,7 +15,7 @@
                 margin: 3rem auto;
                 width: 603px;
                 height: 673px;
-                border: 2rem ridge #618024;
+                border: 2rem solid #618024;
             }
             .state-bar {
                 display: flex;
@@ -48,15 +48,16 @@
 
             /* background color1 */
             .color-1 {
-                background-color: #a9d751;
+                background-color: white;
             }
             /* background color2 */
             .color-2 {
-                background-color: #a3d14a;
+                background-color: black;
+                border: 1px solid white;
             }
             /* snake color */
             .color-3 {
-                background-color: black;
+                background-color: green;
             }
             /* feed color */
             .color-4 {
@@ -77,111 +78,67 @@
             "use strict";
             const table = document.querySelector("#table");
 
-            const row = 20;
-            const cell = 20;
+            // 가로 x 세로
+            const ROW = 20;
+            const CELL = 20;
 
-            const Snake = {
-                size: 4,
-                snake: [],
-                feed: [],
-
-                sizeUp() {
-                    console.log("사이즈업");
-                    this.size += 1;
-                },
-                moveUp() {
-                    console.log("위로");
-                },
-                moveDown() {
-                    console.log("아래로");
-                },
-                moveLeft() {
-                    console.log("좌로");
-                },
-                moveRight() {
-                    console.log("우로");
-                },
+            const SNAKE = {
+                WALL: -1, // 벽
+                BLANK: 0, // 빈공간
+                HEAD: 1, // 머리
+                TAIL: 2, // 꼬리
+                FEED: 3, // 먹이
             };
 
-            const CODE = {
-                BLANK_1: 1, //빈 공간 1
-                BLANK_2: -1, //빈 공간 2
-                SNAKE: 2, //뱀 위치한 공간
-                FEED: 3, //먹이 위치한 공간
-            };
-
-            // 뱀 위치 기록
+            let tableData;
             let snake = [];
+            let feed = [];
 
-            //테이블 데이터 생성
-            let snakeData = [];
+            // 뱀 머리 현재 위치
+            // let snakeLocation = getSnakeLocation();
+            // 먹이 현재 위치
+            let feedLocation;
+            let speed = 75;
+            let direction;
 
-            // snakeData.forEach((data) => {
-            //     data.push(CODE.BLANK);
-            // });
+            let intervalId;
 
-            function createSnake() {
-                // snakeData.forEach((row, rI) => {
-                //     row.forEach((cell, cI) => {
-                //         if (rI === 1 && cI === 10) {
-                //             snakeData[10][10] = 1;
-                //         }
-                //     });
-                // });
-                // snakeData[19][6] = 1;
+            // 게임 초기화
+            function initGame() {
+                draw();
+                updateTable();
             }
-
-            // 테이블 데이터, 뱀 , 먹이
-            function createSnakeFeed() {
-                //테이블 데이터
-                const data = [];
-                for (let i = 0; i < row; i++) {
-                    let cellAry = [];
-                    for (let j = 0; j < cell; j++) {
-                        if ((!(i % 2) && !(j % 2)) || (i % 2 && j % 2)) {
-                            cellAry.push(CODE.BLANK_1);
+            initGame();
+            // 게임 데이터 set
+            function setData() {
+                const data = Array.from(Array(ROW), () => new Array(CELL).fill(0));
+                data.forEach((row, rI) => {
+                    row.forEach((cell, cI) => {
+                        if (rI === 0 || rI === ROW - 1 || cI === 0 || cI === CELL - 1) {
+                            data[rI][cI] = SNAKE.WALL;
+                        } else if (rI === 10 && cI === 5) {
+                            data[rI][cI] = SNAKE.HEAD;
+                            snake.push(rI, cI); // 머리 위치
+                        } else if (rI === 10 && cI === 10) {
+                            data[rI][cI] = SNAKE.FEED;
+                            feed.push(rI, cI);
                         } else {
-                            cellAry.push(CODE.BLANK_2);
+                            data[rI][cI] = SNAKE.BLANK;
                         }
-                    }
-                    data.push(cellAry);
-                }
-
-                // 시작 뱀 위치
-                for (let i = 5; i <= 8; i++) {
-                    data[10][i] = CODE.SNAKE;
-                    snake.push([10, i]);
-                    Snake.snake.push([10, i]);
-                }
-                // 시작 먹이 위치
-                data[10][15] = CODE.FEED;
-                Snake.feed.push([10, 15]);
-                console.log(Snake);
+                    });
+                });
+                console.log(data);
 
                 return data;
             }
-
-            function drawTable() {
-                snakeData = createSnakeFeed();
-                console.log(snakeData);
-
+            // 게임 데이터 draw
+            function draw() {
+                tableData = setData();
                 const fragment = document.createDocumentFragment();
-                snakeData.forEach((row, rI) => {
+                tableData.forEach((row, rI) => {
                     const tr = document.createElement("tr");
                     row.forEach((cell, cI) => {
                         const td = document.createElement("td");
-                        if (cell === CODE.BLANK_1) {
-                            td.classList.add("color-1");
-                        }
-                        if (cell === CODE.BLANK_2) {
-                            td.classList.add("color-2");
-                        }
-                        if (cell === CODE.SNAKE) {
-                            td.classList.add("color-3");
-                        }
-                        if (cell === CODE.FEED) {
-                            td.classList.add("color-4");
-                        }
 
                         tr.appendChild(td);
                     });
@@ -189,109 +146,113 @@
                 });
                 table.appendChild(fragment);
             }
-
+            // 테이블 업데이트
             function updateTable() {
-                // 데이터 변화에 따른 테이블 front 업로드
-                snakeData.forEach((row, rI) => {
+                // console.log(tableData);
+                tableData.forEach((row, rI) => {
                     row.forEach((cell, cI) => {
-                        let target = table.children[rI].children[cI];
-                        if (cell === CODE.BLANK_1) {
-                            target.classList.add("color-1");
-                            target.classList.remove("color-2");
-                            target.classList.remove("color-3");
-                            target.classList.remove("color-4");
-                        }
-                        if (cell === CODE.BLANK_2) {
-                            target.classList.add("color-2");
-                            target.classList.remove("color-1");
-                            target.classList.remove("color-3");
-                            target.classList.remove("color-4");
-                        }
-                        if (cell === CODE.SNAKE) {
-                            target.classList.add("color-3");
-                            target.classList.remove("color-1");
-                            target.classList.remove("color-2");
-                            target.classList.remove("color-4");
-                        }
-                        if (cell === CODE.FEED) {
-                            target.classList.add("color-4");
-                            target.classList.remove("color-1");
-                            target.classList.remove("color-2");
-                            target.classList.remove("color-3");
+                        const target = table.children[rI].children[cI];
+                        if (cell === SNAKE.BLANK) {
+                            target.className = "color-1";
+                        } else if (cell === SNAKE.HEAD) {
+                            target.className = "color-3";
+                        } else if (cell === SNAKE.FEED) {
+                            target.className = "color-4";
+                        } else {
+                            target.className = "color-2";
                         }
                     });
                 });
             }
+
+            // 뱀 현재 위치
+            function getSnakeLocation() {
+                return [10, 10];
+            }
+            // 뱀 방향 변경
+            function changeSnakeDirection() {}
+            // 먹이 랜덤 생성
+            function putRandomFeed() {
+                return "먹이 위치";
+            }
+            // 먹이 획득
+            function getFeed() {}
+
             function handleKeyInput(event) {
-                const { code } = event;
+                const { keyCode } = event;
+                direction = keyCode;
+                clearInterval(intervalId);
 
-                switch (code) {
-                    case "Space":
-                        // 게임 진행
-                        break;
-                    case "Escape":
-                        // 게임 정지
-                        break;
-                    case "KeyR":
-                        // 게임 리셋
-                        break;
-                    case "ArrowUp":
-                        // 위로 이동
-                        break;
-                    case "ArrowDown":
-                        // 아래로 이동
-                        break;
-                    case "ArrowLeft":
-                        // 좌로 이동
-                        break;
-                    case "ArrowRight":
-                        // 우로 이동
-                        // 뱀 데이터 수정해야댐
-                        // 머리 , 몸통 , 꼬리 링크드 리스트 구현
-
-                        setInterval(() => {
-                            let count = 0;
-                            for (let i = 0; i < row; i++) {
-                                for (let j = 0; j < cell; j++) {
-                                    if (count === 4) break;
-                                    if (snakeData[i][j] === CODE.SNAKE) {
-                                        snakeData[i][j + 1] = CODE.SNAKE;
-                                        count++;
+                switch (keyCode) {
+                    case 37: // left
+                        intervalId = setInterval(() => {
+                            tableData.forEach((row, rI) => {
+                                row.forEach((cell, cI) => {
+                                    if (rI === snake[0] && cI === snake[1]) {
+                                        tableData[rI][cI - 1] = SNAKE.HEAD;
+                                        tableData[rI][cI] = SNAKE.BLANK;
+                                        snake[0] = rI;
+                                        snake[1] = cI - 1;
                                     }
-                                    if (count === 1) {
-                                        if (snakeData[i][j - 1] === CODE.BLANK_1) {
-                                            snakeData[i][j] = CODE.BLANK_2;
-                                        } else {
-                                            snakeData[i][j] = CODE.BLANK_1;
-                                        }
+                                });
+                                updateTable();
+                            });
+                        }, speed);
+
+                        break;
+                    case 38: // up
+                        intervalId = setInterval(() => {
+                            tableData.forEach((row, rI) => {
+                                row.forEach((cell, cI) => {
+                                    if (rI === snake[0] && cI === snake[1]) {
+                                        tableData[rI - 1][cI] = SNAKE.HEAD;
+                                        tableData[rI][cI] = SNAKE.BLANK;
+                                        snake[0] = rI - 1;
+                                        snake[1] = cI;
+                                    }
+                                });
+                            });
+                            updateTable();
+                        }, speed);
+                        break;
+                    case 39: // right
+                        intervalId = setInterval(() => {
+                            for (let i = 0; i < ROW - 1; i++) {
+                                for (let j = 0; j < CELL - 1; j++) {
+                                    if (i === snake[0] && j === snake[1]) {
+                                        tableData[i][j + 1] = SNAKE.HEAD;
+                                        tableData[i][j] = SNAKE.BLANK;
+                                        snake[0] = i;
+                                        snake[1] = j + 1;
+                                        break;
                                     }
                                 }
                             }
                             updateTable();
-                        }, 500);
-
-                        // snakeData.forEach((row, rI) => {
-                        //     row.forEach((cell, cI) => {
-                        //         if (cell === CODE.SNAKE) {
-                        //             snakeData[rI][cI + 1] = CODE.SNAKE;
-                        //         }
-                        //     });
-                        // });
-
-                        // for (let i = 6; i <= 9; i++) {
-                        //     if (i - 1 === 5) snakeData[10][i - 1] = CODE.BLANK_1;
-                        //     snakeData[10][i] = CODE.SNAKE;
-                        // }
-
-                        // updateTable();
-
-                        // console.log(Snake.snake);
-                        // console.log(snakeData);
+                        }, speed);
+                        break;
+                    case 40: // down
+                        intervalId = setInterval(() => {
+                            let flag = 0;
+                            for (let i = 0; i < ROW - 1; i++) {
+                                for (let j = 0; j < CELL - 1; j++) {
+                                    if (i === snake[0] && j === snake[1]) {
+                                        flag = 1;
+                                        tableData[i + 1][j] = SNAKE.HEAD;
+                                        tableData[i][j] = SNAKE.BLANK;
+                                        snake[0] = i + 1;
+                                        snake[1] = j;
+                                        break;
+                                    }
+                                }
+                                if (flag === 1) break;
+                            }
+                            updateTable();
+                        }, speed);
                         break;
                 }
+                updateTable();
             }
-
-            drawTable();
 
             window.addEventListener("keyup", handleKeyInput);
         </script>
@@ -299,11 +260,23 @@
 </html>
 
 <!-- 
-    1. 프론트 기본 구조 작성
-    2. 테이블 작성 20 x 20 , 27px
-    3. 테이블 그리기
-    4. 게임 컨트롤 key 이벤트 받기
-    5. 뱀 만들어서 테이블 데이터에 일치 시켜보기
-        - 방향키로 뱀 이동시키기
-
+    1. 게임 테이블 생성 및 벽 그리기 
+        - 벽 data -1 (데이터 변경안해도 찾을 수 있지만 원할한 front 변경을 위함)
+    2. 뱀, 먹이 세팅
+        - 뱀은 head(1) , tail(2,3,4 ....)
+        - 뱀 시작 위치 (중앙) , 먹이 시작 위치 (랜덤 구현)
+    3. 방향키 입력 시 뱀 움직임 시작
+        - 4방향 구현
+    4. 먹이 로직 구현
  -->
+
+<!-- // tableData.forEach((row, rI) => {
+                        //     row.forEach((cell, cI) => {
+                        //         if (rI === snake[0] && cI === snake[1]) {
+                        //             tableData[rI][cI + 1] = SNAKE.HEAD;
+                        //             tableData[rI][cI] = SNAKE.BLANK;
+                        //             snake[0] = rI;
+                        //             snake[1] = cI + 1;
+                        //         }
+                        //     });
+                        // }); -->

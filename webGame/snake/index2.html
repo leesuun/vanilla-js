@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>스네이크 게임</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            .snake {
+                margin: 3rem auto;
+                width: 603px;
+                height: 673px;
+                border: 2rem ridge #618024;
+            }
+            .state-bar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 0.5rem;
+                gap: 1rem;
+                background-color: #d14fd1;
+                height: 70px;
+            }
+
+            .state-bar div {
+                font-size: 1.2rem;
+            }
+            .state-bar p {
+                margin-left: 2.5rem;
+            }
+
+            .table {
+                /* width: 100%; */
+                border-collapse: collapse;
+                height: 466px;
+            }
+
+            .table td {
+                /* border: 1px solid black; */
+                width: 27px;
+                height: 27px;
+            }
+
+            /* background color1 */
+            .color-1 {
+                background-color: #a9d751;
+            }
+            /* background color2 */
+            .color-2 {
+                background-color: #a3d14a;
+            }
+            /* snake color */
+            .color-3 {
+                background-color: black;
+            }
+            /* feed color */
+            .color-4 {
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="snake">
+            <div class="state-bar">
+                <div class="score">점수: 1000</div>
+                <div class="time">시간: 00:00</div>
+                <p>[시작: SPACE] &nbsp;[정지: ESC]&nbsp; [리셋: R]</p>
+            </div>
+            <table id="table" class="table"></table>
+        </div>
+        <script>
+            "use strict";
+            const table = document.querySelector("#table");
+
+            // 가로 x 세로
+            const row = 20;
+            const cell = 20;
+
+            //
+
+            const Snake = {
+                size: 1,
+                snake: [],
+                feed: [],
+            };
+
+            const CODE = {
+                BLANK_1: 1, //빈 공간 1
+                BLANK_2: -1, //빈 공간 2
+                SNAKE: 2, //뱀 위치한 공간
+                FEED: 3, //먹이 위치한 공간
+            };
+
+            // 뱀 위치 기록
+            let snake = [];
+            //테이블 데이터 생성
+            let snakeData = [];
+
+            // 테이블 데이터, 뱀 , 먹이
+            function createSnakeFeed() {
+                //테이블 데이터
+                const data = [];
+                for (let i = 0; i < row; i++) {
+                    let cellAry = [];
+                    for (let j = 0; j < cell; j++) {
+                        if ((!(i % 2) && !(j % 2)) || (i % 2 && j % 2)) {
+                            cellAry.push(CODE.BLANK_1);
+                        } else {
+                            cellAry.push(CODE.BLANK_2);
+                        }
+                    }
+                    data.push(cellAry);
+                }
+
+                // 시작 뱀 위치
+                data[10][5] = CODE.SNAKE;
+                snake.push([10, 5]);
+                Snake.snake.push([10, 5]);
+
+                // 시작 먹이 위치
+                data[10][15] = CODE.FEED;
+                Snake.feed.push([10, 15]);
+                console.log(Snake);
+
+                return data;
+            }
+
+            function drawTable() {
+                snakeData = createSnakeFeed();
+                console.log(snakeData);
+
+                const fragment = document.createDocumentFragment();
+                snakeData.forEach((row, rI) => {
+                    const tr = document.createElement("tr");
+                    row.forEach((cell, cI) => {
+                        const td = document.createElement("td");
+                        if (cell === CODE.BLANK_1) {
+                            td.classList.add("color-1");
+                        }
+                        if (cell === CODE.BLANK_2) {
+                            td.classList.add("color-2");
+                        }
+                        if (cell === CODE.SNAKE) {
+                            td.classList.add("color-3");
+                        }
+                        if (cell === CODE.FEED) {
+                            td.classList.add("color-4");
+                        }
+
+                        tr.appendChild(td);
+                    });
+                    fragment.appendChild(tr);
+                });
+                table.appendChild(fragment);
+            }
+
+            function updateTable() {
+                // 데이터 변화에 따른 테이블 front 업로드
+                snakeData.forEach((row, rI) => {
+                    row.forEach((cell, cI) => {
+                        let target = table.children[rI].children[cI];
+                        if (cell === CODE.BLANK_1) {
+                            target.classList.add("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-3");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.BLANK_2) {
+                            target.classList.add("color-2");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-3");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.SNAKE) {
+                            target.classList.add("color-3");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.FEED) {
+                            target.classList.add("color-4");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-3");
+                        }
+                    });
+                });
+            }
+            function handleKeyInput(event) {
+                const { code } = event;
+
+                switch (code) {
+                    case "Space":
+                        // 게임 진행
+                        break;
+                    case "Escape":
+                        // 게임 정지
+                        break;
+                    case "KeyR":
+                        // 게임 리셋
+                        break;
+                    case "ArrowUp":
+                        // 위로 이동
+                        break;
+                    case "ArrowDown":
+                        // 아래로 이동
+                        break;
+                    case "ArrowLeft":
+                        // 좌로 이동
+                        break;
+                    case "ArrowRight":
+                        // 우로 이동
+                        // 뱀 데이터 수정해야댐
+                        // 머리 , 몸통 , 꼬리 링크드 리스트 구현
+
+                        setInterval(() => {
+                            let count = 0;
+                            for (let i = 0; i < row; i++) {
+                                for (let j = 0; j < cell; j++) {
+                                    if (count === 1) break;
+                                    if (snakeData[i][j] === CODE.SNAKE) {
+                                        snakeData[i][j + 1] = CODE.SNAKE;
+                                        count++;
+                                    }
+                                    if (count === 1) {
+                                        if (snakeData[i][j - 1] === CODE.BLANK_1) {
+                                            snakeData[i][j] = CODE.BLANK_2;
+                                        } else {
+                                            snakeData[i][j] = CODE.BLANK_1;
+                                        }
+                                    }
+                                }
+                            }
+                            updateTable();
+                        }, 500);
+
+                        break;
+                }
+            }
+
+            drawTable();
+
+            window.addEventListener("keyup", handleKeyInput);
+        </script>
+    </body>
+</html>
+
+<!-- 
+    1. 프론트 기본 구조 작성
+    2. 테이블 작성 20 x 20 , 27px
+    3. 테이블 그리기
+    4. 게임 컨트롤 key 이벤트 받기
+    5. 뱀 만들어서 테이블 데이터에 일치 시켜보기
+        - 방향키로 뱀 이동시키기
+
+ -->
