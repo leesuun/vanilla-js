@@ -82,6 +82,8 @@
 
             const Snake = {
                 size: 4,
+                snake: [],
+                feed: [],
 
                 sizeUp() {
                     console.log("사이즈업");
@@ -145,15 +147,16 @@
                     data.push(cellAry);
                 }
 
-                // 뱀 위치
+                // 시작 뱀 위치
                 for (let i = 5; i <= 8; i++) {
                     data[10][i] = CODE.SNAKE;
                     snake.push([10, i]);
+                    Snake.snake.push([10, i]);
                 }
-                console.log(snake);
-
-                // 먹이 위치
+                // 시작 먹이 위치
                 data[10][15] = CODE.FEED;
+                Snake.feed.push([10, 15]);
+                console.log(Snake);
 
                 return data;
             }
@@ -173,7 +176,6 @@
                         if (cell === CODE.BLANK_2) {
                             td.classList.add("color-2");
                         }
-
                         if (cell === CODE.SNAKE) {
                             td.classList.add("color-3");
                         }
@@ -188,6 +190,38 @@
                 table.appendChild(fragment);
             }
 
+            function updateTable() {
+                // 데이터 변화에 따른 테이블 front 업로드
+                snakeData.forEach((row, rI) => {
+                    row.forEach((cell, cI) => {
+                        let target = table.children[rI].children[cI];
+                        if (cell === CODE.BLANK_1) {
+                            target.classList.add("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-3");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.BLANK_2) {
+                            target.classList.add("color-2");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-3");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.SNAKE) {
+                            target.classList.add("color-3");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-4");
+                        }
+                        if (cell === CODE.FEED) {
+                            target.classList.add("color-4");
+                            target.classList.remove("color-1");
+                            target.classList.remove("color-2");
+                            target.classList.remove("color-3");
+                        }
+                    });
+                });
+            }
             function handleKeyInput(event) {
                 const { code } = event;
 
@@ -212,11 +246,47 @@
                         break;
                     case "ArrowRight":
                         // 우로 이동
+                        // 뱀 데이터 수정해야댐
+                        // 머리 , 몸통 , 꼬리 링크드 리스트 구현
 
-                        for (let i = 6; i <= 9; i++) {
-                            snakeData[10][i] = CODE.SNAKE;
-                        }
-                        console.log(snakeData);
+                        setInterval(() => {
+                            let count = 0;
+                            for (let i = 0; i < row; i++) {
+                                for (let j = 0; j < cell; j++) {
+                                    if (count === 4) break;
+                                    if (snakeData[i][j] === CODE.SNAKE) {
+                                        snakeData[i][j + 1] = CODE.SNAKE;
+                                        count++;
+                                    }
+                                    if (count === 1) {
+                                        if (snakeData[i][j - 1] === CODE.BLANK_1) {
+                                            snakeData[i][j] = CODE.BLANK_2;
+                                        } else {
+                                            snakeData[i][j] = CODE.BLANK_1;
+                                        }
+                                    }
+                                }
+                            }
+                            updateTable();
+                        }, 500);
+
+                        // snakeData.forEach((row, rI) => {
+                        //     row.forEach((cell, cI) => {
+                        //         if (cell === CODE.SNAKE) {
+                        //             snakeData[rI][cI + 1] = CODE.SNAKE;
+                        //         }
+                        //     });
+                        // });
+
+                        // for (let i = 6; i <= 9; i++) {
+                        //     if (i - 1 === 5) snakeData[10][i - 1] = CODE.BLANK_1;
+                        //     snakeData[10][i] = CODE.SNAKE;
+                        // }
+
+                        // updateTable();
+
+                        // console.log(Snake.snake);
+                        // console.log(snakeData);
                         break;
                 }
             }
