@@ -105,8 +105,14 @@
 
             // 게임 초기화
             function initGame() {
+                let tableData = [];
+                let snake = [];
+                let feed = [];
+                intervalId = null;
                 draw();
                 updateTable();
+
+                clearInterval(intervalId);
             }
             initGame();
             // 게임 데이터 set
@@ -181,7 +187,17 @@
             function handleKeyInput(event) {
                 const { keyCode } = event;
                 direction = keyCode;
+
                 clearInterval(intervalId);
+                if (
+                    snake[0] === 0 ||
+                    snake[0] === ROW ||
+                    snake[1] === 0 ||
+                    snake[1] === CELL
+                ) {
+                    window.location.reload();
+                }
+                console.log(snake);
 
                 switch (keyCode) {
                     case 37: // left
@@ -189,10 +205,11 @@
                             tableData.forEach((row, rI) => {
                                 row.forEach((cell, cI) => {
                                     if (rI === snake[0] && cI === snake[1]) {
-                                        tableData[rI][cI - 1] = SNAKE.HEAD;
+                                        tableData[rI][cI - 1 < 0 ? 0 : cI - 1] =
+                                            SNAKE.HEAD;
                                         tableData[rI][cI] = SNAKE.BLANK;
                                         snake[0] = rI;
-                                        snake[1] = cI - 1;
+                                        snake[1] = cI - 1 < 0 ? 0 : cI - 1;
                                     }
                                 });
                                 updateTable();
@@ -217,8 +234,8 @@
                         break;
                     case 39: // right
                         intervalId = setInterval(() => {
-                            for (let i = 0; i < ROW - 1; i++) {
-                                for (let j = 0; j < CELL - 1; j++) {
+                            for (let i = 0; i < ROW; i++) {
+                                for (let j = 0; j < CELL; j++) {
                                     if (i === snake[0] && j === snake[1]) {
                                         tableData[i][j + 1] = SNAKE.HEAD;
                                         tableData[i][j] = SNAKE.BLANK;
@@ -228,6 +245,7 @@
                                     }
                                 }
                             }
+
                             updateTable();
                         }, speed);
                         break;
@@ -251,7 +269,6 @@
                         }, speed);
                         break;
                 }
-                updateTable();
             }
 
             window.addEventListener("keyup", handleKeyInput);
