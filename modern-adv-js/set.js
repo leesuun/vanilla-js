@@ -160,10 +160,30 @@
 // const set = new Set([1, 2, 3, 4, 5, 1, 2]);
 // const ary = Array.from(set);
 
-const ary = [1, 2, 3, 1, 2];
-const set = new Set([...ary]);
-const map = new Map(set.entries());
+// const ary = [1, 2, 3, 1, 2];
+// const set = new Set([...ary]);
+// const map = new Map(set.entries());
 
-console.log(map);
+// console.log(map);
 
 // console.log(set);
+
+function unique(arr) {
+    /* 제출 답안 */
+    let set = new Set([...arr]);
+    return Array.from(set);
+}
+
+let values = [
+    "Hare",
+    "Krishna",
+    "Hare",
+    "Krishna",
+    "Krishna",
+    "Krishna",
+    "Hare",
+    "Hare",
+    ":-O",
+];
+
+alert(unique(values)); // 얼럿창엔 `Hare, Krishna, :-O`만 출력되어야 합니다.
