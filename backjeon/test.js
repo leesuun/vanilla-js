@@ -1,11 +1,12 @@
-let input = require("fs").readFileSync("input.txt").toString().split(" ").map(Number);
+let input = require("fs").readFileSync("input.txt").toString().split("\n");
 
-const [h, m] = input;
-const changeM = h * 60 + m - 45;
+const arr = [];
 
-if (changeM / 60 < 0) {
-    let minus = 1440 - Math.floor(changeM / 60) * (changeM % 60);
-    console.log(Math.floor(minus / 60) + " " + (minus % 60));
-    return;
-}
-console.log(Math.floor(changeM / 60) + " " + (changeM % 60));
+input.forEach((x) => {
+    const num = x % 42;
+    arr.push(num);
+});
+
+let result = [...new Set(arr)];
+
+console.log(result.length);
