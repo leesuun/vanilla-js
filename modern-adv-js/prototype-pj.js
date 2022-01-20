@@ -4,8 +4,7 @@
 정리 내용
 
 1 전직업 공용 스킬 2 // 캐릭터 
-- 메이플 용사
-- 용사의 외침
+- 사자후
 
 2 직업군 공용 스킬 1 // 직업군
 - 전사 : 파이널 어택
@@ -22,8 +21,8 @@
 - 나이트로드: 쇼다운
 - 듀블: 팬텀 블로우
 
-
 */
+
 //캐릭터
 const charactor = {
     skill: "사자후",
@@ -67,6 +66,15 @@ const hero = {
     },
     __proto__: warrior,
 };
+// Object.setPrototypeOf(hero, warrior);
+
+console.log(hero.name); // 히어로
+console.log(hero.job); // 전사
+
+hero.shoutOut(); // 히어로이(가) 사자후을(를) 시전했다.
+hero.finalAttack(); //히어로이(가) 파이널 어택을(를) 시전했다.
+hero.madness(); // 히어로이(가) 분노을(를) 시전했다.
+
 const darkKnight = {
     name: "다크나이트",
     skill: "다크임페일",
@@ -109,12 +117,3 @@ const dualBlade = {
     },
     __proto__: thief,
 };
-
-console.log(dualBlade.name);
-console.log(dualBlade.job);
-
-dualBlade.shoutOut();
-dualBlade.luckySeven();
-dualBlade.phantomBlow();
-
-sunCall.shoutOut();
