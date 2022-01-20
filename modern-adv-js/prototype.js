@@ -3,6 +3,16 @@
 // console.log(new Map()); // 프로토타입 Map가 최상위 부모
 // console.log(new Set()); // 프로토타입 sET가 최상위 부모
 
+// tiger.run(); //tiger is run!
+// dog.run(); //dog is run!
+// cat.run(); //cat is run!
+
+// console.log(tiger);
+// console.log(tiger.run());
+
+// Object.setPrototypeOf(obj1, obj);
+// obj.sec();
+
 // class Test {}
 // const test = new Test();
 // console.log(test);
@@ -230,55 +240,3 @@ const Housing = function (name_, color, rooms) {
 
 const apt = new Housing("apt", "red", 4);
 */
-
-const housing = {
-    toilet: 1,
-    turnon() {
-        console.log("turn on..");
-    },
-    setColor(color) {
-        this.color = color;
-    },
-    setRooms(rooms) {
-        this.rooms = rooms;
-    },
-};
-
-const apt = {};
-const villa = {};
-const oneroom = {};
-
-Object.setPrototypeOf(apt, housing);
-Object.setPrototypeOf(villa, housing);
-Object.setPrototypeOf(oneroom, housing);
-
-apt.hasOven = function () {
-    console.log(true);
-};
-
-apt.setColor("blue");
-apt.setRooms(4);
-
-villa.setColor("red");
-villa.setRooms(2);
-
-oneroom.setColor("green");
-oneroom.setRooms(1);
-
-const rainbow = {
-    name: "무지개아파트",
-    rooms: 5,
-    __proto__: apt,
-};
-// console.log(Object.keys(rainbow));
-// console.log(Object.values(rainbow));
-// console.log(Object.entries(rainbow));
-
-let ary = Object.entries(rainbow);
-let obj = {};
-// ary.forEach((prop) => {
-//     obj[prop[0]] = prop[1];
-// });
-obj = Object.fromEntries(ary);
-console.log(obj);
-console.log(ary);
