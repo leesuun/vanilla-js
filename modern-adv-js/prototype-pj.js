@@ -207,10 +207,22 @@
     const nightrod = new DetailJob("나이트로드", "쇼다운", thief);
     const dualBlade = new DetailJob("듀얼블레이드", "팬텀블로우", thief);
 
-    hero.madness(); // 히어로이(가) 분노을(를) 시전했다.
-    hero.finalAttack(); // 히어로이(가) 파이널 어택을(를) 시전했다.
-    hero.shoutOut(); // 히어로이(가) 사자후을(를) 시전했다.
+    // 1. 프로토타입 변경
 
-    sunCall.energyVolt(); // 썬콜이(가) 에너지 볼트을(를) 시전했다.
-    sunCall.finalAttack(); // error : ... is not a function!
+    Object.getPrototypeOf(hero) === Object.getPrototypeOf(sunCall); // false
+    Object.setPrototypeOf(hero, wizard);
+    Object.getPrototypeOf(hero) === Object.getPrototypeOf(sunCall); // true
+
+    // 2. key, values, entries
+    const hero_keys = Object.keys(hero); // key들을 배열로 반환
+    const hero_values = Object.values(hero); // value들을 배열로 반환
+    const hero_entries = Object.entries(hero); // key, value를 한쌍으로한 이중 배열 반환
+
+    // console.log(hero_keys);
+    // console.log(hero_values);
+    // console.log(hero_entries);
+    // console.log(new Map(hero_entries));
+    // console.log(Object.getOwnPropertyNames(hero));
+
+    // 3. 반복
 }
