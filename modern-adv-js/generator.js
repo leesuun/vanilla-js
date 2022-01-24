@@ -27,10 +27,10 @@ const gen_itr = generateSequence(1);
 
 */
 
+/*
 function* testGen2() {
     const a = yield 1;
     console.log(a);
-    debugger;
     const b = yield a * 1;
     console.log(b);
     const c = yield b + 2;
@@ -39,9 +39,94 @@ function* testGen2() {
 }
 
 const gen_itr = testGen2();
+
+console.log(gen_itr);
 console.log(gen_itr.next());
 console.log(gen_itr.next(100));
 console.log(gen_itr.next(48));
 console.log(gen_itr.next(2));
 
-// 3 or
+*/
+
+// 제너레이터 함수를 통한 비동기 구현(callback, promise)
+
+// 1. Promise로 변환
+/*
+setTimeout(
+    (x) => {
+        let result = x;
+        console.log(result);
+
+        setTimeout(
+            (x) => {
+                result *= x;
+                console.log(result);
+
+                setTimeout(
+                    (x) => {
+                        result *= x;
+                        console.log(result);
+                    },
+                    1000,
+                    30
+                );
+            },
+            1000,
+            20
+        );
+    },
+    1000,
+    10
+);
+*/
+
+let promise = new Promise(function (resolve, reject) {
+    setTimeout(
+        (x) => {
+            let result = x;
+            console.log(result);
+            resolve(result);
+        },
+        1000,
+        10
+    );
+})
+    .then((result) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                (x) => {
+                    result *= x;
+                    console.log(result);
+                    resolve(result);
+                },
+                1000,
+                20
+            );
+        });
+    })
+    .then((result) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                (x) => {
+                    result *= x;
+                    console.log(result);
+                    resolve(result);
+                },
+                1000,
+                30
+            );
+        });
+    })
+    .then((result) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                (x) => {
+                    result *= x;
+                    console.log(result);
+                    resolve(result);
+                },
+                1000,
+                40
+            );
+        });
+    });

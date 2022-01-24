@@ -8,19 +8,6 @@
     </head>
     <body>
         <div id="clock">00:00:00</div>
-        <script>
-            let input = "baekjoon";
-            let ary = Array(26)
-                .fill(97)
-                .map((num, idx) => String.fromCharCode(num + idx));
-
-            for (let i = 0; i < input.length; i++) {
-                ary[ary.indexOf(input[i])] = i;
-
-                // console.log(ary.indexOf(input[i]));
-            }
-            // console.log(input);
-            console.log(ary);
-        </script>
+        <script src="generator.js"></script>
     </body>
 </html>
