@@ -50,7 +50,7 @@ console.log(gen_itr.next(2));
 
 // 제너레이터 함수를 통한 비동기 구현(callback, promise)
 
-// 1. Promise로 변환
+// 1. 콜백 구현
 /*
 setTimeout(
     (x) => {
@@ -80,6 +80,8 @@ setTimeout(
 );
 */
 
+/*
+// 2. Promise로 변환
 let promise = new Promise(function (resolve, reject) {
     setTimeout(
         (x) => {
@@ -130,3 +132,28 @@ let promise = new Promise(function (resolve, reject) {
             );
         });
     });
+*/
+
+// 3. 제너레이터로 변환
+/*
+function calc(a, b) {
+    setTimeout(() => {
+        mul_itr.next(a * b);
+    }, 1000);
+}
+
+function* mulGen() {
+    const a = yield calc(1, 10);
+    console.log(a);
+    const b = yield calc(a, 20);
+    console.log(b);
+    const c = yield calc(b, 30);
+    console.log(c);
+    const d = yield calc(c, 40);
+    console.log(d);
+    return;
+}
+
+const mul_itr = mulGen();
+mul_itr.next();
+*/

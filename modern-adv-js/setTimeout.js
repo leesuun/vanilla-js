@@ -20,7 +20,7 @@
 }
 */
 
-const clock = document.getElementById("clock");
+// const clock = document.getElementById("clock");
 
 // let cnt = 0;
 // setInterval(() => {
@@ -36,5 +36,3 @@ function myClock() {
 
     setTimeout(myClock, 2000);
 }
-
-myClock();
