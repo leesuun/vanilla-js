@@ -157,3 +157,125 @@ function* mulGen() {
 const mul_itr = mulGen();
 mul_itr.next();
 */
+
+/*
+let range = {
+    from: 1,
+    to: 5,
+
+    *[Symbol.iterator]() {
+        // [Symbol.iterator]: function*()를 짧게 줄임
+        for (let value = this.from; value <= this.to; value++) {
+            yield value;
+        }
+    },
+};
+
+alert([...range]); // 1, 2, 3, 4, 5
+*/
+
+/*
+let range = {
+    from: 1,
+    to: 5,
+
+    [Symbol.iterator]() {
+        return {
+            current: this.from,
+            last: this.to,
+
+            next() {
+                if (this.current <= this.last) {
+                    return { done: false, value: this.current++ };
+                } else {
+                    return { done: true };
+                }
+            },
+        };
+    },
+};
+*/
+/*
+let range = {
+    from: 1,
+    to: 6,
+
+    *[Symbol.iterator]() {
+        for (let value = this.from; value <= this.to; value++) {
+            if (value <= 5) {
+                yield { value: value, done: false };
+            } else {
+                yield { done: true };
+            }
+        }
+    },
+};
+
+console.log(range);
+
+for (let val of range) {
+    console.log(val);
+}
+*/
+
+/*
+// gen iterator
+function* generateSequence() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+
+let sequence = [0, ...generateSequence()];
+console.log(sequence);
+*/
+{
+    function* generateSequence(start, end) {
+        for (let i = start; i <= end; i++) yield i;
+    }
+    {
+        function* generatePasswordCodes() {
+            // 0..9
+            yield* generateSequence(48, 57);
+
+            // A..Z
+            yield* generateSequence(65, 90);
+
+            // a..z
+            yield* generateSequence(97, 122);
+        }
+
+        let str = "";
+
+        for (let code of generatePasswordCodes()) {
+            str += String.fromCharCode(code);
+        }
+
+        function* generateSequence(start, end) {
+            for (let i = start; i <= end; i++) yield i;
+        }
+    }
+
+    {
+        function* generateAlphaNum() {
+            // yield* generateSequence(48, 57);
+            for (let i = 48; i <= 57; i++) yield i;
+
+            // yield* generateSequence(65, 90);
+            for (let i = 65; i <= 90; i++) yield i;
+
+            // yield* generateSequence(97, 122);
+            for (let i = 97; i <= 122; i++) yield i;
+        }
+
+        let str = "";
+
+        for (let code of generateAlphaNum()) {
+            str += String.fromCharCode(code);
+        }
+    }
+
+    alert(str); // 0..9A..Za..z
+
+    // alert(str); // 0..9A..Za..z
+}
