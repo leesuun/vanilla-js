@@ -14,7 +14,7 @@ for (let i = 0; i < ary.length; i++) {
 
 console.log(input.replace(/\s/g, "").length + count);
 
-// const n = require("fs").readFileSync("dev/stdin").toString().trim().split("\n");
+// const n = require("fs").readFileSync("../input.txt").toString().trim().split("\n");
 // let T = n.shift();
 
 // const arr = [/lj/g, /c=/g, /c-/g, /dz=/g, /d-/g, /nj/g, /s=/g, /z=/g];
