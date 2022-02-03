@@ -14,3 +14,16 @@ let range = {
 for (let value of range) {
     alert(value); // 1, 2, 3, 4, 5
 }
+
+(async () => {
+    let count = 0;
+
+    for await (const commit of fetchCommits("javascript-tutorial/en.javascript.info")) {
+        console.log(commit.author.login);
+
+        if (++count == 100) {
+            // 100번째 커밋에서 멈춥니다.
+            break;
+        }
+    }
+})();
