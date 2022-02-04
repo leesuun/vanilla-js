@@ -56,6 +56,7 @@ console.log(p1.weight);
 // console.log(p1.#weight); // error
 */
 
+/* private value, method
 class Animal {
     #dog = "개";
     bark() {
@@ -78,3 +79,47 @@ class Animal {
 const dog = new Animal();
 console.log(dog.bark());
 Animal.printPrivateStaticMethod();
+*/
+
+/*
+// getter , setter
+class Person {
+    constructor(id, name, email) {
+        this._id = id;
+        this._name = name;
+        this._email = email;
+    }
+    get id() {
+        return this._id;
+    }
+    get name() {
+        return this._name;
+    }
+    get email() {
+        return this._email;
+    }
+
+    set id(id) {
+        this._id = id;
+    }
+    set name(name) {
+        this._name = name;
+    }
+    set email(email) {
+        this._email = email;
+    }
+
+    info() {
+        return `ID:${this._id}, 이름:${this._name}, email:${this._email}`;
+    }
+}
+
+const p1 = new Person(1, "leesuun", "sktjsvy2@naver.com");
+
+// getter는 사용시 함수호출이 아님
+// console.log(p1.name());
+// console.log(p1.email);
+console.log(p1.info());
+p1.name = "이수운";
+console.log(p1.info());
+*/
