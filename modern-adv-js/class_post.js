@@ -24,14 +24,67 @@ class Calculator {
         return a / b;
     }
 }
-
 const basicCalc = new Calculator("basic");
-// console.log("typeof Calculator:", typeof Calculator);
-console.dir(Calculator);
-// console.log(basicCalc);
 
-console.log(basicCalc.add(10, 20));
-console.log(basicCalc.subtract(10, 20));
-console.log(basicCalc.multiply(10, 20));
-console.log(basicCalc.divide(10, 20));
-console.log(Calculator.add2(10, 20));
+class MiddleCalc extends Calculator {
+    constructor(type) {
+        super(type);
+    }
+    pow(a, b) {
+        return a ** b;
+    }
+    sqrt(a) {
+        return Math.sqrt(a);
+    }
+    remainder(a, b) {
+        if (!b) return new Error(`${b}으로 나눌 수 없습니다.`);
+        return a % b;
+    }
+}
+
+const middleCalc = new MiddleCalc("middle", 1);
+
+class AdvancedCalc extends MiddleCalc {
+    constructor(type) {
+        super(type);
+    }
+    random(a, b) {
+        let ary = [];
+        for (let i = a; i <= b; i++) {
+            ary.push(i);
+        }
+        const random = Math.floor(Math.random() * ary.length);
+        return ary[random];
+    }
+
+    factorial(a) {
+        if (a < 0) return new Error("음수 사용 불가");
+        if (a === 0) return 1;
+        let factorial = 1;
+        for (let i = 1; i <= a; i++) {
+            factorial *= i;
+        }
+        return factorial;
+    }
+
+    #decimal(a) {
+        let measure = [];
+        for (let i = 1; i <= a; i++) {
+            if (a % i === 0) measure.push(i);
+        }
+
+        if (measure.length === 2) {
+            return `소수입니다. 약수: ${measure} `;
+        }
+        return "소수가 아닙니다.";
+    }
+
+    decimal2(a) {
+        return this.#decimal(a);
+    }
+}
+
+const advancedCalc = new AdvancedCalc("advanced");
+console.log(advancedCalc.decimal2(5));
+console.log(advancedCalc.decimal(5)); 
+
