@@ -95,3 +95,18 @@ for (let i = 0; i < li.length; i++) {
     li[i].addEventListener("click", () => console.log(i + " 번째 요소"));
 }
 */
+
+const obj = {
+    count: 0,
+};
+
+function test() {
+    setInterval(() => {
+        const { count } = obj;
+        console.log(count);
+    }, 1000);
+}
+test();
+setInterval(() => {
+    obj.count++;
+}, 1000);
