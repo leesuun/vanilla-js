@@ -11,3 +11,4 @@ function solution(n) {
 
   return current % 1234567;
 }
+solution(100);
