@@ -1,3 +1,4 @@
+// sol1
 function solution(n) {
   let answer = 0;
   const count1 = convertBinary(n);
@@ -22,4 +23,19 @@ function convertBinary(n) {
     if (remainder === 1) count++;
   }
   return count;
+}
+
+// sol2
+function solution(n) {
+  let answer = 0;
+  const count1 = n.toString(2).replace(/0/g, "").length;
+
+  for (let i = n + 1; i <= 1000000; i++) {
+    const count2 = i.toString(2).replace(/0/g, "").length;
+    if (count2 === count1) {
+      answer = i;
+      break;
+    }
+  }
+  return answer;
 }
