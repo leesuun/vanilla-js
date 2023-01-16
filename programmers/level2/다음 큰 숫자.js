@@ -27,7 +27,7 @@ function convertBinary(n) {
 
 // sol2
 function solution(n) {
-  let answer = 0;
+  let answer = 1;
   const count1 = n.toString(2).replace(/0/g, "").length;
 
   for (let i = n + 1; i <= 1000000; i++) {
