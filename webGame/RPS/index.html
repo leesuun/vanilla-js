@@ -1,133 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
-        <title>가위바위보</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+    <title>가위바위보</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-            main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            #computer {
-                width: 142px;
-                height: 200px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>
-            <h1>가위바위보 (3판 2선)</h1>
-        </header>
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #computer {
+        width: 142px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>가위바위보 (3판 2선)</h1>
+    </header>
 
-        <main>
-            <div id="computer"></div>
-            <div>
-                <button id="scissors" class="btn">가위</button>
-                <button id="rock" class="btn">바위</button>
-                <button id="paper" class="btn">보</button>
-            </div>
-            <span id="result"></span>
-        </main>
-        <script>
-            const computer = document.querySelector("#computer");
-            const buttons = document.querySelectorAll("button");
-            const result = document.querySelector("#result");
+    <main>
+      <div id="computer"></div>
+      <div>
+        <button id="scissors" class="btn">가위</button>
+        <button id="rock" class="btn">바위</button>
+        <button id="paper" class="btn">보</button>
+      </div>
+      <span id="result"></span>
+    </main>
+    <script>
+      const computer = document.querySelector("#computer");
+      const buttons = document.querySelectorAll("button");
+      const result = document.querySelector("#result");
 
-            const IMG_URL = `rsp.png`;
-            const RELOAD_SPEED = 50;
-            const RSP_DELAY = 1000;
+      const IMG_URL = `rsp.png`;
+      const RELOAD_SPEED = 500;
+      const RSP_DELAY = 1000;
 
-            const rspX = {
-                scissors: "0", // 가위
-                rock: "-220px", // 바위
-                paper: "-440px", // 보
-            };
+      const rspX = {
+        scissors: "0", // 가위
+        rock: "-220px", // 바위
+        paper: "-440px", // 보
+      };
 
-            const scoreTable = {
-                rock: 0,
-                scissors: 1,
-                paper: -1,
-            };
+      const scoreTable = {
+        rock: 0,
+        scissors: 1,
+        paper: -1,
+      };
 
-            const win = [2, -1];
-            const lose = [-2, 1];
+      const win = [2, -1];
+      const lose = [-2, 1];
 
-            let myScore = 0;
-            let computerScore = 0;
-            let intervalId;
-            let clickable = true;
+      let myScore = 0;
+      let computerScore = 0;
+      let intervalId;
+      let clickable = true;
 
-            let computerChoice = `scissors`;
-            const changeComputerHand = () => {
-                if (computerChoice === "rock") {
-                    computerChoice = "scissors";
-                } else if (computerChoice === "scissors") {
-                    computerChoice = "paper";
-                } else {
-                    computerChoice = "rock";
-                }
-                computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]}`;
-                computer.style.backgroundSize = `auto 200px`;
-            };
+      let computerChoice = `scissors`;
+      const changeComputerHand = () => {
+        if (computerChoice === "rock") {
+          computerChoice = "scissors";
+        } else if (computerChoice === "scissors") {
+          computerChoice = "paper";
+        } else {
+          computerChoice = "rock";
+        }
+        computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]}`;
+        computer.style.backgroundSize = `auto 200px`;
+      };
 
-            function handleRspGame(event) {
-                if (clickable) {
-                    clearInterval(intervalId);
-                    clickable = false;
+      function handleRspGame(event) {
+        if (clickable) {
+          clearInterval(intervalId);
+          clickable = false;
 
-                    const myRspSelect = this.id;
-                    const computerNumber = scoreTable[computerChoice];
-                    const selectNumber = scoreTable[myRspSelect];
-                    const diff = selectNumber - computerNumber;
+          const myRspSelect = this.id;
+          const computerNumber = scoreTable[computerChoice];
+          const selectNumber = scoreTable[myRspSelect];
+          const diff = selectNumber - computerNumber;
 
-                    // 가위 = 1 바위 = 0 보 -1
+          // 가위 = 1 바위 = 0 보 -1
 
-                    if (win.includes(diff)) {
-                        //승리
-                        myScore++;
-                        result.innerText = `승리!! 내점수: ${myScore} 상대점수: ${computerScore}`;
-                    } else if (lose.includes(diff)) {
-                        //패배
-                        computerScore++;
-                        result.innerText = `패배!! 내점수: ${myScore} 상대점수: ${computerScore}`;
-                    } else {
-                        //무승부 diff = 0
-                        result.innerText = `무승부!! 내점수: ${myScore} 상대점수: ${computerScore}`;
-                    }
+          if (win.includes(diff)) {
+            //승리
+            myScore++;
+            result.innerText = `승리!! 내점수: ${myScore} 상대점수: ${computerScore}`;
+          } else if (lose.includes(diff)) {
+            //패배
+            computerScore++;
+            result.innerText = `패배!! 내점수: ${myScore} 상대점수: ${computerScore}`;
+          } else {
+            //무승부 diff = 0
+            result.innerText = `무승부!! 내점수: ${myScore} 상대점수: ${computerScore}`;
+          }
 
-                    if (myScore === 3) {
-                        result.innerText = "나의 승리";
-                        return;
-                    }
-                    if (computerScore === 3) {
-                        result.innerText = "컴퓨터 승리";
-                        return;
-                    }
+          if (myScore === 3) {
+            result.innerText = "나의 승리";
+            return;
+          }
+          if (computerScore === 3) {
+            result.innerText = "컴퓨터 승리";
+            return;
+          }
 
-                    setTimeout(() => {
-                        clickable = true;
-                        intervalId = setInterval(
-                            changeComputerHand,
-                            RELOAD_SPEED
-                        );
-                    }, RSP_DELAY);
-                }
-            }
-
+          setTimeout(() => {
+            clickable = true;
             intervalId = setInterval(changeComputerHand, RELOAD_SPEED);
-            buttons.forEach((button) =>
-                button.addEventListener("click", handleRspGame)
-            );
-        </script>
-    </body>
+          }, RSP_DELAY);
+        }
+      }
+
+      intervalId = setInterval(changeComputerHand, RELOAD_SPEED);
+      buttons.forEach((button) =>
+        button.addEventListener("click", handleRspGame)
+      );
+    </script>
+  </body>
 </html>
