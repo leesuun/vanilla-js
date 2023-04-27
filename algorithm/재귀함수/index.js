@@ -54,7 +54,15 @@ function gcd_1(m, n) {
   else return gcd_1(n, m % n);
 }
 
-console.log(gcd_1(10, 22));
+function gcd_2(m, n) {
+  if (n === 0) {
+    return m;
+  } else {
+    return gcd_2(n, m % n);
+  }
+}
+
+console.log(gcd_2(10, 25));
 
 // 1,2,5,10
 // 1,2,4,5,10,20
