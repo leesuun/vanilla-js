@@ -27,14 +27,34 @@ function fibonacci(n) {
   }
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
-// fibonacci(4) + fibonacci(3);
-// fibonacci(3) + fibonacci(2) + fibonacci(2) + fibonacci(1);
-// fibonacci(2) +
-//   fibonacci(1) +
-//   fibonacci(1) +
-//   fibonacci(0) +
-//   fibonacci(1) +
-//   fibonacci(0) +
-//   fibonacci(1);
-console.log(fibonacci(5));
+// console.log(fibonacci(5));
 // 4. 최대 공약수
+
+function gcd(num1, num2) {
+  const maxNum = num1 >= num2 ? num1 : num2;
+  const minNum = num1 >= num2 ? num2 : num1;
+  const result = [];
+
+  for (let i = 1; i <= maxNum; i++) {
+    if (num1 % i === 0 && num2 % i === 0) {
+      result.push(i);
+    }
+    if (i === minNum) break;
+  }
+  return result[result.length - 1];
+}
+
+function gcd_1(m, n) {
+  if (m < n) {
+    let temp = m;
+    m = n;
+    m = temp;
+  }
+  if (m % n == 0) return n;
+  else return gcd_1(n, m % n);
+}
+
+console.log(gcd_1(10, 22));
+
+// 1,2,5,10
+// 1,2,4,5,10,20
