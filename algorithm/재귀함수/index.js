@@ -18,7 +18,23 @@ function powN(n, x) {
   x--;
   return n * powN(n, x);
 }
+// console.log(powN(2, 5));
+// 3. n번째 피보나치 수
 
-console.log(powN(2, 5));
-// 3. 피보나치
+function fibonacci(n) {
+  if (n <= 1) {
+    return n;
+  }
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+// fibonacci(4) + fibonacci(3);
+// fibonacci(3) + fibonacci(2) + fibonacci(2) + fibonacci(1);
+// fibonacci(2) +
+//   fibonacci(1) +
+//   fibonacci(1) +
+//   fibonacci(0) +
+//   fibonacci(1) +
+//   fibonacci(0) +
+//   fibonacci(1);
+console.log(fibonacci(5));
 // 4. 최대 공약수
