@@ -5,7 +5,7 @@ import java.util.Stack;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class BackExpression2 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
